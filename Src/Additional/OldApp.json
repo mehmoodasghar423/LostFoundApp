@@ -1,0 +1,37 @@
+{
+    "expo": {
+      "name": "LostApp",
+      "slug": "LostApp",
+      "scheme": "lostapp",
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "icon": "./assets/icon.png",
+      "userInterfaceStyle": "automatic",
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      },
+      "assetBundlePatterns": [
+        "**/*"
+      ],
+      "ios": {
+        "supportsTablet": true
+      },
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/fvbnm-icon.png",
+          "backgroundColor": "#ffffff"
+        },
+        "package": "com.mehmoodasghar423.LostApp"
+      },
+      "web": {
+        "favicon": "./assets/fvbnm-icon.png"
+      },
+      "extra": {
+        "eas": {
+          "projectId": "811c870e-8f4b-4ff4-a780-3fda0410ad21"
+        }
+      }
+    }
+  }
