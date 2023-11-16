@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
@@ -17,8 +17,11 @@ import { SelectList } from 'react-native-dropdown-select-list';
 
 
 
-const LostPost = () => {
-  const navigation = useNavigation();
+const LostPostEdit = ({ route,navigation  }) => {
+  const { documentId } = route.params;
+
+
+  // const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
 
@@ -26,16 +29,46 @@ const LostPost = () => {
   const [location, setLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-
+  
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false)
+  
+  const [defaultSelectedCategory, setDefaultSelectedCategory] = useState('');
 
 
+  useEffect(() => {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      const userRef = firebase.firestore().collection("UserData").doc(documentId);
+      userRef.get()
+        .then((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
 
-  const [categoryError, setCategoryError] = useState('');
-  const [locationError, setLocationError] = useState('');
-  const [dateError, setDateError] = useState('');
-  const [timeError, setTimeError] = useState('');
+            // Set the default selected option based on the data retrieved from Firestore
+            const defaultCategory = { key: '1', value: data.category };
+
+            setCategory(data.category);
+            setLocation(data.location);
+             // Convert Firestore Timestamp to a JavaScript Date
+          const selectedDateTimestamp = data.date.toDate();
+
+          // Set the formatted date string with the desired format
+          const formattedDate = moment(selectedDateTimestamp).format("MMMM Do YYYY");
+
+          // Set the previously selected date based on the formatted date
+          setSelectedDate(formattedDate);
+            // Set the default selected option
+            setDefaultSelectedCategory(defaultCategory);
+          } else {
+            console.error("No such document!");
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting document:", error);
+        });
+    }
+  }, [documentId]);
 
   const data = [
     {key:'Electronics', value:'Electronics'},
@@ -82,46 +115,16 @@ const LostPost = () => {
 
 
 
- const NextScreen = () => {
-    // Validate the fields
-    let isValid = true;
-
-    if (!category) {
-      setCategoryError('Please select a category');
-      isValid = false;
-    } else {
-      setCategoryError(''); // Clear the error
-    }
-
-    if (!location) {
-      setLocationError('Please enter the location');
-      isValid = false;
-    } else {
-      setLocationError(''); // Clear the error
-    }
-
-    if (!selectedDate) {
-      setDateError('Please select a date');
-      isValid = false;
-    } else {
-      setDateError(''); // Clear the error
-    }
-
-    if (!selectedTime) {
-      setTimeError('Please select a time');
-      isValid = false;
-    } else {
-      setTimeError(''); // Clear the error
-    }
-    if (isValid) {
-      navigation.navigate('LostPostNext', {
-        category,
-        location,
-        date: selectedDate,
-        time: selectedTime,
-      });
-    }
+  const NextScreen = () => {
+    navigation.navigate('LostPostNextEdit', {
+      category: category, 
+      location,
+      date: selectedDate,
+      time: selectedTime,
+      documentId: documentId
+    });
   };
+
 
 
 
@@ -166,12 +169,12 @@ const LostPost = () => {
             style={{
               fontSize: RFValue(18),
               fontFamily: "Urbanist_600SemiBold",
-              marginLeft: "30%",
+              marginLeft: "22%",
 
 
             }}
           >
-            Lost Post
+            Lost Post Editing
           </Text>
         </View>
 
@@ -198,11 +201,11 @@ const LostPost = () => {
          
         <SelectList 
         setSelected={setCategory} data={data}
-
+        defaultOption={defaultSelectedCategory}
         boxStyles={{
           backgroundColor: "#EDEEEF",
             borderWidth: 1,
-            borderColor: categoryError ? 'red' : '#EDEEEF',
+            borderColor: "#EDEEEF",
             width: "91%",
             // height: screenHeight * 0.052,
             borderRadius: 8,
@@ -232,8 +235,6 @@ const LostPost = () => {
           fontFamily: "Urbanist_500Medium",
         }}
         />
-
-        
         </View>
 
 
@@ -262,7 +263,7 @@ const LostPost = () => {
           <TextInput style={{
             backgroundColor: "#EDEEEF",
             borderWidth: 1,
-            borderColor: locationError ? 'red' : '#EDEEEF',
+            borderColor: "#EDEEEF",
             width: "91%",
             // width:279,
             height: 38,
@@ -277,11 +278,10 @@ const LostPost = () => {
             // marginLeft: "6%"
             alignSelf: "center"
           }}
-            placeholder='Enter City Name  '
+            placeholder='Search Location  '
             value={location}
             onChangeText={text => setLocation(text)}
              />
-            
           <Ionicons
             name="search"
             size={RFValue(17)}
@@ -299,11 +299,10 @@ const LostPost = () => {
         </View>
 
 
-     
 
         <View style={{
           position: "relative",
-          top: screenHeight * 0.119,
+          top: screenHeight * 0.09,
           flexDirection: "row",
           width: "89%",
           justifyContent: "space-between",
@@ -351,9 +350,9 @@ const LostPost = () => {
 
         <View style={{
           // backgroundColor: "green",
-          left: "5%",
+          left: "6%",
           position: "relative",
-          top: screenHeight * 0.128,
+          top: screenHeight * 0.11,
           // position: "absolute",
           // top: 264,
           flexDirection: "row",
@@ -369,7 +368,7 @@ const LostPost = () => {
             height: screenHeight * 0.054,
             borderRadius: 8,
             borderWidth: 1,
-            borderColor: dateError ? 'red' : '#E8ECF4',
+            borderColor: '#E8ECF4',
             flexDirection: "row",
             alignItems: "center",
             //  justifyContent:"center"
@@ -381,7 +380,7 @@ const LostPost = () => {
                   width: screenWidth * 0.036,
                   height: screenHeight * 0.017,
                   resizeMode: "contain",
-                  marginLeft: "8%"
+                  marginLeft: "10%"
                 }}
                 source={require('../../assets/LostApp/Date.png')} />
 
@@ -390,7 +389,7 @@ const LostPost = () => {
                   fontSize: RFValue(12),
                   fontFamily: "Urbanist_500Medium",
                   // lineHeight: 15,
-                  marginLeft: "3%",
+                  marginLeft: "7%",
                   color: "#8391A1"
                 }}
               >
@@ -428,7 +427,7 @@ const LostPost = () => {
             height: screenHeight * 0.054,
             borderRadius: 8,
             borderWidth: 1,
-            borderColor: dateError ? 'red' : '#E8ECF4',
+            borderColor: '#E8ECF4',
             flexDirection: "row",
             alignItems: "center",
             // justifyContent:"center"/
@@ -521,6 +520,6 @@ const LostPost = () => {
   )
 }
 
-export default LostPost
+export default LostPostEdit
 
 const styles = StyleSheet.create({})

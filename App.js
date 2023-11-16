@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+
 
 import Welcome from './Src/Login and Register/Welcome'
+import Guest from './Src/Login and Register/Guest'
 import Login from './Src/Login and Register/Login'
 import Register from './Src/Login and Register/Register'
 import ForgotPassword from './Src/Login and Register/ForgotPassword'
@@ -27,33 +29,85 @@ import Notifications from './Src/HomeStack/Notifications';
 import Map from './Src/HomeStack/Map';
 import ItemDetail from './Src/ItemDetail'
 
+import OutPutCheck from './Src/OutPutCheck';
+import DetailsScreen from './Src/DetailsScreen';
+import RecordEditing from './Src/RecordEditing';
+
+import ChatScreen from './Src/ChatScreen';
 
 import MyAds from './Src/Tabs/MyAds'
 
 
+import AccountDeatils from './Src/Profile.js/AccountDeatils';
+import Settings from './Src/Profile.js/Settings';
+import Contact from './Src/Profile.js/Contact';
+
+
+import LostPostEdit from './Src/PostEditing/LostPostEdit';
+import LostPostNextEdit from './Src/PostEditing/LostPostNextEdit';
+import { firebase } from './config';
+
+
+
 const Stack = createStackNavigator();
 const App = () => {
+
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
+
+  function onAuthStateChanged(user) {
+      setUser(user);
+      if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+      const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+      return subscriber;
+  }, []);
+
+  if (initializing) {
+      return null;
+  }
+
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName='Welcome'>
-    <Stack.Screen name="Welcome" component={Welcome}  options={{headerShown:false}} />
-    <Stack.Screen name="Login" component={Login}  options={{headerShown:false}} />
-    <Stack.Screen name="ForgotPassword" component={ForgotPassword}  options={{headerShown:false}} />
-    <Stack.Screen name="Register" component={Register}  options={{headerShown:false}} />
-    <Stack.Screen name="OtpVerification" component={OtpVerification}  options={{headerShown:false}} />
-    <Stack.Screen name="CreateNewPassword" component={CreateNewPassword}  options={{headerShown:false}} />
-    <Stack.Screen name="PasswordChanged" component={PasswordChanged}  options={{headerShown:false}} />
-    <Stack.Screen name="TabNavigator" component={TabNavigator}  options={{headerShown:false}} />
-    <Stack.Screen name="Middlee" component={Middle}  options={{headerShown:false}} />
-    <Stack.Screen name="LostPost" component={LostPost}  options={{headerShown:false}} /> 
-    <Stack.Screen name="LostPostNext" component={LostPostNext}  options={{headerShown:false}} /> 
-    <Stack.Screen name="FoundPost" component={FoundPost}  options={{headerShown:false}} /> 
-    <Stack.Screen name="FoundPostNext" component={FoundPostNext}  options={{headerShown:false}} /> 
-    <Stack.Screen name="MyAds" component={MyAds}  options={{headerShown:false}} />
-    <Stack.Screen name='Filters' component={Filters} options={{headerShown:false}}/>
-    <Stack.Screen name='Notifications' component={Notifications} options={{headerShown:false}} />
-    <Stack.Screen name='ItemDetail' component={ItemDetail} options={{headerShown:false}}/>
-    <Stack.Screen name='Map' component={Map} options={{headerShown:false}}/>
+    {user ? (
+      //  if a user is logged in
+      <>
+        <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="Middlee" component={Middle}  options={{headerShown:false}} />
+        <Stack.Screen name="LostPost" component={LostPost}  options={{headerShown:false}} /> 
+        <Stack.Screen name="LostPostNext" component={LostPostNext}  options={{headerShown:false}} />  
+        <Stack.Screen name="OutPutCheck" component={OutPutCheck}  options={{headerShown:false}} />  
+        <Stack.Screen name="FoundPost" component={FoundPost}  options={{headerShown:false}} /> 
+        <Stack.Screen name="FoundPostNext" component={FoundPostNext}  options={{headerShown:false}} /> 
+        <Stack.Screen name="MyAds" component={MyAds}  options={{headerShown:false}} />
+        <Stack.Screen name="LostPostEdit" component={LostPostEdit}  options={{headerShown:false}} />
+        <Stack.Screen name="LostPostNextEdit" component={LostPostNextEdit}  options={{headerShown:false}} />
+        <Stack.Screen name='Filters' component={Filters} options={{headerShown:false}}/>
+        <Stack.Screen name='Notifications' component={Notifications} options={{headerShown:false}} />
+        <Stack.Screen name="DetailsScreen" component={DetailsScreen}  options={{headerShown:false}} />  
+        <Stack.Screen name="ChatScreen" component={ChatScreen}  options={{headerShown:false}} />  
+        <Stack.Screen name='ItemDetail' component={ItemDetail} options={{headerShown:false}}/>
+        <Stack.Screen name='AccountDeatils' component={AccountDeatils} options={{headerShown:false}}/>
+        <Stack.Screen name='Settings' component={Settings} options={{headerShown:false}}/>
+        <Stack.Screen name='Contact' component={Contact} options={{headerShown:false}}/>
+        <Stack.Screen name='Map' component={Map} options={{headerShown:false}}/>
+      </>
+    ) : (
+      //  when user not logged in
+      <>
+      <Stack.Screen name="Welcome" component={Welcome}  options={{headerShown:false}} />
+      <Stack.Screen name="Guest" component={Guest}  options={{headerShown:false}} />
+      <Stack.Screen name="Login" component={Login}  options={{headerShown:false}} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword}  options={{headerShown:false}} />
+      <Stack.Screen name="Register" component={Register}  options={{headerShown:false}} />
+      <Stack.Screen name="OtpVerification" component={OtpVerification}  options={{headerShown:false}} />
+      <Stack.Screen name="CreateNewPassword" component={CreateNewPassword}  options={{headerShown:false}} />
+      <Stack.Screen name="PasswordChanged" component={PasswordChanged}  options={{headerShown:false}} />
+      </>
+    )}
     </Stack.Navigator>
     </NavigationContainer>
   )
@@ -62,6 +116,11 @@ const App = () => {
 
 const styles = StyleSheet.create({})
 export default App;
+
+
+
+
+
 
 
 

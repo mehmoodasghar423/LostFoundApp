@@ -10,19 +10,24 @@ import { useFonts } from  '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
+import { firebase } from '../../config';
+
 
 
 export default function Login() {
+  const navigation = useNavigation();
  
 
-  const navigation = useNavigation();
+ 
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
 
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
- 
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  
 
 
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -54,6 +59,32 @@ export default function Login() {
   if (!fontsLoaded) {
     return null; 
   }
+
+
+  const loginUser = async (email, password) => {
+    if (email.trim() === '') {
+      setEmailError('Please enter your email');
+    } else {
+      setEmailError('');
+    }
+  
+    if (password.trim() === '') {
+      setPasswordError('Please enter your password');
+    } else {
+      setPasswordError('');
+    }
+  
+    if (email.trim() !== '' && password.trim() !== '') {
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+      } catch (error) {
+        const customMessage = "Invalid Information Entered";
+        alert(customMessage);
+      }
+    }
+  };
+  
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View>
@@ -79,7 +110,7 @@ export default function Login() {
         <TextInput style={{
           backgroundColor: "#F7F8F9",
           borderWidth: 1,
-          borderColor: "#E8ECF4",
+          borderColor: emailError ? 'red' : '#E8ECF4',
           // width: 335,
           width: "90%",
           height: screenHeight*0.06,
@@ -98,6 +129,8 @@ export default function Login() {
           placeholderTextColor="#8391A1"
           value={email}
           onChangeText={text => setEmail(text)}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
 
         <View style={{
@@ -107,7 +140,7 @@ export default function Login() {
           <TextInput style={{
             backgroundColor: "#F7F8F9",
             borderWidth: 1,
-            borderColor: "#E8ECF4",
+            borderColor: passwordError ? 'red' : '#E8ECF4',
             // width: 335,
             width: "90%",
             width: screenWidth*0.9,
@@ -132,6 +165,9 @@ export default function Login() {
             // secureTextEntry={!isPasswordVisible}
             value={password}
             onChangeText={text => setPassword(text)}
+            autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry={true}
           />
          
         </View>
@@ -158,7 +194,7 @@ export default function Login() {
 
 
         <TouchableOpacity
-          onPress={handler}
+        onPress={() => loginUser(email, password)}
           style={{
             position: "relative",
             borderRadius: 8,

@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Pressable, Alert, Modal, Dimensions, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Pressable, Alert, Modal, Dimensions ,ActivityIndicator} from 'react-native'
 // import React,{useState,useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
 import {
@@ -15,18 +15,19 @@ import 'firebase/storage';
 
 
 
-const FoundPostNext = ({ route }) => {
-
-  const navigation = useNavigation();
+const LostPostNextEdit = ({ route,navigation}) => {
+    const { documentId } = route.params;
+  // const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
-
+// console.log(documentId);
   const [lostItem, setlostItem] = useState('');
   const [description, setdescription] = useState('')
-  const [image1, setImage1] = useState(null);
-  const [image2, setImage2] = useState(null);
-  const [image3, setImage3] = useState(null);
-  const { category, location,number, date, time } = route.params;
+  const [image1, setImage1] = useState(null); 
+  const [image2, setImage2] = useState(null); 
+  const [image3, setImage3] = useState(null); 
+  const { category, location,date,time } = route.params;
+
 
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isImageUploading2, setIsImageUploading2] = useState(false);
@@ -34,8 +35,7 @@ const FoundPostNext = ({ route }) => {
 
 
   const [currentImageIndex, setCurrentImageIndex] = useState(null);
-
-
+  
 
   const [user, setUser] = useState(null);
 
@@ -50,9 +50,43 @@ const FoundPostNext = ({ route }) => {
   };
 
 
+
+  useEffect(() => {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      const userRef = firebase.firestore().collection("UserData").doc(documentId);
+      userRef.get()
+        .then((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            setlostItem(data.lostItem);
+            setdescription(data.description);
+           setImage1(data.imageUrl1); // Set the URL of the first image
+        setImage2(data.imageUrl2); // Set the URL of the second image
+        setImage3(data.imageUrl3); // Set the URL of the third image
+            // setImageUrl(data.imageUrl); // Set the image URL
+          } else {
+            console.error("No such document!");
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting document:", error);
+        });
+    }
+  }, [documentId]);
+
+
+
+
+
+
+
+
   const saveDataToFirestore = () => {
     const user = firebase.auth().currentUser;
     if (user) {
+      const userDataRef = firebase.firestore().collection("UserData").doc(documentId);
+
       const userData = {
         lostItem,
         description,
@@ -60,42 +94,40 @@ const FoundPostNext = ({ route }) => {
         imageUrl2: image2 ? image2 : null,
         imageUrl3: image3 ? image3 : null,
         uid: user.uid,
-        category,
+        category, 
         location,
-        number,
         date: firebase.firestore.Timestamp.fromDate(new Date()),
-        time,
-        Type: "Found"
+        time
       };
-
-      // Add a new document to Firestore
-      firebase.firestore().collection("UserData").add(userData)
-        .then(() => {
-
-          navigation.navigate('MyAds', { initialButton: 'found' });
-
-        })
-        .catch(error => {
-          console.error("Error adding document to Firestore: ", error);
-        });
+  
+      userDataRef.update(userData)
+      .then(() => {
+        navigation.navigate('MyAds');
+      })
+      .catch(error => {
+        console.error("Error updating data in Firestore: ", error);
+      });
     }
-  };
+    };
 
-
+  
+  
   const [modalVisible, setModalVisible] = useState(false);
+
+ 
 
 
 
   const GallerypickImage1 = async () => {
     setIsImageUploading(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-
+    
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-
+  
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
       setModalVisible(!modalVisible);
@@ -112,7 +144,7 @@ const FoundPostNext = ({ route }) => {
       //if the user cancels the image selection
       setIsImageUploading(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-
+    
     }
   };
 
@@ -120,13 +152,13 @@ const FoundPostNext = ({ route }) => {
   const CamerapickImage1 = async () => {
     setIsImageUploading(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-
+    
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-
+  
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
       setModalVisible(!modalVisible);
@@ -143,22 +175,22 @@ const FoundPostNext = ({ route }) => {
       //if the user cancels the image selection
       setIsImageUploading(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-
+    
     }
   };
   const pickImage2 = async () => {
     setIsImageUploading2(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-
+    
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-
+  
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
-
+     
       const storageRef = firebase.storage().ref();
       const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
       const imageRef = storageRef.child(imageName);
@@ -172,24 +204,24 @@ const FoundPostNext = ({ route }) => {
       //if the user cancels the image selection
       setIsImageUploading2(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-
+    
     }
   };
-
+  
 
   const pickImage3 = async () => {
     setIsImageUploading3(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-
+    
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-
+  
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
-
+     
       const storageRef = firebase.storage().ref();
       const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
       const imageRef = storageRef.child(imageName);
@@ -203,21 +235,19 @@ const FoundPostNext = ({ route }) => {
       //if the user cancels the image selection
       setIsImageUploading3(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-
+    
     }
   };
+ 
 
-
-
-
-
-
+ 
+ 
   ///
 
 
 
-
-
+ 
+  
 
 
   let [fontsLoaded] = useFonts({
@@ -267,12 +297,12 @@ const FoundPostNext = ({ route }) => {
               // width: 280,
               // left: 18,
               // top: 1,
-              marginLeft: "30%",
+              marginLeft: "22%",
 
 
             }}
           >
-            Found Post
+          Lost Post Editing
           </Text>
         </View>
 
@@ -427,7 +457,7 @@ const FoundPostNext = ({ route }) => {
                 // margin: 20,
                 backgroundColor: 'white',
                 borderRadius: 20,
-                top: screenHeight * 0.43,
+                top:screenHeight*0.43,
                 paddingVertical: screenHeight * 0.03,
                 alignItems: 'center',
                 shadowColor: '#000',
@@ -442,31 +472,31 @@ const FoundPostNext = ({ route }) => {
                 elevation: 5,
               }}>
                 <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}
-                  style={{ position: "absolute", right: screenWidth * 0.03, top: screenHeight * -0.02 }} >
-                  <Image style={{ width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#7689D6", resizeMode: "contain", }}
+                  style={{ position: "absolute",right:screenWidth*0.03,top:screenHeight*-0.02 }} >
+                  <Image style={{  width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#7689D6",resizeMode:"contain" ,}}
                     source={require('../../assets/LostApp/Close.png')}
                   />
                 </TouchableOpacity>
 
 
                 <TouchableOpacity onPress={GallerypickImage1}
-                  style={{ flexDirection: "row", marginTop: "3%" }}>
-                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth * 0.012, resizeMode: "contain" }}
+                  style={{ flexDirection: "row",marginTop:"3%" }}>
+                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth*0.012,resizeMode:"contain" }}
                     source={require('../../assets/LostApp/Gallery.png')}
                   />
 
-                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), }}>Gallery</Text>
+                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12),  }}>Gallery</Text>
 
 
                 </TouchableOpacity>
 
-                <Image style={{ width: "80%", marginTop: "7.5%", height: screenHeight * 0.003 }}
+                <Image style={{ width: "80%", marginTop: "7.5%",height:screenHeight*0.003}}
                   source={require('../../assets/LostApp/Linee.png')}
                 />
 
                 <TouchableOpacity onPress={CamerapickImage1}
                   style={{ flexDirection: "row", marginTop: "7%" }}>
-                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth * 0.012, resizeMode: "contain" }}
+                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth*0.012,resizeMode:"contain" }}
                     source={require('../../assets/LostApp/Cameraa.png')}
                   />
                   <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), }}>Camera</Text>
@@ -499,7 +529,7 @@ const FoundPostNext = ({ route }) => {
             </TouchableOpacity>
 
             {isImageUploading && currentImageIndex === 1 ? (
-              <ActivityIndicator size="large" color="#7689D6" style={{ position: "absolute", }} />
+              <ActivityIndicator size="large" color="#7689D6"  style={{position:"absolute",}}/>
             ) : (
               image1 && (
                 <Image
@@ -514,7 +544,6 @@ const FoundPostNext = ({ route }) => {
                 />
               )
             )}
-
           </View>
 
 
@@ -529,7 +558,7 @@ const FoundPostNext = ({ route }) => {
             </TouchableOpacity>
 
             {isImageUploading2 && currentImageIndex === 1 ? (
-              <ActivityIndicator size="large" color="#7689D6" style={{ position: "absolute", }} />
+              <ActivityIndicator size="large" color="#7689D6"  style={{position:"absolute",}}/>
             ) : (
               image2 && (
                 <Image
@@ -557,7 +586,7 @@ const FoundPostNext = ({ route }) => {
             </TouchableOpacity>
 
             {isImageUploading3 && currentImageIndex === 1 ? (
-              <ActivityIndicator size="large" color="#7689D6" style={{ position: "absolute", }} />
+              <ActivityIndicator size="large" color="#7689D6"  style={{position:"absolute",}}/>
             ) : (
               image3 && (
                 <Image
@@ -649,4 +678,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FoundPostNext;
+export default LostPostNextEdit;

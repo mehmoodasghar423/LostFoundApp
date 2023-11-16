@@ -16,7 +16,7 @@ import { firebase } from '../../config';
 
 
 
-const Wallet = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton }) => {
+const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton }) => {
   const navigation = useNavigation();
   // console.log(categoryselectedButton);
 
@@ -113,7 +113,7 @@ const Wallet = ({ searchQuery, handleSearch, selectedType, selectedLocation, cat
         <ActivityIndicator size="large" color="#7689D6" />
       ) : filteredData.length > 0 ? ( // Data is available, render the data
         <FlatList
-          data={filteredData.filter(item => item.lostItem && item.category === 'Wallet')} // Filter out items where lostItem is empty
+        data={filteredData.filter(item => item.lostItem)} // Filter out items where lostItem is empty
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -396,4 +396,4 @@ const styles = StyleSheet.create({
 
 
 
-export default Wallet;
+export default MainData;

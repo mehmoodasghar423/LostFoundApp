@@ -9,7 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './Tabs/Home'
 import MyAds from './Tabs/MyAds'
 import Middle from './Tabs/Middle'
-import Chat from './Tabs/Chat'
+import ChatList from './Tabs/ChatList'
 import Profile from './Tabs/Profile'
 import { useEffect, useState } from 'react';
 import {
@@ -20,37 +20,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 
-
-
-
-
-//ChatStack
-import Chating from './Chat Stack/Chating';
-
-
-//Add Post
-// import AddPost1 from './Add Post/AddPost1';
-import ItemDetail from './ItemDetail';
-
-
-
-
-
-
-
-
-
-
-const ChatStack = createStackNavigator();
-function ChatPageStackScreen() {
-  return (
-    <ChatStack.Navigator independent={true} initialRouteName='' >
-      <ChatStack.Screen options={{ headerShown: false }} name='Chatt' component={Chat} />
-      <ChatStack.Screen options={{ headerShown: false }} name='Chating' component={Chating} />
-
-    </ChatStack.Navigator>
-  )
-}
 
 
 
@@ -187,7 +156,7 @@ export default function TabScreens() {
         }}
       />
 
-      <Tab.Screen name="Chat" component={ChatPageStackScreen}
+      <Tab.Screen name="Chat" component={ChatList}
 
         options={{
           headerShown: false, tabBarIcon: ({ focused }) => (

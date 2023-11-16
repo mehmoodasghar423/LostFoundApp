@@ -9,7 +9,8 @@ import {
 import { useFonts } from  '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-
+import { firebase } from '../../config';
+import PhoneInput from 'react-native-phone-input';
 
 
 export default function Register() {
@@ -19,10 +20,60 @@ export default function Register() {
 
 
   const [username, setUsername] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
  
+
+  const [initialCountry, setInitialCountry] = useState('pk');
+
+  useEffect(() => {
+    // Simulating a delay for fetching initial country data
+    setTimeout(() => {
+      setInitialCountry('pk'); // Set Pakistan as the default country
+    }, 1000); 
+  }, []);
+
+
+
+
+  registrationUser = async (username, email, password, confirmPassword) => {
+    if (password !== confirmPassword) {
+      alert("Password and Confirm Password should be same.");
+      return;
+    }
+  
+    await firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        // Send email verification
+        return firebase.auth().currentUser.sendEmailVerification({
+          handleCodeInApp: true,
+          url: "https://lost-e3f4a.firebaseapp.com",
+        });
+      })
+      .then(() => {
+        alert("Verification email sent");
+      })
+      .then(() => {
+        // Store user data in Firestore
+        firebase.firestore().collection("UserData")
+          .doc(firebase.auth().currentUser.uid)
+          .set({
+            username,
+            phoneNumber,
+            email,
+            password,
+            confirmPassword,
+          });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
+  
+
+
 
 
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -92,6 +143,37 @@ export default function Register() {
           placeholderTextColor="#8391A1"
           value={username}
           onChangeText={text => setUsername(text)}
+          autoCorrect={false}
+        />
+
+
+        <PhoneInput style={{
+          backgroundColor: "#F7F8F9",
+          borderWidth: 1,
+          borderColor: "#E8ECF4",
+          // width: 335,
+          width: "90%",
+          height: screenHeight*0.06,
+          alignSelf: "center",
+          borderRadius: 8,
+          fontSize:  RFValue(12),
+          fontFamily:"Urbanist_500Medium",
+          // lineHeight: 15,
+          // position: "absolute",
+          // top: 156,
+          position: "relative",
+          marginTop: "2%",
+          padding: 10,
+        }}
+          placeholder='Enter your Phone Number'
+          placeholderTextColor="#8391A1"
+          value={phoneNumber}
+        initialCountry={initialCountry}
+        onChangePhoneNumber={(number) => setPhoneNumber(number)}
+        textInputProps={{
+          style: { fontSize: 30 }, // Adjust the font size as needed
+        }}
+         
         />
 
 
@@ -117,6 +199,8 @@ export default function Register() {
           placeholderTextColor="#8391A1"
           value={email}
           onChangeText={text => setEmail(text)}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
 
       
@@ -146,6 +230,10 @@ export default function Register() {
             // secureTextEntry={!isPasswordVisible}
             value={password}
             onChangeText={text => setPassword(text)}
+            autoCapitalize="none"
+            autoCorrect={false}
+          secureTextEntry={true}
+
           />
 
           <TextInput style={{
@@ -174,6 +262,10 @@ export default function Register() {
             // secureTextEntry={!isPasswordVisible}
             value={confirmPassword}
             onChangeText={text => setConfirmPassword(text)}
+            autoCapitalize="none"
+            autoCorrect={false}
+          secureTextEntry={true}
+
           />
          
       
@@ -181,7 +273,7 @@ export default function Register() {
        
 
         <TouchableOpacity
-          onPress={handler}
+        onPress={() => registrationUser(username, email, password, confirmPassword)}
           style={{
             position: "relative",
            marginTop:"7%",

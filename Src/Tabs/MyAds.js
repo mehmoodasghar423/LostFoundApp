@@ -12,16 +12,25 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 
 
+/////
 
-
-const MyAds = () => {
+const MyAds = ({ route }) => {
+  const { initialButton } = route.params || {};
 
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = (screenWidth * 0.25);
   const screenHeight = Dimensions.get('window').height;
 
+  const [selectedButton, setSelectedButton] = useState(initialButton || 'lost'); // Set the initial value based on initialButton
 
-  const [selectedButton, setSelectedButton] = useState('lost');
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
 
   const handleButtonPress = (button) => {
     setSelectedButton(button);
@@ -50,6 +59,9 @@ const MyAds = () => {
   if (!fontsLoaded) {
     return null; 
   }
+
+
+
   return (
     <SafeAreaView >
       <View style={{ backgroundColor:"white"}}>

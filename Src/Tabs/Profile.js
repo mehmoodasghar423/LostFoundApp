@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, TextInput } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, TextInput,Alert } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker';
@@ -8,15 +8,46 @@ import {
 import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { useNavigation } from '@react-navigation/native';
+
+import { firebase } from '../../config';
+import 'firebase/storage';
 
 
 
 const Profile = () => {
+  const navigation = useNavigation();
 
+
+  const AccountDeatilsHandler = () => {
+    navigation.navigate('AccountDeatils');
+};
+  const SettingHandler = () => {
+    navigation.navigate('Settings');
+};
+  const ContactHandler = () => {
+    navigation.navigate('Contact');
+};
+const [loading, setLoading] = useState(true); 
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
 
   const [selectedImage, setSelectedImage] = useState(null);
+  ///
+  const [name, setName] = useState("")
+  useEffect(() => {
+      firebase.firestore().collection("UserData")
+          .doc(firebase.auth().currentUser.uid).get()
+          .then((sanpshot) => {
+              if (sanpshot.exists) {
+                  setName(sanpshot.data())
+              } else {
+                  console.log("user does not exist")
+              }
+          })
+  }, [])
+
+
 
   useEffect(() => {
     (async () => {
@@ -27,12 +58,61 @@ const Profile = () => {
     })();
   }, []);
 
+
+
+
+
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.cancelled) {
-      setSelectedImage(result.uri);
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+  
+      if (!result.canceled) {
+        const selectedAsset = result.assets[0];
+        const storageRef = firebase.storage().ref();
+        const imageName = `${firebase.auth().currentUser.uid}/${new Date().getTime()}.jpg`;
+        const imageRef = storageRef.child(imageName);
+        const response = await fetch(selectedAsset.uri);
+        const blob = await response.blob();
+        await imageRef.put(blob);
+        const imageUrl = await imageRef.getDownloadURL();
+  
+        const currentUser = firebase.auth().currentUser;
+        if (currentUser) {
+          await firebase.firestore().collection("UserProfilePictures").doc(currentUser.email).set({
+            profilePic: imageUrl,
+          });
+          setSelectedImage(imageUrl);
+        }
+      }
+    } catch (error) {
+      console.error("Error picking image: ", error);
+      // Handle the error appropriately, display an alert, etc.
     }
   };
+  
+  
+  useEffect(() => {
+    const currentUser = firebase.auth().currentUser;
+    if (currentUser) {
+      firebase.firestore().collection("UserProfilePictures").doc(currentUser.email).get()
+        .then((snapshot) => {
+          if (snapshot.exists) {
+            setSelectedImage(snapshot.data().profilePic);
+            setLoading(false); // Set loading to false when image is fetched
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching profile picture: ", error);
+          setLoading(false); // Set loading to false on error
+          // Handle the error appropriately, display an alert, etc.
+        });
+    }
+  }, []);
+
 
   let [fontsLoaded] = useFonts({
     Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
@@ -49,6 +129,48 @@ const Profile = () => {
     return null;
   }
 
+  const handleSignOut = () => {
+    firebase.auth().signOut();
+  };
+
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            const user = firebase.auth().currentUser;
+            if (user) {
+              user
+                .delete()
+                .then(() => {
+               
+                  navigation.navigate('Login'); 
+                })
+                .catch((error) => {
+                  
+                  Alert.alert('Error', 'An error occurred while deleting your account.');
+                });
+            } else {
+              Alert.alert('Error', 'User not found. Please sign in again.');
+            }
+          },
+          style: 'destructive',
+        },
+      ]
+    );
+  };
+
+
+
+  
   return (
     <SafeAreaView>
       <View>
@@ -74,14 +196,11 @@ const Profile = () => {
             style={{
               fontSize: RFValue(20),
               fontFamily: "Urbanist_600SemiBold",
-              // lineHeight: 20,
-              // left: "6%",
+             
               letterSpacing: -1,
               position: "relative",
-              // top: 19,
               marginTop: "3.5%",
               color: "#1E232C",
-              // width: 210,
               alignSelf: "center",
             }}
           >
@@ -100,16 +219,13 @@ const Profile = () => {
         }}>
 
           <Image
-            source={require('../../assets/LostApp/NProfile.webp')}
+            source={require('../../assets/LostApp/ProfilePicture.webp')}
             style={
               {
-                width: 110,
-                height: 110,
+               
                 width: screenWidth * 0.29,
                 height: screenHeight * 0.14,
                 alignSelf: "center",
-                // borderRadius: 100,
-                // resizeMode:"contain",
                 backgroundColor: "red",
                 borderRadius: (screenWidth, screenHeight) * 0.07,
               borderWidth:(screenWidth, screenHeight) * 0.007,
@@ -120,15 +236,14 @@ const Profile = () => {
           {selectedImage && <Image
             source={{ uri: selectedImage }}
             style={{
-              width: 110,
-              height: 110,
+          
               width: screenWidth * 0.29,
               height: screenHeight * 0.14,
               alignSelf: "center",
-              borderRadius: 100,
               position: "absolute",
               borderWidth:(screenWidth, screenHeight) * 0.007,
-              borderColor:"white"
+              borderColor:"white",
+              borderRadius:(screenWidth, screenHeight) * 0.08,
             }}
 
           />}
@@ -170,7 +285,7 @@ const Profile = () => {
             alignSelf: "center"
           }}
         >
-          Sam
+       {name.username}
         </Text>
 
 
@@ -217,7 +332,7 @@ const Profile = () => {
               alignSelf: "center"
             }}
           >
-            Points :1234
+            Points : 0
           </Text>
 
 
@@ -227,7 +342,9 @@ const Profile = () => {
 
 
 
-        <View style={{
+        <TouchableOpacity
+       onPress={AccountDeatilsHandler}
+        style={{
           position: "relative",
           marginTop: "5%",
           width: "82%",
@@ -263,7 +380,7 @@ const Profile = () => {
           >
             Account Detail
           </Text>
-        </View>
+        </TouchableOpacity>
 
 
 
@@ -271,7 +388,9 @@ const Profile = () => {
 
 
 
-        <View style={{
+        <TouchableOpacity 
+        onPress={SettingHandler}
+        style={{
           position: "relative",
           marginTop: "2%",
           width: "82%",
@@ -306,14 +425,16 @@ const Profile = () => {
           </Text>
 
 
-        </View>
+        </TouchableOpacity>
 
 
 
 
 
 
-        <View style={{
+        <TouchableOpacity
+        onPress={ContactHandler}
+         style={{
 
           position: "relative",
           marginTop: "2%",
@@ -348,14 +469,14 @@ const Profile = () => {
           </Text>
 
 
-        </View>
+        </TouchableOpacity>
 
 
 
 
 
         <TouchableOpacity
-          // onPress={handler}
+        onPress={handleSignOut}
           style={{
             // position: "absolute",
             // top: 427,
@@ -381,7 +502,7 @@ const Profile = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          // onPress={handler}
+        onPress={handleDeleteAccount}
           style={{
             position: 'relative',
             // top: 127,

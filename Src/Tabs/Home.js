@@ -1,12 +1,13 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView, Dimensions, } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons';
+import MainData from '../HomeTabCategory/MainData';
 import Electronics from '../HomeTabCategory/Electronics';
 import Jewelry from '../HomeTabCategory/Jewelry';
 import Wallet from '../HomeTabCategory/Wallet';
 import Glasses from '../HomeTabCategory/Glasses';
 import Bag from '../HomeTabCategory/Bag';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation ,route} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
   Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
@@ -15,15 +16,36 @@ import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { Picker } from '@react-native-picker/picker';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import SelectDropdown from 'react-native-select-dropdown'
 
 
 
-const Home = () => {
+const CustomSelectorImage = () => (
+  <Image
+    source={require('../../assets/LostApp/Selector.png')} // Replace with the path to your image
+    style={{ width: 20, height: 20,position:"relative" }} // Set the desired width and height for your image
+    resizeMode="contain" // Adjust the resizeMode property as needed
+  />
+);
+
+
+const Home = ({ route }) => {
+  const { selectedType } = route.params || { selectedType: null };
+  const { selectedLocation } = route.params || { selectedLocation: null };
+  const { categoryselectedButton } = route.params || { categoryselectedButton: null };
+  const { sliderValues } = route.params || { sliderValues: null };
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = (screenWidth * 0.25);
   const screenHeight = Dimensions.get('window').height;
 
+  // console.log(selectedType);
+  // console.log(selectedLocation);
+  // console.log(categoryselectedButton);
+  // console.log(sliderValues);
   const navigation = useNavigation();
+
+  const [searchQuery, setSearchQuery] = useState('');
+
   const [selectedValue, setSelectedValue] = useState('Pakistan');
   const handleValueChange = (itemValue) => {
     setSelectedValue(itemValue);
@@ -34,26 +56,40 @@ const Home = () => {
     navigation.navigate('Filters');
   };
 
-  const [selectedButton, setSelectedButton] = useState('button1');
+  const [selectedButton, setSelectedButton] = useState('button0');
 
   const handleButtonPress = (button) => {
     setSelectedButton(button);
   };
 
+
+  
   const renderButtonContent = () => {
-    if (selectedButton === 'button1') {
-      return <Electronics />;
+
+    if (selectedButton === 'button0') {
+      return <MainData  searchQuery={searchQuery}  selectedType={selectedType}  selectedLocation={selectedLocation}  categoryselectedButton={categoryselectedButton} sliderValues={sliderValues} />;
+    } else if (selectedButton === 'button1') {
+      return <Electronics  searchQuery={searchQuery}  selectedType={selectedType}  selectedLocation={selectedLocation}  categoryselectedButton={categoryselectedButton} sliderValues={sliderValues} />;
     } else if (selectedButton === 'button2') {
-      return <Jewelry />;
+      return <Jewelry  searchQuery={searchQuery}  selectedType={selectedType}  selectedLocation={selectedLocation}  categoryselectedButton={categoryselectedButton} sliderValues={sliderValues}/>;
     } else if (selectedButton === 'button3') {
-      return <Bag />;
+      return <Bag  searchQuery={searchQuery}  selectedType={selectedType}  selectedLocation={selectedLocation}  categoryselectedButton={categoryselectedButton} sliderValues={sliderValues} />;
     } else if (selectedButton === 'button4') {
-      return <Wallet />;
+      return <Wallet  searchQuery={searchQuery}  selectedType={selectedType}  selectedLocation={selectedLocation}  categoryselectedButton={categoryselectedButton} sliderValues={sliderValues}/>;
     } else if (selectedButton === 'button5') {
-      return <Glasses />;
+      return <Glasses  searchQuery={searchQuery}  selectedType={selectedType}  selectedLocation={selectedLocation}  categoryselectedButton={categoryselectedButton} sliderValues={sliderValues} />;
     }
     return null;
   };
+
+  const [selected, setSelected] = React.useState("1");
+  const countries = ["Pakistan", "Canada", "Australia", "Ireland"]
+  const defaultSelectedIndex = 0; 
+  
+  const renderCustomDropdownIcon = () => {
+    return <CustomSelectorImage />;
+  };
+
 
 
   let [fontsLoaded] = useFonts({
@@ -76,86 +112,74 @@ const Home = () => {
 
 
       <View style={{ backgroundColor: "#FFFFFF" }}>
-        <Text
-          style={{
-          
-            fontSize: RFValue(12),
-            fontFamily: "Urbanist_400Regular",
-            // lineHeight: 14.4,
-            // left: 28,
-            marginLeft: screenWidth*0.042,
-            position: "relative",
-            top: 20,
-            top: screenHeight*0.028,
-            color: "#838383"
-          }}
-        >Location</Text>
+    
+
+      <Text
+      style={{
+      
+        fontSize: RFValue(12),
+        fontFamily: "Urbanist_400Regular",
+        // lineHeight: 14.4,
+        // left: 28,
+        marginLeft: screenWidth*0.062,
+        position: "relative",
+        top: 20,
+        top: screenHeight*0.028,
+        color: "#838383"
+      }}
+    >Location</Text>
 
 
 
-        <View style={{
-          flexDirection: "row",
-          alignItems: "center",
-          position: "relative",
-          marginLeft: "3%",
-          top: "2%",
-          alignItems: "center",
-          width: "92%"
+    <View style={{
+      // position: "absolute",
+      // top: 105,
+      // position: "relative",
+      // marginLeft: "1%",
+      top: "5.5%",
+      flexDirection: 'row', 
+      // backgroundColor:"red",
+      height:30,marginBottom:30,
+      
+    }}>
+     
+    <SelectDropdown
+    data={countries}
+    onSelect={(selectedItem, index) => {
+      console.log(selectedItem, index) }}
+    defaultButtonText={countries[defaultSelectedIndex]}
+    buttonTextAfterSelection={(selectedItem, index) => { return selectedItem }}
+    rowTextForSelection={(item, index) => {return item}}
+  
+    dropdownStyle={{
+      width: '39%', // Adjust the width
+      height: 'auto', // Set height to auto or a specific value
+      borderColor: '#8391A1', // Border color
+      borderWidth: 1, // Border width
+      borderRadius: 10, // Border radius
+      backgroundColor: 'white', // Dropdown background color
+      marginTop: -40, // Adjust margin top
+      fontSize:10
+    }}
+    buttonStyle={{
+      width: '39%', // Adjust the width
+      height: 'auto', // Set height to auto or a specific value
+  backgroundColor:"white"
+  
+    }}
+    selectedRowStyle={{ backgroundColor:"#7689D6", }}
+    buttonTextStyle={{ fontFamily: "Urbanist_500Medium",fontSize: RFValue(20),}}
+    rowTextStyle={{ fontFamily: "Urbanist_500Medium",fontSize: RFValue(15) }}
+  
+  
+    dropdownIconPosition="right" // Show icon on the right side
+    renderDropdownIcon={renderCustomDropdownIcon}
+  />
+  
+    </View>
 
-        }}>
 
-
-          <TouchableOpacity style={{}}>
-            <Text style={{
-              fontFamily: "Urbanist_500Medium",
-              fontSize: RFValue(20),
-              // lineHeight:24
-
-
-            }} > {selectedValue}</Text>
-          </TouchableOpacity>
-
-
-          <View style={{
-            width: 27,
-            // marginLeft: "7%",
-            position: "relative",
-            // bottom: 10,
-            borderRadius: 10,
-            alignSelf: "center",
-            marginLeft: 6,
-           
-          }}>
-            <Picker
-              selectedValue={selectedValue}
-              onValueChange={handleValueChange}
-              mode="dropdown">
-              <Picker.Item label="Pakistan" value="Pakistan" />
-              <Picker.Item label="China" value="China" />
-              <Picker.Item label="America" value="America" />
-              <Picker.Item label="Africa" value="Africa" />
-              <Picker.Item label="Qatar" value="Qatar" />
-
-            </Picker>
-          </View>
-
-
-
-          <TouchableOpacity style={{ position: "absolute", right: -3 }}
-            onPress={() => navigation.navigate('Notifications')}>
-            <Image style={{
-              width: 14,
-              width: screenWidth * 0.038,
-              height: 18,
-              height: screenHeight * 0.042,
-              resizeMode: "contain"
-
-            }}
-              source={require("../../assets/LostApp/Notification.png")} />
-          </TouchableOpacity>
-
-        </View>
-
+      
 
 
 
@@ -191,7 +215,10 @@ const Home = () => {
             color: "#8C9199",
 
           }}
-            placeholder='Search something here' />
+            placeholder='Search something here' 
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
+            />
           <Ionicons
             name="search"
             size={RFValue(17)}
@@ -234,6 +261,13 @@ const Home = () => {
 
         <View style={styles.buttons}>
           <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+
+            <TouchableOpacity
+              style={[styles.button, { width: buttonWidth, height: screenHeight * 0.047 }, selectedButton === 'button0' && styles.selectedButton]}
+              onPress={() => handleButtonPress('button0')}
+            >
+              <Text style={selectedButton === 'button0' ? styles.selectedButtonText : styles.buttonText}>All Data</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.button, { width: buttonWidth, height: screenHeight * 0.047 }, selectedButton === 'button1' && styles.selectedButton]}
@@ -280,19 +314,7 @@ const Home = () => {
 
 
 
-        <TouchableOpacity onPress={() => navigation.navigate('Map')}
-          style={{
-            
-            width:screenWidth*0.15,
-            height:screenHeight*0.083,
-            position: "absolute",
-            right: screenWidth*0.03,
-            top: screenHeight*0.8,
-            // borderRadius: (screenWidth,screenHeight) * 0.02,
-          }}>
-          <Image style={{ width: "100%", height: "100%", }}
-            source={require("../../assets/LostApp/MapIcon.png")} />
-        </TouchableOpacity>
+       
       </View>
     </SafeAreaView>
   )

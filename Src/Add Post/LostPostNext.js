@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Pressable, Alert, Modal, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Pressable, Alert, Modal, Dimensions, ActivityIndicator } from 'react-native'
 // import React,{useState,useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
@@ -10,74 +10,214 @@ import {
 import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { firebase } from '../../config';
+import 'firebase/storage';
 
 
 
-const LostPostNext = () => {
+const LostPostNext = ({ route }) => {
 
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
+
+  const [lostItem, setlostItem] = useState('');
+  const [description, setdescription] = useState('')
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
+  const { category, location,number, date, time } = route.params;
+
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [isImageUploading2, setIsImageUploading2] = useState(false);
+  const [isImageUploading3, setIsImageUploading3] = useState(false);
+
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(null);
+
+
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const currentUser = firebase.auth().currentUser;
+    setUser(currentUser);
+  }, []);
 
 
   const handleGoBack = () => {
     navigation.goBack();
   };
 
+
+  const saveDataToFirestore = () => {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      const userData = {
+        lostItem,
+        description,
+        imageUrl1: image1 ? image1 : null,
+        imageUrl2: image2 ? image2 : null,
+        imageUrl3: image3 ? image3 : null,
+        uid: user.uid,
+        category,
+        location,
+        date: firebase.firestore.Timestamp.fromDate(new Date()),
+        time,
+        Type: "Lost"
+      };
+
+      // Add a new document to Firestore
+      firebase.firestore().collection("UserData").add(userData)
+        .then(() => {
+
+          navigation.navigate('MyAds', { initialButton: 'lost' });
+
+        })
+        .catch(error => {
+          console.error("Error adding document to Firestore: ", error);
+        });
+    }
+  };
+
+
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [lostItem, setlostItem] = useState('');
-  const [description, setdescription] = useState('')
-
-  const [selectedImage1, setSelectedImage1] = useState(null);
-  const [selectedImage2, setSelectedImage2] = useState(null);
-  const [selectedImage3, setSelectedImage3] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission denied!');
-      }
-    })();
-  }, []);
 
 
   const GallerypickImage1 = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync();
+    setIsImageUploading(true); // Set loading indicator to true
+    setCurrentImageIndex(1); // Set the current image index
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
 
     if (!result.canceled) {
-      setSelectedImage1(result.uri);
+      const selectedAsset = result.assets[0];
       setModalVisible(!modalVisible);
-    }
+      const storageRef = firebase.storage().ref();
+      const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
+      const imageRef = storageRef.child(imageName);
+      const response = await fetch(selectedAsset.uri);
+      const blob = await response.blob();
+      await imageRef.put(blob);
+      const imageUrl = await imageRef.getDownloadURL();
+      setImage1(imageUrl);
+      setIsImageUploading(false);
+    } else {
+      //if the user cancels the image selection
+      setIsImageUploading(false); // Set loading indicator to false
+      setCurrentImageIndex(null); // Reset the current image index
 
+    }
   };
 
 
   const CamerapickImage1 = async () => {
-    const result = await ImagePicker.launchCameraAsync();
+    setIsImageUploading(true); // Set loading indicator to true
+    setCurrentImageIndex(1); // Set the current image index
+
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
     if (!result.canceled) {
-      setSelectedImage1(result.uri);
-      setModalVisible(!modalVisible)
+      const selectedAsset = result.assets[0];
+      setModalVisible(!modalVisible);
+      const storageRef = firebase.storage().ref();
+      const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
+      const imageRef = storageRef.child(imageName);
+      const response = await fetch(selectedAsset.uri);
+      const blob = await response.blob();
+      await imageRef.put(blob);
+      const imageUrl = await imageRef.getDownloadURL();
+      setImage1(imageUrl);
+      setIsImageUploading(false);
+    } else {
+      //if the user cancels the image selection
+      setIsImageUploading(false); // Set loading indicator to false
+      setCurrentImageIndex(null); // Reset the current image index
+
     }
-
   };
-
-
   const pickImage2 = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.canceled) {
-      setSelectedImage2(result.uri);
-    }
+    setIsImageUploading2(true); // Set loading indicator to true
+    setCurrentImageIndex(1); // Set the current image index
 
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.canceled) {
+      const selectedAsset = result.assets[0];
+
+      const storageRef = firebase.storage().ref();
+      const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
+      const imageRef = storageRef.child(imageName);
+      const response = await fetch(selectedAsset.uri);
+      const blob = await response.blob();
+      await imageRef.put(blob);
+      const imageUrl = await imageRef.getDownloadURL();
+      setImage2(imageUrl);
+      setIsImageUploading2(false);
+    } else {
+      //if the user cancels the image selection
+      setIsImageUploading2(false); // Set loading indicator to false
+      setCurrentImageIndex(null); // Reset the current image index
+
+    }
   };
+
+
   const pickImage3 = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.canceled) {
-      setSelectedImage3(result.uri);
-    }
+    setIsImageUploading3(true); // Set loading indicator to true
+    setCurrentImageIndex(1); // Set the current image index
 
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.canceled) {
+      const selectedAsset = result.assets[0];
+
+      const storageRef = firebase.storage().ref();
+      const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
+      const imageRef = storageRef.child(imageName);
+      const response = await fetch(selectedAsset.uri);
+      const blob = await response.blob();
+      await imageRef.put(blob);
+      const imageUrl = await imageRef.getDownloadURL();
+      setImage3(imageUrl);
+      setIsImageUploading3(false);
+    } else {
+      //if the user cancels the image selection
+      setIsImageUploading3(false); // Set loading indicator to false
+      setCurrentImageIndex(null); // Reset the current image index
+
+    }
   };
+
+
+
+
+
+
+  ///
+
+
+
+
+
+
 
   let [fontsLoaded] = useFonts({
     Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
@@ -286,7 +426,7 @@ const LostPostNext = () => {
                 // margin: 20,
                 backgroundColor: 'white',
                 borderRadius: 20,
-                top:screenHeight*0.43,
+                top: screenHeight * 0.43,
                 paddingVertical: screenHeight * 0.03,
                 alignItems: 'center',
                 shadowColor: '#000',
@@ -301,31 +441,31 @@ const LostPostNext = () => {
                 elevation: 5,
               }}>
                 <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}
-                  style={{ position: "absolute",right:screenWidth*0.03,top:screenHeight*-0.02 }} >
-                  <Image style={{  width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#7689D6",resizeMode:"contain" ,}}
+                  style={{ position: "absolute", right: screenWidth * 0.03, top: screenHeight * -0.02 }} >
+                  <Image style={{ width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#7689D6", resizeMode: "contain", }}
                     source={require('../../assets/LostApp/Close.png')}
                   />
                 </TouchableOpacity>
 
 
                 <TouchableOpacity onPress={GallerypickImage1}
-                  style={{ flexDirection: "row",marginTop:"3%" }}>
-                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth*0.012,resizeMode:"contain" }}
+                  style={{ flexDirection: "row", marginTop: "3%" }}>
+                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth * 0.012, resizeMode: "contain" }}
                     source={require('../../assets/LostApp/Gallery.png')}
                   />
 
-                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12),  }}>Gallery</Text>
+                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), }}>Gallery</Text>
 
 
                 </TouchableOpacity>
 
-                <Image style={{ width: "80%", marginTop: "7.5%",height:screenHeight*0.003}}
+                <Image style={{ width: "80%", marginTop: "7.5%", height: screenHeight * 0.003 }}
                   source={require('../../assets/LostApp/Linee.png')}
                 />
 
                 <TouchableOpacity onPress={CamerapickImage1}
                   style={{ flexDirection: "row", marginTop: "7%" }}>
-                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth*0.012,resizeMode:"contain" }}
+                  <Image style={{ width: screenWidth * 0.055, height: screenHeight * 0.02, marginRight: screenWidth * 0.012, resizeMode: "contain" }}
                     source={require('../../assets/LostApp/Cameraa.png')}
                   />
                   <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), }}>Camera</Text>
@@ -357,16 +497,23 @@ const LostPostNext = () => {
                 source={require("../../assets/LostApp/UploadIcon.png")} />
             </TouchableOpacity>
 
-            {selectedImage1 && <Image
-              source={{ uri: selectedImage1 }}
-              style={{
-                width: screenWidth * 0.19, height: screenHeight * 0.087,
-                alignSelf: "center",
-                borderRadius: 8,
-                position: "absolute"
-              }}
+            {isImageUploading && currentImageIndex === 1 ? (
+              <ActivityIndicator size="large" color="#7689D6" style={{ position: "absolute", }} />
+            ) : (
+              image1 && (
+                <Image
+                  source={{ uri: image1 }}
+                  style={{
+                    width: screenWidth * 0.19,
+                    height: screenHeight * 0.087,
+                    alignSelf: "center",
+                    borderRadius: 8,
+                    position: "absolute",
+                  }}
+                />
+              )
+            )}
 
-            />}
           </View>
 
 
@@ -380,16 +527,22 @@ const LostPostNext = () => {
                 source={require("../../assets/LostApp/UploadIcon.png")} />
             </TouchableOpacity>
 
-            {selectedImage2 && <Image
-              source={{ uri: selectedImage2 }}
-              style={{
-                width: screenWidth * 0.19, height: screenHeight * 0.087,
-                alignSelf: "center",
-                borderRadius: 8,
-                position: "absolute"
-              }}
-
-            />}
+            {isImageUploading2 && currentImageIndex === 1 ? (
+              <ActivityIndicator size="large" color="#7689D6" style={{ position: "absolute", }} />
+            ) : (
+              image2 && (
+                <Image
+                  source={{ uri: image2 }}
+                  style={{
+                    width: screenWidth * 0.19,
+                    height: screenHeight * 0.087,
+                    alignSelf: "center",
+                    borderRadius: 8,
+                    position: "absolute",
+                  }}
+                />
+              )
+            )}
           </View>
 
           <View style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: "#E8ECF4", alignItems: "center", justifyContent: "center", borderRadius: 8, marginRight: 10 }}>
@@ -402,16 +555,22 @@ const LostPostNext = () => {
                 source={require("../../assets/LostApp/UploadIcon.png")} />
             </TouchableOpacity>
 
-            {selectedImage3 && <Image
-              source={{ uri: selectedImage3 }}
-              style={{
-                width: screenWidth * 0.19, height: screenHeight * 0.087,
-                alignSelf: "center",
-                borderRadius: 8,
-                position: "absolute"
-              }}
-
-            />}
+            {isImageUploading3 && currentImageIndex === 1 ? (
+              <ActivityIndicator size="large" color="#7689D6" style={{ position: "absolute", }} />
+            ) : (
+              image3 && (
+                <Image
+                  source={{ uri: image3 }}
+                  style={{
+                    width: screenWidth * 0.19,
+                    height: screenHeight * 0.087,
+                    alignSelf: "center",
+                    borderRadius: 8,
+                    position: "absolute",
+                  }}
+                />
+              )
+            )}
           </View>
 
 
@@ -424,7 +583,7 @@ const LostPostNext = () => {
 
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("MyAds")}
+          onPress={saveDataToFirestore}
 
           style={{
             // position: "absolute",

@@ -1,143 +1,98 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image,Dimensions,FlatList } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, FlatList, ActivityIndicator } from 'react-native'
 import { Asset } from 'expo-asset';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Urbanist_300Light,Urbanist_400Regular,Urbanist_500Medium,Urbanist_600SemiBold,Urbanist_700Bold, 
-} from  '@expo-google-fonts/urbanist';
-import { useFonts } from  '@expo-google-fonts/urbanist';
+  Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
+} from '@expo-google-fonts/urbanist';
+import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import moment from 'moment';
 
-
-
-const myArray = [
-  {
-    name: 'Glasses',
-    date: '3 July 2023',
-    image: require('../../assets/LostApp/GlassesBg.png'),
-    Shadow: require('../../assets/LostApp/Shadow.png'),
-    type: 'Lost'
-
-  },
-  {
-    name: 'Glasses',
-    date: '3 July 2023',
-    image: require('../../assets/LostApp/GlassesBg.png'),
-    Shadow: require('../../assets/LostApp/Shadow.png'),
-    type: 'Lost'
-
-  },
-  {
-    name: 'Glasses',
-    date: '3 July 2023',
-    image: require('../../assets/LostApp/GlassesBg.png'),
-    Shadow: require('../../assets/LostApp/Shadow.png'),
-    type: 'Lost'
-
-  },
-];
+import { firebase } from '../../config';
 
 
 
 
-const LostItem = [
-  {
-    id: 1,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 2,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 3,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 4,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 5,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 6,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 7,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 8,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
-  {
-    id: 9,
-    imagepath1: require("../../assets/LostApp/GlassesBg.png"),
-    Title: "Glasses",
-    imagepath:require("../../assets/LostApp/Locationtwo.png"),
-    date: "3 july, 2023",
-    Location: "1.8 km",
-  },
- 
-];
 
-
-
-const Jewelry = () => {
+const Jewelry = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton }) => {
   const navigation = useNavigation();
+  // console.log(categoryselectedButton);
 
-  // const screenWidth = Dimensions.get('window').width;
-  // const boxWidth = (screenWidth * 0.50);
-  // const box_two_Width = (screenWidth * 0.89);
-
-  // const screenHeight = Dimensions.get('window').height;
-  // const boxHeight = screenHeight * 0.27; 
-  // const box_two_hieght = screenHeight * 0.07; 
-  
   const screenWidth = Dimensions.get('window').width;
   const box_Width = (screenWidth * 0.95);
   const boxWidth = (screenWidth * 0.50);
   const screenHeight = Dimensions.get('window').height;
-  const boxHeight = screenHeight * 0.27; 
+  const boxHeight = screenHeight * 0.27;
+
+  const [userDataList, setUserDataList] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  useEffect(() => {
+    const userRef = firebase.firestore().collection("UserData");
+    setIsLoading(true);
+
+    // Modify the query to retrieve only items with the specified Type
+    const typeQuery = selectedType
+      ? userRef.where("Type", "==", selectedType)
+      : userRef;
+
+    // Apply an additional filter based on the selected location
+    const locationQuery = selectedLocation
+      ? typeQuery.where("location", "==", selectedLocation)
+      : typeQuery;
+
+    // Apply another filter based on the selected category
+    const categoryQuery = categoryselectedButton && categoryselectedButton !== "All"
+      ? locationQuery.where("category", "==", categoryselectedButton)
+      : locationQuery;
+
+    categoryQuery.onSnapshot((querySnapshot) => {
+      const userDataArray = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        userDataArray.push({ id: doc.id, ...data });
+      });
+
+      setUserDataList(userDataArray.reverse());
+      setFilteredData(userDataArray);
+      setIsLoading(false);
+    });
+  }, [selectedType, selectedLocation, categoryselectedButton]);
+
+
+
+  useEffect(() => {
+    if (searchQuery) {
+      // Filter the data based on the search query
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      const filteredResults = userDataList.filter((item) => {
+        // Check 'lostItem,' 'location,' and 'item.date' fields and make sure they are defined before calling toLowerCase()
+        if (item.lostItem && item.location && item.date) {
+          const lostItem = item.lostItem.toLowerCase();
+          const location = item.location.toLowerCase();
+          const date = moment(item.date.toDate()).format("Do MMMM YYYY").toLowerCase();
+          return lostItem.includes(lowerCaseQuery) || location.includes(lowerCaseQuery) || date.includes(lowerCaseQuery);
+        }
+        return false; // Return false if 'lostItem,' 'location,' or 'item.date' is undefined
+      });
+      setFilteredData(filteredResults);
+    } else {
+      // If no search query, display all data
+      setFilteredData(userDataList);
+    }
+  }, [searchQuery, userDataList]);
+
+
+
+
+
 
   let [fontsLoaded] = useFonts({
-    Urbanist_300Light,Urbanist_400Regular,Urbanist_500Medium,Urbanist_600SemiBold,Urbanist_700Bold,  
+    Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
   });
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -148,274 +103,115 @@ const Jewelry = () => {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null; 
+    return null;
   }
-
-
-  const RenderLostItem = ({ item }) => {
-
-    return (
-      <View style={{
-        // flexDirection: "column",
-        height: 55.48,
-        height: screenHeight * 0.08,
-        width: "92%",
-        borderRadius: 5,
-        borderColor: "#E8ECF4",
-        backgroundColor: "white",
-        elevation: 3,
-        marginBottom: 10,
-        alignSelf:"center",
-      }}>
-        <View style={{ flexDirection: "row" }}>
-          <Image source={item.imagepath1} style={{
-            // height: 48.16,
-            height: screenHeight*0.068,
-            width: 50.25,
-            width:  screenWidth*0.14,
-            borderRadius: 8,
-            marginTop: 6,
-            marginTop: "1.4%",
-            marginLeft: 5,
-            marginLeft: "1.3%"
-          }} />
-          <Text style={styles.itemTitle}>{item.Title}</Text>
-          <Text style={styles.itemDate}>{item.date}</Text>
-        </View>
-        <View style={styles.SecondView}>
-          <Image source={item.imagepath}
-            style={{
-              // height: 12,
-              height: screenHeight * 0.015,
-              // width: 12,
-              width: screenWidth*0.03,
-              marginTop: 2
-              
-            }}
-          />
-          <Text style={styles.Locationtxt}>{item.Location}</Text>
-          <TouchableOpacity style={styles.detailsView}>
-            <Text style={styles.detailbtb}>View Details</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-
-    )
-  }
-
-
+  /////////////////////
+  ////////////////
   return (
-    <View style={{ marginTop: "3.4%" }}>
-      <View style={{ flexDirection: "row" }}>
-
-        <Text style={{
-          position: "relative",
-          fontSize: RFValue(14) ,
-          fontFamily:"Urbanist_600SemiBold",
-          // lineHeight: 16.44,
-          color: "#000000",
-          marginLeft: "4%"
-        }}>Recent Ads</Text>
-        <TouchableOpacity style={{position:"absolute",right: "4%" }}>
-
-          <Text style={{
-            position: "relative",
-
-            fontSize: RFValue(12) ,
-            fontFamily:"Urbanist_400Regular",
-            // lineHeight: 14.09,
-            color: "#858585",
-
-          }}>See more</Text>
-
-        </TouchableOpacity>
-      </View>
-
-
-
-
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}  >
-
-
-
-        <View style={{ flexDirection: "row", position: "relative", marginTop: "1.5%",marginLeft:10 }}>
-
-          {myArray.map((item, index) => (
-            <View style={{
-              position: "relative",
-              // width: 179,
-              width:boxWidth,
-              height: screenHeight * 0.27,
-              // height:boxHeight,
-              borderRadius: 8,
-              backgroundColor: "blue",
-
-              marginLeft: 8,
-
-            }}
-              key={index} >
+    <View style={{ height: 515, marginTop: 20 }}>
+      {isLoading ? ( // Show loading icon when data is loading
+        <ActivityIndicator size="large" color="#7689D6" />
+      ) : filteredData.length > 0 ? ( // Data is available, render the data
+        <FlatList
+          data={filteredData.filter(item => item.lostItem && item.category === 'Jewelry')} // Filter out items where lostItem is empty
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={{
+                height: 55.48,
+                height: screenHeight * 0.08,
+                width: "92%",
+                borderRadius: 5,
+                borderColor: "#E8ECF4",
+                backgroundColor: "white",
+                elevation: 3,
+                marginBottom: 10,
+                alignSelf: "center",
+              }}
+              onPress={() => {
+                navigation.navigate('DetailsScreen', {
+                  category: item.category,
+                  location: item.location,
+                  number: item.number,
+                  date: item.date,
+                  time: item.time,
+                  lostItem: item.lostItem,
+                  description: item.description,
+                  imageUrl1: item.imageUrl1,
+                  imageUrl2: item.imageUrl2,
+                  imageUrl3: item.imageUrl3,
+                  participants: [item.uid],
+                });
+              }}
+            >
 
 
-              <Image
-                style={{
-
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: 8
-                }}
-                source={item.image} />
-
-              <Image
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "70%",
-                  borderRadius: 10,
-                  bottom:0
-                }}
-                source={item.Shadow} />
-
-
-              <Text
-                style={{
-                  fontFamily:"Urbanist_500Medium",
-                  fontSize: RFValue(14) ,
-                  // lineHeight: 16.44,
-                  position: "absolute",
-                  // left: 10,
-                  left:"7%",
-                  // bottom: 42,
-                  bottom:"21.5%",
-                  color: "white",
-
-
-                }}
-              >{item.name}</Text>
-
-
-              <Text
-                style={{
-                  fontFamily:"Urbanist_400Regular",
-                  fontSize: RFValue(10) ,
-                  // lineHeight: 11.74,
-                  position: "absolute",
-                  right: 9,
-                  right:"5.1%",
-                  // bottom: 45,
-                  bottom:"22.5%",
-                  color: "#D7D7D7"
-
-                }}
-              >{item.date}</Text>
-
-              <View
-                style={{
-                  backgroundColor: "#8DA4BC",
-                  // width: 31,
-                  width:  screenWidth * 0.09,
-                  // height: 17.04,
-                  height: screenHeight * 0.024,
-                  position: "absolute",
-                  // right: 17,
-                  right:"9%",
-                  // top: 12,
-                  top: "6%",
+              <View style={{ flexDirection: "row" }}>
+                <Image source={{ uri: item.imageUrl1 }} style={{
+                  height: screenHeight * 0.068,
+                  width: 50.25,
+                  width: screenWidth * 0.14,
                   borderRadius: 8,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}>
-                <Text
-                  style={{
-                    fontWeight: "400",
-                    fontSize: RFValue(9) ,
-                    // lineHeight: 10.63,
-                    color: "#FFFFFF"
+                  marginTop: 6,
+                  marginTop: "1.4%",
+                  marginLeft: 5,
+                  marginLeft: "1.3%"
+                }} />
+                <Text style={styles.itemTitle}> {item.lostItem}</Text>
+           
+                <View  style={{backgroundColor:"#778899",borderRadius:10,marginLeft:"4.5%",position:"absolute",bottom:screenHeight*0.002,
+                height:screenHeight*0.015,alignItems:"center",justifyContent:"center"}}>
+                <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(9),color:"white" }}
+                >{item.Type}</Text>
+                
+                </View>
 
-                  }}
-                >{item.type}</Text>
+                
+                <Text style={styles.itemDate}>
+                  {item.date ? moment(item.date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
+                </Text>
               </View>
 
-              <TouchableOpacity
-                onPress={() => navigation.navigate("ItemDetail")}
 
-                style={{
-                  backgroundColor: '#7689D6',
-                  // width: 163,
-                  width: "91%",
-                  // height: 29,
-                  height: boxHeight*0.15,
-                  borderRadius: 8,
-                  position: "absolute",
-                  // right: 8,
-                  bottom:"5%",
-                  justifyContent: "center",
-                  alignSelf:"center"
+              <View style={styles.SecondView}>
+                <Image source={require("../../assets/LostApp/Locationtwo.png")}
+                  style={{
+                    height: screenHeight * 0.015,
+                    width: screenWidth * 0.03,
+                    marginTop: 2
 
-                }}>
+                  }}
+                />
+                <Text style={styles.Locationtxt}>{item.location}</Text>
+                <TouchableOpacity style={styles.detailsView}>
+                  <Text style={styles.detailbtb}>View Details</Text>
+                </TouchableOpacity>
+              </View>
 
-                <Text style={{
-                  color: "white",
-                  alignSelf: "center",
-                    fontSize: RFValue(10) ,
-                  fontFamily:"Urbanist_500Medium",
-                  // lineHeight: 12
-                }}>View details</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-
-
-
-
-        </View>
-      </ScrollView>
-
-
-
-
-
-      <View style={{ flexDirection: "row", marginTop: 0 ,marginBottom:9}}>
-
-        <Text style={{
-          position: "relative",
-          fontSize: RFValue(14) ,
-          fontFamily:"Urbanist_600SemiBold",
-          // lineHeight: 16.44,
-          color: "#000000",
-          marginLeft: "4%"
-        }}>Lost Items Near me</Text>
-        <TouchableOpacity  style={{position:"absolute",right: "4%" }}>
-
-          <Text style={{
-            position: "relative",
-
-            fontSize: RFValue(12) ,
-            fontFamily:"Urbanist_400Regular",
-            // lineHeight: 14.09,
-            color: "#858585",
-
-          }}>See more</Text>
-
-        </TouchableOpacity>
-      </View>
-
-
-      <FlatList
-      style={{ height: "60%", }}
-      data={LostItem}
-      keyExtractor={(item) => item.id}
-      renderItem={RenderLostItem}
-    />
-
-      
+            </TouchableOpacity>
+          )}
+        />
+      ) : (
+        <Text style={styles.noResultsText}>No results found</Text>
+      )}
 
     </View>
-  )
-}
-
+  );
+};
 
 const styles = StyleSheet.create({
+  userContainer: {
+    backgroundColor: "grey",
+    marginVertical: 10,
+    borderRadius: 30,
+    alignItems: "center",
+  },
+  image: {
+    width: 300,
+    height: 200,
+    resizeMode: 'cover',
+    margin: 10,
+  },
   backgroundImage: {
     // resizeMode: "contain",
     width: 179,
@@ -474,7 +270,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   title: {
-    fontSize: RFValue(16) ,
+    fontSize: RFValue(16),
     position: "absolute",
     color: "#FFFFFF",
     fontWeight: "500",
@@ -498,7 +294,7 @@ const styles = StyleSheet.create({
 
   },
   date: {
-       fontSize: RFValue(12) ,
+    fontSize: RFValue(12),
     color: '#D7D7D7',
     position: "absolute",
     right: 9,
@@ -516,37 +312,37 @@ const styles = StyleSheet.create({
     bottom: 9
   },
   heading: {
-    fontSize: RFValue(12) ,
+    fontSize: RFValue(12),
     fontWeight: "600",
   },
   LostListView: {
-   
+
   },
   ItemImage: {
-   
+
   },
   itemTitle: {
     marginLeft: 10,
-    marginLeft:"3%",
+    marginLeft: "3%",
     marginTop: 12,
-    fontSize: RFValue(14) ,
-    fontFamily:"Urbanist_500Medium"
+    fontSize: RFValue(14),
+    fontFamily: "Urbanist_500Medium"
   },
   itemDate: {
     position: "absolute",
-    right:"3.5%",
-    top:11.3,
+    right: "3.5%",
+    top: 11.3,
     color: "#8391A1",
     fontSize: 10,
-    fontFamily:"Urbanist_400Regular",
-    fontSize: RFValue(10) ,
+    fontFamily: "Urbanist_400Regular",
+    fontSize: RFValue(10),
   },
   SecondView: {
     flexDirection: "row",
     // bottom: 21,
-    bottom:"6%",
+    bottom: "6%",
     marginLeft: 65,
-    marginLeft:"20%",
+    marginLeft: "20%",
     // backgroundColor:"red"
   },
   LocationImg: {
@@ -556,26 +352,48 @@ const styles = StyleSheet.create({
   },
   Locationtxt: {
     color: "#8391A1",
-    fontFamily:"Urbanist_400Regular",
-    fontSize: RFValue(10) ,
+    fontFamily: "Urbanist_400Regular",
+    fontSize: RFValue(10),
+    // backgroundColor:"yellow"
 
   },
   detailsView: {
     position: "absolute",
     right: 13,
-    right:"5%"
+    right: "5%"
   },
   detailbtb: {
     color: "#8391A1",
-    fontSize: RFValue(9) ,
-    fontFamily:"Urbanist_400Regular",
+    fontSize: RFValue(9),
+    fontFamily: "Urbanist_400Regular",
     // lineHeight:10.63,
-right:-7
-    
+    right: -7
 
-  }
-  
-  
+
+  },
+  noResultsText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: RFValue(15),
+    fontFamily: "Urbanist_400Regular",
+    color: "#8391A1"
+
+  },
+  itemtype: {
+    textAlign: 'center',
+    marginTop: 16,
+    fontSize: RFValue(10),
+    fontFamily: "Urbanist_400Regular",
+    color: "#7689D6",
+    marginLeft: "0.5%",
+
+
+  },
+
+
 
 })
+
+
+
 export default Jewelry;

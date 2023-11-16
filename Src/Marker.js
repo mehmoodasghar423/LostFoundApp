@@ -28,7 +28,7 @@ const MyMultiSlider = () => {
     />
   </View>
 
-
+  https://firebasestorage.googleapis.com/v0/b/infinity-scroll-firebase.appspot.com/o/images%2Fimg-1697798337890.jpg?alt=media&token=83af84f9-ad0a-4f1f-a3c3-32a8fbcee8fb
   );
 };
 
