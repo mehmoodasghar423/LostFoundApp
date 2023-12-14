@@ -1,16 +1,16 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View,Dimensions } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,Image,Dimensions,TouchableWithoutFeedback,TextInput } from 'react-native'
 import React, { useEffect,useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import {
   Urbanist_300Light,Urbanist_400Regular,Urbanist_500Medium,Urbanist_600SemiBold,Urbanist_700Bold, 
 } from  '@expo-google-fonts/urbanist';
 import { useFonts } from  '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-
+import { LoadingModal } from "react-native-loading-modal";
 import { firebase } from '../../config';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 
 
 
@@ -28,9 +28,11 @@ export default function Login() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   
-
+  const [loading, setLoading] = useState(false); 
 
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+  const [modalVisible, setmodalVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
@@ -61,28 +63,28 @@ export default function Login() {
   }
 
 
+
   const loginUser = async (email, password) => {
-    if (email.trim() === '') {
-      setEmailError('Please enter your email');
-    } else {
-      setEmailError('');
+    // Check if both email and password are provided
+    if (!email.trim() || !password.trim()) {
+      // Display the custom modal when both fields are not filled
+      setmodalVisible(true);
+      return; // Exit the function early if fields are empty
     }
   
-    if (password.trim() === '') {
-      setPasswordError('Please enter your password');
-    } else {
-      setPasswordError('');
-    }
-  
-    if (email.trim() !== '' && password.trim() !== '') {
-      try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-      } catch (error) {
-        const customMessage = "Invalid Information Entered";
-        alert(customMessage);
-      }
+    try {
+      setLoading(true); // Show loading modal when login process starts
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      setLoading(false); // Hide loading modal when login process ends successfully
+      navigation.navigate("TabNavigator");
+    } catch (error) {
+      setLoading(false); // Hide loading modal if an error occurs during login
+      const customMessage = "Invalid Information Entered";
+      // Display the custom modal when invalid information is entered
+      setmodalVisible(true);
     }
   };
+  
   
 
   return (
@@ -100,7 +102,8 @@ export default function Login() {
             // top: 78,
             marginTop: "21%",
             // width: 210,
-            alignSelf:"center"
+            alignSelf:"center",
+            color:"#0F2944"
           }}
         >
           Welcome back! Glad to {'\n'}       see you, Again!
@@ -108,7 +111,7 @@ export default function Login() {
         </Text>
 
         <TextInput style={{
-          backgroundColor: "#F7F8F9",
+          backgroundColor: "#E0E0E0",
           borderWidth: 1,
           borderColor: emailError ? 'red' : '#E8ECF4',
           // width: 335,
@@ -126,19 +129,20 @@ export default function Login() {
           padding: 10
         }}
           placeholder='Enter your email'
-          placeholderTextColor="#8391A1"
+          placeholderTextColor="#6A707C"
           value={email}
           onChangeText={text => setEmail(text)}
           autoCapitalize="none"
           autoCorrect={false}
         />
 
+        {loading && <LoadingModal modalVisible={true} />}
         <View style={{
           // flexDirection: 'row',
           // alignItems: 'center',
         }}>
           <TextInput style={{
-            backgroundColor: "#F7F8F9",
+            backgroundColor: "#E0E0E0",
             borderWidth: 1,
             borderColor: passwordError ? 'red' : '#E8ECF4',
             // width: 335,
@@ -161,7 +165,7 @@ export default function Login() {
             padding: 10,
           }}
             placeholder='Enter your password'
-            placeholderTextColor="#8391A1"
+            placeholderTextColor="#6A707C"
             // secureTextEntry={!isPasswordVisible}
             value={password}
             onChangeText={text => setPassword(text)}
@@ -185,7 +189,7 @@ export default function Login() {
               left: "-6%",
               letterSpacing: -1,
            
-              color: "#6A707C"
+              color: "#FE9003"
             }}
           >
             Forgot Password?
@@ -193,12 +197,14 @@ export default function Login() {
         </TouchableOpacity>
 
 
-        <TouchableOpacity
+        <TouchableOpacity 
+
         onPress={() => loginUser(email, password)}
+        
           style={{
             position: "relative",
             borderRadius: 8,
-            backgroundColor: '#7689D6',
+            backgroundColor: '#0F2944',
             width: "90%",
             height:33,
             height: screenHeight*0.06,
@@ -251,48 +257,41 @@ export default function Login() {
 
 
 
-        <View style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-          marginTop:"5%",
-          // backgroundColor:"red"
-        }}>
-          <TouchableOpacity style={[styles.box,{borderColor:"#4092FF", height: screenHeight*0.04,}]}>
-            <Image
-              source={require("../../assets/LostApp/Facebook.png")}
-              style={{
-                height: screenHeight*0.02,
-                height: screenHeight*0.02,
-                resizeMode: "contain",
-                alignSelf: "center"
-              }} />
-          </TouchableOpacity>
+        <TouchableOpacity
+    
+          style={{
+            position: "relative",
+            borderRadius: 5,
+            backgroundColor: '#0F2944',
+            width: "60%",
+            height:33,
+            height: screenHeight*0.04,
+            alignSelf: "center",
+            marginTop:"6%",
+            justifyContent: "center",
+            flexDirection:"row"
+          }}>
 
-          <TouchableOpacity  
-          style={[styles.box,{borderColor:"#FBBB00", height: screenHeight*0.04,}]}>
-            <Image
-              source={require("../../assets/LostApp/Google.png")}
-              style={{
-                height: screenHeight*0.02,
-                height: screenHeight*0.02,
-                resizeMode: "contain",
-                alignSelf: "center"
-              }} />
-          </TouchableOpacity>
+          <Image
+          style={{
+            height:screenHeight*0.03,
+            width:screenWidth*0.05,
+            resizeMode:"contain",
+            alignSelf:"center",
+            marginRight:10,
 
-          <TouchableOpacity style={[styles.box,{borderColor:"#000000", height: screenHeight*0.04,}]}>
-            <Image
-              source={require("../../assets/LostApp/Ios.png")}
-              style={{
-                height: screenHeight*0.02,
-                height: screenHeight*0.02,
-                resizeMode: "contain",
-                alignSelf: "center"
-              }} />
-          </TouchableOpacity>
-        </View>
+          }}
+           source={require('../../assets/Google.webp')}/>
+          <Text style={{
+            fontSize: RFValue(13),
+            fontFamily:"Urbanist_600SemiBold",
+            // lineHeight: 18,
+            alignSelf: "center",
+            color: '#F9F9F9',
+          }}
+          >Sign in with Google </Text>
+        </TouchableOpacity>
+
 
 
 
@@ -326,7 +325,7 @@ export default function Login() {
             justifyContent:"center"
           }} >
           <Text style={{
-             color: "#9457E0",
+             color: "#FE9003",
              fontSize: RFValue(12),
              fontFamily:"Urbanist_700Bold",
             //  lineHeight: 16.8,
@@ -341,7 +340,101 @@ export default function Login() {
         </View>
 
         
-
+        {modalVisible && (
+          <TouchableWithoutFeedback onPress={() => setmodalVisible(false)}>
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: screenHeight * 1,
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              }}
+            >
+              <TouchableWithoutFeedback>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: (screenWidth, screenHeight) * 0.03,
+                    paddingVertical: screenHeight * 0.03,
+                    paddingHorizontal: screenWidth * 0.04,
+                    alignItems: 'center',
+        
+                    // position:"absolute"
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setmodalVisible(false)}
+                    style={{ position: 'absolute', top: screenHeight * 0.007, right: screenWidth * 0.021 }}>
+        
+                    <Entypo name="cross"
+                      size={screenWidth * 0.065}
+                      color="black" />
+                  </TouchableOpacity>
+        
+                 
+                  <Text
+                    style={{
+                      fontSize: RFValue(17),
+                      fontFamily: "Urbanist_600SemiBold",
+                      color: "black", marginTop: "1%"
+        
+                    }}
+                  >Add Valid Information for Login !</Text>
+        
+                  <View style={{ flexDirection: 'row', marginTop: screenHeight*0.02 ,marginLeft:"7%",}}>
+                    <TouchableOpacity
+                      onPress={() => setmodalVisible(false)}
+                      style={{
+                        marginRight: screenWidth * 0.05,
+                        width: "25%",
+                        height: screenHeight * 0.032,
+                        backgroundColor: "#3cb371",
+                        borderRadius: (screenWidth, screenHeight) * 0.03,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: RFValue(15),
+                          fontFamily: "Urbanist_600SemiBold",
+                          color: "white",
+                          // left: "6%",
+                        }}
+                      >Cancel</Text>
+                    </TouchableOpacity>
+        
+                    <TouchableOpacity
+                      style={{
+                        marginRight: screenWidth * 0.05,
+                        width: "50%",
+                        height: screenHeight * 0.032,
+                        backgroundColor: "#0F2944",
+                        borderRadius: (screenWidth, screenHeight) * 0.03,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        
+                      }}
+                      onPress={() => setmodalVisible(false)}
+>
+                      <Text
+                        style={{
+                          fontSize: RFValue(15),
+                          fontFamily: "Urbanist_600SemiBold",
+                          color: "white",
+                          // left: "6%",
+                        }}>Enter Data Again</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
       </View>
     </SafeAreaView>
   )

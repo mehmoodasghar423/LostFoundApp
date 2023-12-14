@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView, Dimensions } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView, Dimensions ,TouchableWithoutFeedback} from 'react-native'
 import { SafeAreaFrameContext, SafeAreaView } from 'react-native-safe-area-context'
 import Lost from '../MyAdds/Lost'
 import Found from '../MyAdds/Found'
@@ -9,6 +9,8 @@ import {
 import { useFonts } from  '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { Entypo, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -17,9 +19,15 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 const MyAds = ({ route }) => {
   const { initialButton } = route.params || {};
 
+  const navigation = useNavigation();
+
+
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = (screenWidth * 0.25);
   const screenHeight = Dimensions.get('window').height;
+
+  const [modalVisible, setmodalVisible] = useState(false);
+
 
   const [selectedButton, setSelectedButton] = useState(initialButton || 'lost'); // Set the initial value based on initialButton
 
@@ -45,6 +53,11 @@ const MyAds = ({ route }) => {
     return null;
   };
 
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
   let [fontsLoaded] = useFonts({
     Urbanist_300Light,Urbanist_400Regular,Urbanist_500Medium,Urbanist_600SemiBold,Urbanist_700Bold,  
   });
@@ -67,6 +80,7 @@ const MyAds = ({ route }) => {
       <View style={{ backgroundColor:"white"}}>
 
         <View style={{
+          flexDirection:"row",
           paddingBottom:"4%",
           borderBottomWidth:  RFValue(3),
           borderBottomColor: 'rgba(0, 0, 0, 0.1)', // Adjust the shadow color and opacity
@@ -81,24 +95,53 @@ const MyAds = ({ route }) => {
               elevation: 0,
             },
           }),
+          alignItems:"center",
+          // justifyContent:"center"
+          height:screenHeight*0.073,
+          
         }}>
+
+        <TouchableOpacity
+        style={{
+          marginLeft: "4%",
+          marginTop:screenHeight*0.025,
+          // backgroundColor:"red",
+          height:screenHeight*0.047,
+          justifyContent:"center",
+          alignSelf:"center"
+        }}
+        onPress={handleGoBack}>
+        <Ionicons name="ios-chevron-back-sharp"
+          size={screenWidth * 0.08}
+          color="black" 
+          style={{
+          }}/>
+      </TouchableOpacity>
           <Text
             style={{
               fontSize: RFValue(20),
               fontFamily:"Urbanist_600SemiBold",
-              // lineHeight: 20,
-              // left: "6%",
+              color: "#0F2944",
               letterSpacing: -1,
               position: "relative",
-              // top: 19,
-              marginTop:"3.5%",
-              color: "#1E232C",
-              // width: 210,
-              alignSelf: "center",
+              marginLeft: screenWidth*0.40,
+              marginTop:screenHeight*0.02,
+              position:"absolute"
             }}
           >
             My Ads
           </Text>
+          <TouchableOpacity onPress={() => setmodalVisible(true)}>
+          <Image style={{
+            width: screenWidth * 0.1,
+            height: screenHeight * 0.047,
+            resizeMode: "contain",
+            marginLeft: screenWidth*0.73,
+            marginTop:screenHeight*0.02
+    
+          }}
+            source={require("../../assets/HomeBack.png")} />
+        </TouchableOpacity>
         </View>
 
 
@@ -107,7 +150,7 @@ const MyAds = ({ route }) => {
           <TouchableOpacity
             style={[styles.button, { width: buttonWidth }, selectedButton === 'lost' && {
               borderBottomWidth:screenHeight*0.002,
-              borderColor: "#7689D6",
+              borderColor: "#FE9003",
               shadowColor: "#363B64",
               paddingBottom:screenHeight*0.01
             }]}
@@ -120,7 +163,7 @@ const MyAds = ({ route }) => {
           <TouchableOpacity
             style={[styles.button, { width: buttonWidth }, selectedButton === 'found' && {
               borderBottomWidth:screenHeight*0.002,
-              borderColor: "#7689D6",
+              borderColor: "#FE9003",
               shadowColor: "#363B64",
               paddingBottom:screenHeight*0.01
             }]}
@@ -133,6 +176,107 @@ const MyAds = ({ route }) => {
 
         <View style={styles.buttonContentContainer}>{renderButtonContent()}</View>
 
+        {modalVisible && (
+          <TouchableWithoutFeedback onPress={() => setmodalVisible(false)}>
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: screenHeight * 1,
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              }}
+            >
+              <TouchableWithoutFeedback>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: (screenWidth, screenHeight) * 0.03,
+                    paddingVertical: screenHeight * 0.03,
+                    paddingHorizontal: screenWidth * 0.07,
+                    alignItems: 'center',
+  
+                    // position:"absolute"
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setmodalVisible(false)}
+                    style={{ position: 'absolute', top: screenHeight * 0.007, right: screenWidth * 0.021 }}>
+  
+                    <Entypo name="cross"
+                      size={screenWidth * 0.065}
+                      color="black" />
+                  </TouchableOpacity>
+  
+                  <Text
+                    style={{
+                      fontSize: RFValue(12),
+                      fontFamily: "Urbanist_600SemiBold",
+                      color: "#778899"
+  
+                    }}
+                  >You Are Going to Home Page !</Text>
+                  <Text
+                    style={{
+                      fontSize: RFValue(16),
+                      fontFamily: "Urbanist_600SemiBold",
+                      color: "black", marginTop: "1%"
+  
+                    }}
+                  >Do You Want to Continue ?</Text>
+  
+                  <View style={{ flexDirection: 'row', marginTop: screenHeight*0.02 ,marginLeft:"7%",}}>
+                    <TouchableOpacity
+                      onPress={() => setmodalVisible(false)}
+                      style={{
+                        marginRight: screenWidth * 0.05,
+                        width: "25%",
+                        height: screenHeight * 0.032,
+                        backgroundColor: "#3cb371",
+                        borderRadius: (screenWidth, screenHeight) * 0.03,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: RFValue(15),
+                          fontFamily: "Urbanist_600SemiBold",
+                          color: "white",
+                          // left: "6%",
+                        }}
+                      >Cancel</Text>
+                    </TouchableOpacity>
+  
+                    <TouchableOpacity
+                      style={{
+                        marginRight: screenWidth * 0.05,
+                        width: "40%",
+                        height: screenHeight * 0.032,
+                        backgroundColor: "#0F2944",
+                        borderRadius: (screenWidth, screenHeight) * 0.03,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        
+                      }}
+                      onPress={() => navigation.navigate("Home")}>
+                      <Text
+                        style={{
+                          fontSize: RFValue(15),
+                          fontFamily: "Urbanist_600SemiBold",
+                          color: "white",
+                          // left: "6%",
+                        }}>Go To Home</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
 
       </View>
     </SafeAreaView>
@@ -159,14 +303,14 @@ width:57,
   },
   selectedButton: {
     borderBottomWidth:2,
-    borderColor: "#7689D6",
+    borderColor: "#0F2944",
     shadowColor: "#363B64",
     paddingBottom:10
   },
   selectedButtonText: {
     fontFamily:"Urbanist_500Medium",
     fontSize: RFValue(14),
-    color: "#7689D6",
+    color: "#0F2944",
     textAlign: "center"
   },
   buttonContentContainer: {

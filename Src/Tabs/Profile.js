@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, TextInput,Alert } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, TextInput, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as ImagePicker from 'expo-image-picker';
@@ -9,6 +9,9 @@ import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { useNavigation } from '@react-navigation/native';
+import { LoadingModal } from "react-native-loading-modal";
+import { Ionicons, AntDesign, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 import { firebase } from '../../config';
 import 'firebase/storage';
@@ -18,17 +21,20 @@ import 'firebase/storage';
 const Profile = () => {
   const navigation = useNavigation();
 
+  const [loading, setLoading] = useState(false);
 
   const AccountDeatilsHandler = () => {
-    navigation.navigate('AccountDeatils');
-};
+    navigation.navigate('AccountDeatils', { selectedImage, profilname: name.username });
+  };
+
+  ////
   const SettingHandler = () => {
     navigation.navigate('Settings');
-};
+  };
   const ContactHandler = () => {
     navigation.navigate('Contact');
-};
-const [loading, setLoading] = useState(true); 
+  };
+  const [loadingg, setloadingg] = useState(true);
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
 
@@ -36,15 +42,15 @@ const [loading, setLoading] = useState(true);
   ///
   const [name, setName] = useState("")
   useEffect(() => {
-      firebase.firestore().collection("UserData")
-          .doc(firebase.auth().currentUser.uid).get()
-          .then((sanpshot) => {
-              if (sanpshot.exists) {
-                  setName(sanpshot.data())
-              } else {
-                  console.log("user does not exist")
-              }
-          })
+    firebase.firestore().collection("UserData")
+      .doc(firebase.auth().currentUser.uid).get()
+      .then((sanpshot) => {
+        if (sanpshot.exists) {
+          setName(sanpshot.data())
+        } else {
+          console.log("user does not exist")
+        }
+      })
   }, [])
 
 
@@ -69,7 +75,7 @@ const [loading, setLoading] = useState(true);
         allowsEditing: true,
         aspect: [4, 3],
       });
-  
+
       if (!result.canceled) {
         const selectedAsset = result.assets[0];
         const storageRef = firebase.storage().ref();
@@ -79,7 +85,7 @@ const [loading, setLoading] = useState(true);
         const blob = await response.blob();
         await imageRef.put(blob);
         const imageUrl = await imageRef.getDownloadURL();
-  
+
         const currentUser = firebase.auth().currentUser;
         if (currentUser) {
           await firebase.firestore().collection("UserProfilePictures").doc(currentUser.email).set({
@@ -93,8 +99,8 @@ const [loading, setLoading] = useState(true);
       // Handle the error appropriately, display an alert, etc.
     }
   };
-  
-  
+
+
   useEffect(() => {
     const currentUser = firebase.auth().currentUser;
     if (currentUser) {
@@ -102,12 +108,12 @@ const [loading, setLoading] = useState(true);
         .then((snapshot) => {
           if (snapshot.exists) {
             setSelectedImage(snapshot.data().profilePic);
-            setLoading(false); // Set loading to false when image is fetched
+            setloadingg(false); // Set loadingg to false when image is fetched
           }
         })
         .catch((error) => {
           console.error("Error fetching profile picture: ", error);
-          setLoading(false); // Set loading to false on error
+          setloadingg(false); // Set loadingg to false on error
           // Handle the error appropriately, display an alert, etc.
         });
     }
@@ -129,8 +135,25 @@ const [loading, setLoading] = useState(true);
     return null;
   }
 
-  const handleSignOut = () => {
-    firebase.auth().signOut();
+
+  const handleSignOut = async () => {
+    try {
+      setLoading(true); // Show loading modal when sign-out starts
+      const currentUser = firebase.auth().currentUser;
+      if (currentUser) {
+        // Update user status to 'offline'
+        await firebase.firestore().collection('UserData').doc(currentUser.uid).update({
+          onlineStatus: 'offline',
+        });
+      }
+      // Sign the user out after updating the status
+      await firebase.auth().signOut();
+      // Navigate to the login screen or perform any other necessary action
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Sign-out error:', error);
+      setLoading(false); // Hide loading modal on error
+    }
   };
 
 
@@ -151,11 +174,11 @@ const [loading, setLoading] = useState(true);
               user
                 .delete()
                 .then(() => {
-               
-                  navigation.navigate('Login'); 
+
+                  navigation.navigate('Login');
                 })
                 .catch((error) => {
-                  
+
                   Alert.alert('Error', 'An error occurred while deleting your account.');
                 });
             } else {
@@ -170,9 +193,9 @@ const [loading, setLoading] = useState(true);
 
 
 
-  
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View>
 
         <View
@@ -196,11 +219,11 @@ const [loading, setLoading] = useState(true);
             style={{
               fontSize: RFValue(20),
               fontFamily: "Urbanist_600SemiBold",
-             
+
               letterSpacing: -1,
               position: "relative",
               marginTop: "3.5%",
-              color: "#1E232C",
+              color: "#0F2944",
               alignSelf: "center",
             }}
           >
@@ -208,6 +231,7 @@ const [loading, setLoading] = useState(true);
           </Text>
         </View>
 
+        {loading && <LoadingModal modalVisible={true} />}
         <View style={{
           // position:"absolute",
           // top:81,
@@ -219,51 +243,62 @@ const [loading, setLoading] = useState(true);
         }}>
 
           <Image
-            source={require('../../assets/LostApp/ProfilePicture.webp')}
+            source={require('../../assets/Dpp.png')}
             style={
               {
-               
+
                 width: screenWidth * 0.29,
                 height: screenHeight * 0.14,
                 alignSelf: "center",
-                backgroundColor: "red",
-                borderRadius: (screenWidth, screenHeight) * 0.07,
-              borderWidth:(screenWidth, screenHeight) * 0.007,
-                borderColor:"white"
+                // backgroundColor: "red",
+                resizeMode: "contain",
+                //   borderRadius: (screenWidth, screenHeight) * 0.07,
+                // borderWidth:(screenWidth, screenHeight) * 0.007,
+                borderColor: "white",
               }}
           />
 
           {selectedImage && <Image
             source={{ uri: selectedImage }}
             style={{
-          
+
               width: screenWidth * 0.29,
               height: screenHeight * 0.14,
               alignSelf: "center",
               position: "absolute",
-              borderWidth:(screenWidth, screenHeight) * 0.007,
-              borderColor:"white",
+              borderColor: "white",
+              // borderWidth:(screenWidth, screenHeight) * 0.007,
               borderRadius:(screenWidth, screenHeight) * 0.08,
             }}
 
           />}
 
-          <TouchableOpacity onPress={pickImage}>
-            <Image
-              style={{
-                width: 32,
-                width: screenWidth*0.078,
-                height: 32,
-                height: screenHeight*0.05,
-                alignSelf: "center",
-                position: "absolute",
-                bottom: screenHeight*-0.006,
-                // alignSelf:"center",
-                right: screenWidth*0.37,
-                resizeMode:"contain"
+          <TouchableOpacity onPress={pickImage} style={{
+            backgroundColor: "white",
+            height: screenHeight * 0.04,
+            width: screenWidth * 0.08,
+            position: "absolute",
+            bottom: screenHeight * -0.0006,
+            alignSelf: "center",
+            right: screenWidth * 0.38,
+            alignItems:"center",
+            justifyContent:"center",
+              borderRadius:(screenWidth, screenHeight) * 0.08,
 
-              }}
-              source={require('../../assets/LostApp/Camera.png')} />
+          }}>
+          <SimpleLineIcons name="camera"
+          size={RFValue(19)}
+          color="#0F2944" // Set color based on selectedButton
+          style={{
+            width: screenWidth * 0.06,
+            height: screenHeight * 0.031,
+            alignSelf: "center",
+            // marginRight: "3%",
+            // backgroundColor:"yellow",
+            // marginTop: "2%"
+
+          }}
+        />
           </TouchableOpacity>
 
         </View>
@@ -285,7 +320,7 @@ const [loading, setLoading] = useState(true);
             alignSelf: "center"
           }}
         >
-       {name.username}
+          {name.username}
         </Text>
 
 
@@ -300,7 +335,7 @@ const [loading, setLoading] = useState(true);
           height: 38,
           height: screenHeight * 0.053,
           alignSelf: "center",
-          borderColor: "#7689D6",
+          borderColor: "#0F2944",
           borderWidth: (screenWidth, screenHeight) * 0.0014,
           borderRadius: (screenWidth, screenHeight) * 0.007,
           flexDirection: "row"
@@ -327,7 +362,7 @@ const [loading, setLoading] = useState(true);
               left: "20%",
               letterSpacing: -1,
 
-              color: "#7689D6",
+              color: "#0F2944",
               // width: 210,
               alignSelf: "center"
             }}
@@ -343,30 +378,34 @@ const [loading, setLoading] = useState(true);
 
 
         <TouchableOpacity
-       onPress={AccountDeatilsHandler}
-        style={{
-          position: "relative",
-          marginTop: "5%",
-          width: "82%",
-          height: 60,
-          borderColor: "#8391A1",
-          borderBottomWidth: screenWidth * 0.001,
-          marginLeft: "6%",
-          flexDirection: "row",
-        }}>
+          onPress={AccountDeatilsHandler}
+          style={{
+            position: "relative",
+            marginTop: "5%",
+            width: "82%",
+            height: 60,
+            borderColor: "#8391A1",
+            borderBottomWidth: screenWidth * 0.001,
+            marginLeft: "6%",
+            flexDirection: "row",
+          }}>
 
-          <Image
+          <MaterialCommunityIcons name="contacts-outline"
+            size={RFValue(19)}
+            color="#0F2944" // Set color based on selectedButton
             style={{
-              width: 18.33,
-              height: 18.33,
-              width: screenWidth * 0.051,
+              width: screenWidth * 0.053,
               height: screenHeight * 0.031,
-              resizeMode: "contain",
               alignSelf: "center",
-              //  backgroundColor:"red"
+              marginRight: "3%",
+              // backgroundColor:"yellow",
+              marginTop: "2%"
 
             }}
-            source={require('../../assets/LostApp/Account.png')} />
+          />
+
+
+
 
 
           <Text
@@ -375,7 +414,8 @@ const [loading, setLoading] = useState(true);
               position: "absolute",
               left: "13%",
               fontFamily: "Urbanist_500Medium",
-              alignSelf: "center"
+              alignSelf: "center",
+
             }}
           >
             Account Detail
@@ -388,28 +428,32 @@ const [loading, setLoading] = useState(true);
 
 
 
-        <TouchableOpacity 
-        onPress={SettingHandler}
-        style={{
-          position: "relative",
-          marginTop: "2%",
-          width: "82%",
-          height: 60,
-          borderColor: "#8391A1",
-          borderBottomWidth: screenWidth * 0.001,
-          marginLeft: "6%",
-          flexDirection: "row",
-        }}>
+        <TouchableOpacity
+          onPress={SettingHandler}
+          style={{
+            position: "relative",
+            marginTop: "2%",
+            width: "82%",
+            height: 60,
+            borderColor: "#8391A1",
+            borderBottomWidth: screenWidth * 0.001,
+            marginLeft: "6%",
+            flexDirection: "row",
+          }}>
 
-          <Image
+          <SimpleLineIcons name="settings"
+            size={RFValue(19)}
+            color="#0F2944" // Set color based on selectedButton
             style={{
-              width: screenWidth * 0.051,
+              width: screenWidth * 0.055,
               height: screenHeight * 0.031,
-              resizeMode: "contain",
               alignSelf: "center",
+              marginRight: "3%",
+              // backgroundColor:"yellow",
+              marginTop: "2%"
 
             }}
-            source={require('../../assets/LostApp/Setting.png')} />
+          />
 
 
           <Text
@@ -433,28 +477,32 @@ const [loading, setLoading] = useState(true);
 
 
         <TouchableOpacity
-        onPress={ContactHandler}
-         style={{
+          onPress={ContactHandler}
+          style={{
 
-          position: "relative",
-          marginTop: "2%",
-          width: "82%",
-          height: 60,
-          borderColor: "#8391A1",
-          borderBottomWidth: screenWidth * 0.001,
-          marginLeft: "6%",
-          flexDirection: "row",
-        }}>
+            position: "relative",
+            marginTop: "2%",
+            width: "82%",
+            height: 60,
+            borderColor: "#8391A1",
+            borderBottomWidth: screenWidth * 0.001,
+            marginLeft: "6%",
+            flexDirection: "row",
+          }}>
 
-          <Image
+          <AntDesign name="mail"
+            size={RFValue(19)}
+            color="#0F2944" // Set color based on selectedButton
             style={{
-              width: screenWidth * 0.051,
+              width: screenWidth * 0.055,
               height: screenHeight * 0.031,
-              resizeMode: "contain",
               alignSelf: "center",
-            }}
-            source={require('../../assets/LostApp/Contact.png')} />
+              marginRight: "3%",
+              // backgroundColor:"yellow",
+              marginTop: "2%"
 
+            }}
+          />
 
           <Text
             style={{
@@ -476,14 +524,14 @@ const [loading, setLoading] = useState(true);
 
 
         <TouchableOpacity
-        onPress={handleSignOut}
+          onPress={handleSignOut}
           style={{
             // position: "absolute",
             // top: 427,
             position: 'relative',
             // top: 120,
             borderRadius: 8,
-            backgroundColor: '#7689D6',
+            backgroundColor: '#0F2944',
             width: "90%",
             height: screenHeight * 0.06,
             alignSelf: "center",
@@ -501,8 +549,10 @@ const [loading, setLoading] = useState(true);
           >Logout </Text>
         </TouchableOpacity>
 
+
+
         <TouchableOpacity
-        onPress={handleDeleteAccount}
+          onPress={handleDeleteAccount}
           style={{
             position: 'relative',
             // top: 127,
@@ -517,7 +567,7 @@ const [loading, setLoading] = useState(true);
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 18,
             alignSelf: "center",
-            color: '#DF1818',
+            color: '#FE9003',
 
 
           }}

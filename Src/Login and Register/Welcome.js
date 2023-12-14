@@ -63,22 +63,34 @@ const Welcome = () => {
             }}>
 
                 <Image style={{
-                    width: 247,
+            
                     width: screenWidth * 0.7,
-                    height: 249,
-                    height: screenHeight * 0.55,
-                    //   top: -80, 
-                    alignSelf: "center",
-                    //   position:"absolute",
+                    height: screenHeight * 0.45,
                     resizeMode: "contain",
+                    alignSelf: "center",
+                  
                     // backgroundColor:"red"
 
                 }}
                     source={require("../../assets/LostApp/Welcome.png")} />
 
-                <View style={{ top: "8%" }}>
+                <View style={{ top: "13%",}}>
 
-                    <Text style={{ alignSelf: "center", fontSize: RFValue(25), fontFamily: "Urbanist_600SemiBold", position: "relative", }}>Lost<Text style={{ fontFamily: "Urbanist_400Regular" }}>&</Text>Found</Text>
+
+                <Image style={{
+                 
+                    width: screenWidth * 0.3,
+                
+                    height: screenHeight * 0.07,
+                    //   top: -80, 
+                    alignSelf: "center",
+                    //   position:"absolute",
+                    resizeMode: "contain",
+                    // backgroundColor:"yellow"
+
+                }}
+                    source={require("../../assets/losticon.png")} />
+
 
                     <TouchableOpacity
                         onPress={handler}
@@ -87,7 +99,7 @@ const Welcome = () => {
                             marginTop: "5%",
                             // position:"absolute",top:505,
                             borderRadius: 8,
-                            backgroundColor: '#7689D6',
+                            backgroundColor: '#0F2944',
                             // padding: 10,
                             width: 320,
                             width: screenWidth * 0.89,
@@ -123,6 +135,7 @@ const Welcome = () => {
                             height: 53,
                             height: screenHeight * 0.073,
                             alignSelf: "center",
+                            borderColor:"#0F2944",
                             // top: 235,
                             justifyContent: "center"
                         }}><Text style={{
@@ -130,30 +143,14 @@ const Welcome = () => {
                             fontFamily: "Urbanist_600SemiBold",
                             // lineHeight: 18,
                             alignSelf: "center",
-                            color: '#1E232C',
+                            color: '#0F2944',
 
                         }}
                         >Register </Text>
 
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={Guesthandler}>
-                        
-                        <Text style={{
-                            fontSize: RFValue(14),
-                            fontFamily: "Urbanist_500Medium",
-                            // lineHeight: 18,
-                            alignSelf: "center",
-                            color: '#CE3932',
-                            position: "relative",
-                            marginTop: "5%",
-                            // position:"absolute",top:300
-
-                        }}
-                        >
-                            Continue as a guest
-                        </Text>
-                    </TouchableOpacity>
+                  
 
                 </View>
 

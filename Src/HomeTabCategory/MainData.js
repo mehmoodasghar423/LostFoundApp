@@ -9,16 +9,16 @@ import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import moment from 'moment';
-
+import { Ionicons } from '@expo/vector-icons';
 import { firebase } from '../../config';
 
 
 
 
 
-const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton }) => {
+const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton,selectedTypeButton,selectedCityState,leftMarkerDate,rightMarkerDate ,topLocation }) => {
   const navigation = useNavigation();
-  // console.log(categoryselectedButton);
+  // console.log('Right date ',rightMarkerDate);
 
   const screenWidth = Dimensions.get('window').width;
   const box_Width = (screenWidth * 0.95);
@@ -30,40 +30,56 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
   const [filteredData, setFilteredData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-
   useEffect(() => {
     const userRef = firebase.firestore().collection("UserData");
     setIsLoading(true);
-
-    // Modify the query to retrieve only items with the specified Type
-    const typeQuery = selectedType
-      ? userRef.where("Type", "==", selectedType)
+  
+    const typeQuery = selectedType || selectedTypeButton
+      ? userRef.where("Type", "==", selectedType || selectedTypeButton)
       : userRef;
-
-    // Apply an additional filter based on the selected location
-    const locationQuery = selectedLocation
-      ? typeQuery.where("location", "==", selectedLocation)
+  
+    const locationQuery = selectedLocation || selectedCityState || topLocation
+      ? typeQuery.where("location", "==", selectedLocation || selectedCityState || topLocation)
       : typeQuery;
-
-    // Apply another filter based on the selected category
-    const categoryQuery = categoryselectedButton && categoryselectedButton !== "All"
-      ? locationQuery.where("category", "==", categoryselectedButton)
-      : locationQuery;
-
-    categoryQuery.onSnapshot((querySnapshot) => {
+  
+    const categoryQuery =
+      categoryselectedButton && categoryselectedButton !== "All"
+        ? locationQuery.where("category", "==", categoryselectedButton)
+        : locationQuery;
+  
+    let dateFilterQuery = categoryQuery;
+  
+    if (leftMarkerDate && rightMarkerDate) {
+      dateFilterQuery = dateFilterQuery.where("date", ">=", leftMarkerDate).where("date", "<=", rightMarkerDate);
+    }
+  
+    dateFilterQuery.onSnapshot((querySnapshot) => {
       const userDataArray = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         userDataArray.push({ id: doc.id, ...data });
       });
-
-      setUserDataList(userDataArray.reverse());
-      setFilteredData(userDataArray);
+  
+      const sortedData = [...userDataArray].sort((a, b) => {
+        const dateA = a.date ? a.date.toDate() : null;
+        const dateB = b.date ? b.date.toDate() : null;
+  
+        if (dateA && dateB) {
+          return dateB - dateA;
+        } else if (dateA && !dateB) {
+          return -1;
+        } else if (!dateA && dateB) {
+          return 1;
+        }
+        return 0;
+      });
+  
+      setUserDataList(sortedData);
+      setFilteredData(sortedData);
       setIsLoading(false);
     });
-  }, [selectedType, selectedLocation, categoryselectedButton]);
-
-
+  }, [selectedType, selectedLocation, categoryselectedButton, selectedTypeButton, selectedCityState, leftMarkerDate, rightMarkerDate,topLocation]);
+  
 
   useEffect(() => {
     if (searchQuery) {
@@ -108,7 +124,7 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
   /////////////////////
   ////////////////
   return (
-    <View style={{ height: 515, marginTop: 20 }}>
+    <View style={{ height:screenHeight*0.7, marginTop: screenHeight*0.01 ,paddingBottom:screenHeight*0.01}}>
       {isLoading ? ( // Show loading icon when data is loading
         <ActivityIndicator size="large" color="#7689D6" />
       ) : filteredData.length > 0 ? ( // Data is available, render the data
@@ -141,6 +157,7 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
                   imageUrl2: item.imageUrl2,
                   imageUrl3: item.imageUrl3,
                   participants: [item.uid],
+                  Type:item.Type
                 });
               }}
             >
@@ -159,8 +176,9 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
                 }} />
                 <Text style={styles.itemTitle}> {item.lostItem}</Text>
            
-                <View  style={{backgroundColor:"#778899",borderRadius:10,marginLeft:"4.5%",position:"absolute",bottom:screenHeight*0.002,
+                <View  style={{backgroundColor:"#0F2944",borderRadius:10,marginLeft:"4.5%",position:"absolute",bottom:screenHeight*0.002,
                 height:screenHeight*0.015,alignItems:"center",justifyContent:"center"}}>
+
                 <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(9),color:"white" }}
                 >{item.Type}</Text>
                 
@@ -168,20 +186,26 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
 
                 
                 <Text style={styles.itemDate}>
-                  {item.date ? moment(item.date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
+                  {item.date ? moment(item.date.toDate()).format("D MMM YYYY") : 'Date not available'}
                 </Text>
               </View>
 
 
-              <View style={styles.SecondView}>
-                <Image source={require("../../assets/LostApp/Locationtwo.png")}
-                  style={{
-                    height: screenHeight * 0.015,
-                    width: screenWidth * 0.03,
-                    marginTop: 2
+              
+             
 
-                  }}
-                />
+              <View style={styles.SecondView}>
+              <Ionicons name="md-location-sharp" 
+                size={RFValue(11)}
+              color="#FE9003"
+              style={{
+                marginTop: screenHeight*0.0015,marginRight:screenWidth*0.003
+              }}
+            />
+                
+
+
+
                 <Text style={styles.Locationtxt}>{item.location}</Text>
                 <TouchableOpacity style={styles.detailsView}>
                   <Text style={styles.detailbtb}>View Details</Text>
@@ -326,13 +350,14 @@ const styles = StyleSheet.create({
     marginLeft: "3%",
     marginTop: 12,
     fontSize: RFValue(14),
-    fontFamily: "Urbanist_500Medium"
+    fontFamily: "Urbanist_500Medium",
+    color:"#0F2944"
   },
   itemDate: {
     position: "absolute",
     right: "3.5%",
     top: 11.3,
-    color: "#8391A1",
+    color: "#6A707C",
     fontSize: 10,
     fontFamily: "Urbanist_400Regular",
     fontSize: RFValue(10),
@@ -351,7 +376,7 @@ const styles = StyleSheet.create({
     marginTop: 2
   },
   Locationtxt: {
-    color: "#8391A1",
+    color: "#6A707C",
     fontFamily: "Urbanist_400Regular",
     fontSize: RFValue(10),
     // backgroundColor:"yellow"
@@ -363,9 +388,9 @@ const styles = StyleSheet.create({
     right: "5%"
   },
   detailbtb: {
-    color: "#8391A1",
+    color: "#FE9003",
     fontSize: RFValue(9),
-    fontFamily: "Urbanist_400Regular",
+    fontFamily: "Urbanist_600SemiBold",
     // lineHeight:10.63,
     right: -7
 

@@ -9,13 +9,17 @@ import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import moment from 'moment';
+import { Ionicons } from '@expo/vector-icons';
 
 import { firebase } from '../../config';
 
 
 
-const Glasses = ({ searchQuery, handleSearch }) => {
+
+
+const Glasses = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton,selectedTypeButton,selectedCityState ,leftMarkerDate,rightMarkerDate}) => {
   const navigation = useNavigation();
+  // console.log(categoryselectedButton);
 
   const screenWidth = Dimensions.get('window').width;
   const box_Width = (screenWidth * 0.95);
@@ -30,20 +34,54 @@ const Glasses = ({ searchQuery, handleSearch }) => {
 
   useEffect(() => {
     const userRef = firebase.firestore().collection("UserData");
-    setIsLoading(true); // Start loading
-
-    userRef.onSnapshot((querySnapshot) => {
+    setIsLoading(true);
+  
+    const typeQuery = selectedType || selectedTypeButton
+      ? userRef.where("Type", "==", selectedType || selectedTypeButton)
+      : userRef;
+  
+    const locationQuery = selectedLocation || selectedCityState
+      ? typeQuery.where("location", "==", selectedLocation || selectedCityState)
+      : typeQuery;
+  
+    const categoryQuery =
+      categoryselectedButton && categoryselectedButton !== "All"
+        ? locationQuery.where("category", "==", categoryselectedButton)
+        : locationQuery;
+  
+    let dateFilterQuery = categoryQuery;
+  
+    if (leftMarkerDate && rightMarkerDate) {
+      dateFilterQuery = dateFilterQuery.where("date", ">=", leftMarkerDate).where("date", "<=", rightMarkerDate);
+    }
+  
+    dateFilterQuery.onSnapshot((querySnapshot) => {
       const userDataArray = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         userDataArray.push({ id: doc.id, ...data });
       });
-      setUserDataList(userDataArray.reverse());
-      setFilteredData(userDataArray); // Set filteredData initially to show all records
+  
+      const sortedData = [...userDataArray].sort((a, b) => {
+        const dateA = a.date ? a.date.toDate() : null;
+        const dateB = b.date ? b.date.toDate() : null;
+  
+        if (dateA && dateB) {
+          return dateB - dateA;
+        } else if (dateA && !dateB) {
+          return -1;
+        } else if (!dateA && dateB) {
+          return 1;
+        }
+        return 0;
+      });
+  
+      setUserDataList(sortedData);
+      setFilteredData(sortedData);
       setIsLoading(false);
     });
-  }, []);
-
+  }, [selectedType, selectedLocation, categoryselectedButton, selectedTypeButton, selectedCityState, leftMarkerDate, rightMarkerDate]);
+  
 
   useEffect(() => {
     if (searchQuery) {
@@ -65,9 +103,9 @@ const Glasses = ({ searchQuery, handleSearch }) => {
       setFilteredData(userDataList);
     }
   }, [searchQuery, userDataList]);
-  
-  
-  
+
+
+
 
 
 
@@ -85,17 +123,17 @@ const Glasses = ({ searchQuery, handleSearch }) => {
   if (!fontsLoaded) {
     return null;
   }
-/////////////////////
-////////////////
+  /////////////////////
+  ////////////////
   return (
-    <View style={{ height: 515, marginTop: 20 }}>
+    <View style={{ height:screenHeight*0.7, marginTop: screenHeight*0.01 ,paddingBottom:screenHeight*0.01}}>
       {isLoading ? ( // Show loading icon when data is loading
         <ActivityIndicator size="large" color="#7689D6" />
       ) : filteredData.length > 0 ? ( // Data is available, render the data
         <FlatList
-        data={filteredData.filter(item => item.lostItem && item.category === 'Glasses')} // Filter out items where lostItem is empty
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+          data={filteredData.filter(item => item.lostItem && item.category === 'Glasses')} // Filter out items where lostItem is empty
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
             <TouchableOpacity
               style={{
                 height: 55.48,
@@ -138,28 +176,38 @@ const Glasses = ({ searchQuery, handleSearch }) => {
                   marginLeft: "1.3%"
                 }} />
                 <Text style={styles.itemTitle}> {item.lostItem}</Text>
-                <Text style={styles.itemtype}> {item.Type}</Text>
+           
+                <View  style={{backgroundColor:"#778899",borderRadius:10,marginLeft:"4.5%",position:"absolute",bottom:screenHeight*0.002,
+                height:screenHeight*0.015,alignItems:"center",justifyContent:"center"}}>
+                <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(9),color:"white" }}
+                >{item.Type}</Text>
+                
+                </View>
+
+                
                 <Text style={styles.itemDate}>
-                  {item.date ? moment(item.date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
+                  {item.date ? moment(item.date.toDate()).format("D MMM YYYY") : 'Date not available'}
                 </Text>
               </View>
 
 
               <View style={styles.SecondView}>
-                <Image source={require("../../assets/LostApp/Locationtwo.png")}
-                  style={{
-                    height: screenHeight * 0.015,
-                    width: screenWidth * 0.03,
-                    marginTop: 2
+              <Ionicons name="md-location-sharp" 
+                size={RFValue(11)}
+              color="#8391A1"
+              style={{
+                marginTop: screenHeight*0.0015,marginRight:screenWidth*0.003
+              }}
+            />
+                
 
-                  }}
-                />
+
+
                 <Text style={styles.Locationtxt}>{item.location}</Text>
                 <TouchableOpacity style={styles.detailsView}>
                   <Text style={styles.detailbtb}>View Details</Text>
                 </TouchableOpacity>
               </View>
-
             </TouchableOpacity>
           )}
         />

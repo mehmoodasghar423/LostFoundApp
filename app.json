@@ -2,13 +2,13 @@
   "expo": {
     "name": "Lost & Found",
     "slug": "Minimalone",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashscreen_image.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0F2944"
     },
     "assetBundlePatterns": ["**/*"],
     "extra": {
@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "com.yourcompany.lostandfound", 
-      "versionCode":2,
+      "versionCode":3,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDbcwfqnPYudCOOhzi85aGb1Ll2v5Wklfc"

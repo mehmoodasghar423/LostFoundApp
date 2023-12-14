@@ -9,6 +9,7 @@ import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import moment from 'moment';
+import { Ionicons } from '@expo/vector-icons';
 
 import { firebase } from '../../config';
 
@@ -16,7 +17,7 @@ import { firebase } from '../../config';
 
 
 
-const Bag = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton }) => {
+const Bag = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton,selectedTypeButton,selectedCityState ,leftMarkerDate,rightMarkerDate}) => {
   const navigation = useNavigation();
   // console.log(categoryselectedButton);
 
@@ -34,34 +35,54 @@ const Bag = ({ searchQuery, handleSearch, selectedType, selectedLocation, catego
   useEffect(() => {
     const userRef = firebase.firestore().collection("UserData");
     setIsLoading(true);
-
-    // Modify the query to retrieve only items with the specified Type
-    const typeQuery = selectedType
-      ? userRef.where("Type", "==", selectedType)
+  
+    const typeQuery = selectedType || selectedTypeButton
+      ? userRef.where("Type", "==", selectedType || selectedTypeButton)
       : userRef;
-
-    // Apply an additional filter based on the selected location
-    const locationQuery = selectedLocation
-      ? typeQuery.where("location", "==", selectedLocation)
+  
+    const locationQuery = selectedLocation || selectedCityState
+      ? typeQuery.where("location", "==", selectedLocation || selectedCityState)
       : typeQuery;
-
-    // Apply another filter based on the selected category
-    const categoryQuery = categoryselectedButton && categoryselectedButton !== "All"
-      ? locationQuery.where("category", "==", categoryselectedButton)
-      : locationQuery;
-
-    categoryQuery.onSnapshot((querySnapshot) => {
+  
+    const categoryQuery =
+      categoryselectedButton && categoryselectedButton !== "All"
+        ? locationQuery.where("category", "==", categoryselectedButton)
+        : locationQuery;
+  
+    let dateFilterQuery = categoryQuery;
+  
+    if (leftMarkerDate && rightMarkerDate) {
+      dateFilterQuery = dateFilterQuery.where("date", ">=", leftMarkerDate).where("date", "<=", rightMarkerDate);
+    }
+  
+    dateFilterQuery.onSnapshot((querySnapshot) => {
       const userDataArray = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         userDataArray.push({ id: doc.id, ...data });
       });
-
-      setUserDataList(userDataArray.reverse());
-      setFilteredData(userDataArray);
+  
+      const sortedData = [...userDataArray].sort((a, b) => {
+        const dateA = a.date ? a.date.toDate() : null;
+        const dateB = b.date ? b.date.toDate() : null;
+  
+        if (dateA && dateB) {
+          return dateB - dateA;
+        } else if (dateA && !dateB) {
+          return -1;
+        } else if (!dateA && dateB) {
+          return 1;
+        }
+        return 0;
+      });
+  
+      setUserDataList(sortedData);
+      setFilteredData(sortedData);
       setIsLoading(false);
     });
-  }, [selectedType, selectedLocation, categoryselectedButton]);
+  }, [selectedType, selectedLocation, categoryselectedButton, selectedTypeButton, selectedCityState, leftMarkerDate, rightMarkerDate]);
+  
+
 
 
 
@@ -108,7 +129,8 @@ const Bag = ({ searchQuery, handleSearch, selectedType, selectedLocation, catego
   /////////////////////
   ////////////////
   return (
-    <View style={{ height: 515, marginTop: 20 }}>
+    <View style={{ height:screenHeight*0.7, marginTop: screenHeight*0.01 ,paddingBottom:screenHeight*0.01}}>
+
       {isLoading ? ( // Show loading icon when data is loading
         <ActivityIndicator size="large" color="#7689D6" />
       ) : filteredData.length > 0 ? ( // Data is available, render the data
@@ -141,6 +163,8 @@ const Bag = ({ searchQuery, handleSearch, selectedType, selectedLocation, catego
                   imageUrl2: item.imageUrl2,
                   imageUrl3: item.imageUrl3,
                   participants: [item.uid],
+                  Type:item.Type
+
                 });
               }}
             >
@@ -168,20 +192,24 @@ const Bag = ({ searchQuery, handleSearch, selectedType, selectedLocation, catego
 
                 
                 <Text style={styles.itemDate}>
-                  {item.date ? moment(item.date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
-                </Text>
+                {item.date ? moment(item.date.toDate()).format("D MMM YYYY") : 'Date not available'}
+              </Text>
+              
               </View>
 
 
               <View style={styles.SecondView}>
-                <Image source={require("../../assets/LostApp/Locationtwo.png")}
-                  style={{
-                    height: screenHeight * 0.015,
-                    width: screenWidth * 0.03,
-                    marginTop: 2
+              <Ionicons name="md-location-sharp" 
+                size={RFValue(11)}
+              color="#8391A1"
+              style={{
+                marginTop: screenHeight*0.0015,marginRight:screenWidth*0.003
+              }}
+            />
+                
 
-                  }}
-                />
+
+
                 <Text style={styles.Locationtxt}>{item.location}</Text>
                 <TouchableOpacity style={styles.detailsView}>
                   <Text style={styles.detailbtb}>View Details</Text>

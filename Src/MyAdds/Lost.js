@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions,FlatList ,ActivityIndicator} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, FlatList, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import {
   Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
@@ -8,8 +8,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../../config';
-
+import { MaterialCommunityIcons,Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
+
 
 
 
@@ -23,9 +24,9 @@ const Lost = () => {
   const screenHeight = Dimensions.get('window').height;
   const [isLoading, setIsLoading] = useState(true);
 
-  
 
- useEffect(() => {
+
+  useEffect(() => {
     const user = firebase.auth().currentUser;
     if (user) {
       const userUID = user.uid;
@@ -39,11 +40,13 @@ const Lost = () => {
           userDataArray.push({ id: doc.id, ...data });
         });
         setUserDataList(userDataArray);
-      setIsLoading(false);
+        setIsLoading(false);
 
       });
     }
   }, []);
+
+
 
   const deleteRecord = (documentId) => {
     const user = firebase.auth().currentUser;
@@ -51,21 +54,47 @@ const Lost = () => {
       const userRef = firebase.firestore().collection("UserData").doc(documentId);
       userRef.delete()
         .then(() => {
-          
+
         })
         .catch(error => {
           console.error("Error deleting data in Firestore: ", error);
         });
     }
   };
-  
+
 
   const editRecord = (documentId) => {
-    navigation.navigate('LostPostEdit', { documentId });
+    const selectedItem = userDataList.find(item => item.id === documentId);
+    if (selectedItem) {
+      navigation.navigate('LostPostNextEdit', {
+        documentId: selectedItem.id,
+        categorycontainer: selectedItem.category,
+        lostItemcontainer: selectedItem.lostItem,
+        location: selectedItem.location,
+        date: selectedItem.date,
+        time: selectedItem.time,
+        descriptioncontainer: selectedItem.description,
+        imageUrl1: selectedItem.imageUrl1,
+        imageUrl2: selectedItem.imageUrl2,
+        imageUrl3: selectedItem.imageUrl3,
+      });
+    }
   };
+  
 
-
+  // Filter the data
   const filteredUserDataList = userDataList.filter(item => item.Type === 'Lost');
+
+  // Check if data exists before sorting and rendering
+  let sortedUserDataList = [];
+  if (filteredUserDataList && filteredUserDataList.length > 0) {
+    sortedUserDataList = filteredUserDataList.sort((a, b) => {
+      const dateA = a.date ? a.date.toDate() : new Date(0);
+      const dateB = b.date ? b.date.toDate() : new Date(0);
+      return dateB - dateA;
+    });
+  }
+
 
 
   let [fontsLoaded] = useFonts({
@@ -84,167 +113,163 @@ const Lost = () => {
   }
 
   return (
-    <View style={{backgroundColor:"white",height:screenHeight * 0.8}}>
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
+    <View style={{ backgroundColor: "white", height: screenHeight * 0.9 }}>
+      <View style={{ justifyContent: "center", alignItems: "center",height:screenHeight*0.75 }}>
 
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-      <FlatList
-      showsVerticalScrollIndicator={false}
-      data={filteredUserDataList}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <View
-          style={{
-            position: "relative",
-            width: 300,
-            height: screenHeight * 0.106,
-            borderRadius: 8,
-            backgroundColor: "white",
-            elevation: 3,
-            marginTop: 9,
-          }}
-          onPress={() => {
-            navigation.navigate('DetailsScreen', {
-              category: item.category,
-              location: item.location,
-              date: item.date,
-              time: item.time,
-              lostItem: item.lostItem,
-              description: item.description,
-              imageUrl1: item.imageUrl1,
-              imageUrl2: item.imageUrl2,
-              imageUrl3: item.imageUrl3,
-            });
-          }}
-        >
-
-
-         
-            <Image source={{ uri: item.imageUrl1 }} style={{
-              width: screenWidth * 0.175,
-              height: screenHeight * 0.086,
-              borderRadius: 10,
-              position: "absolute",
-              marginLeft:"1.7%",
-              marginTop:"1%"
-            }} />
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={sortedUserDataList}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View
+                style={{
+                  position: "relative",
+                  width: screenWidth*0.9,
+                  height: screenHeight * 0.106,
+                  borderRadius: 8,
+                  backgroundColor: "white",
+                  elevation: 3,
+                  marginTop: 9,
+                }}
+                onPress={() => {
+                  navigation.navigate('DetailsScreen', {
+                    category: item.category,
+                    location: item.location,
+                    date: item.date,
+                    time: item.time,
+                    lostItem: item.lostItem,
+                    description: item.description,
+                    imageUrl1: item.imageUrl1,
+                    imageUrl2: item.imageUrl2,
+                    imageUrl3: item.imageUrl3,
+                  });
+                }}
+              >
 
 
-            <Text style={{
-              fontFamily: "Urbanist_500Medium",
-              fontSize: RFValue(14),
-              // lineHeight: 16.8,
-              position: "absolute",
-              // left: 79,
-              marginLeft:"26.5%",
-              top: screenHeight*0.015,
-              color: "black",
-            }}> {item.lostItem}</Text>
-            
-       
-            <Text style={{
-              fontFamily: "Urbanist_400Regular",
-              fontSize: RFValue(8),
-              position: "absolute",
-              marginLeft:"28.3%",
-              top: screenHeight*0.046,
-              color: "#1E1F4B",
-            }}>
-            {item.date ? moment(item.date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
-            </Text>
+
+                <Image source={{ uri: item.imageUrl1 }} style={{
+                  width: screenWidth * 0.175,
+                  height: screenHeight * 0.086,
+                  borderRadius: 10,
+                  position: "absolute",
+                  marginLeft: "1.7%",
+                  marginTop: "1%"
+                }} />
 
 
-         
-        <Image source={require("../../assets/LostApp/Locationtwo.png")}
-          style={{
-            width:screenWidth*0.03,
-                height:screenHeight*0.03,
-                resizeMode:"contain",
+                <Text style={{
+                  fontFamily: "Urbanist_500Medium",
+                  fontSize: RFValue(14),
+                  // lineHeight: 16.8,
+                  position: "absolute",
+                  // left: 79,
+                  marginLeft: "26.5%",
+                  top: screenHeight * 0.015,
+                  color: "black",
+                }}> {item.lostItem}</Text>
+
+
+                <Text style={{
+                  fontFamily: "Urbanist_400Regular",
+                  fontSize: RFValue(8),
+                  position: "absolute",
+                  marginLeft: "28.3%",
+                  top: screenHeight * 0.046,
+                  color: "#1E1F4B",
+                }}>
+                  {item.date ? moment(item.date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
+                </Text>
+
+                <Ionicons name="md-location-sharp" 
+                size={RFValue(11)}
+              color="#FE9003"
+              style={{
                 position: "absolute",
-                left:screenWidth*0.232,
-                top: screenHeight*0.063,
-          }}
-        />
-
-
-        <Text style={{
-          fontFamily: "Urbanist_400Regular",
-          fontSize: RFValue(8),
-          position: "absolute",
-          left:screenWidth*0.268,
-          top: screenHeight*0.067,
-          color: "#8391A1",
-        }}>{item.location}</Text>
-
-
-       
-        <TouchableOpacity
-        onPress={() => editRecord(item.id)}
-
-        style={{
-
-          position: "absolute",
-          right:screenWidth*0.09,
-          top: screenHeight*0.013,
-          justifyContent: "center",
-          width: screenWidth*0.051,
-          height:screenHeight*0.021,
-// backgroundColor:"red"
-        }}>
-
-        <Image
-          style={{
-            tintColor: "#7689D6",
-            alignSelf: "center",
-            width: screenWidth*0.041,
-            height:screenHeight*0.016,
-            resizeMode:"contain"
-
-
-          }}
-          source={require('../../assets/LostApp/Editt.png')}
-        />
-
-      </TouchableOpacity>
+                left: screenWidth * 0.25,
+                top: screenHeight * 0.066,
+              }}
+            />
 
 
 
-      <TouchableOpacity
-   onPress={() => deleteRecord(item.id)} 
-
-      style={{
-
-        position: "absolute",
-        right:screenWidth*0.03,
-        top: screenHeight*0.014,
-        justifyContent: "center",
-        // backgroundColor:"red",
-        width: screenWidth*0.04,
-        height:screenHeight*0.018,
-      }}>
-
-      <Image
-        style={{
-
-          alignSelf: "center",
-          width: screenWidth*0.036,
-          height:screenHeight*0.02,
-          resizeMode:"contain"
+                <Text style={{
+                  fontFamily: "Urbanist_400Regular",
+                  fontSize: RFValue(8),
+                  position: "absolute",
+                  left: screenWidth * 0.29,
+                  top: screenHeight * 0.067,
+                  color: "#FE9003",
+                }}>{item.location}</Text>
 
 
-        }}
-        source={require('../../assets/LostApp/Delete.png')}
-      />
 
-    </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => editRecord(item.id)}
+
+                  style={{
+
+                    position: "absolute",
+                    right: screenWidth * 0.03,
+                    top: screenHeight * 0.013,
+                    justifyContent: "center",
+                    width: screenWidth * 0.07,
+                    height: screenHeight * 0.038,
+                    // backgroundColor:"red"
+                  }}>
+
+                 
+
+                  <MaterialCommunityIcons name="circle-edit-outline"
+                  size={RFValue(24)}
+                  color="#0F2944"
+                  style={{
+                    // position: "absolute",
+                    // marginLeft: screenWidth * 0.0011
+                    // left: "35%",
+                  }}
+                />
 
 
-        </View>
-      )}
-    />
-    )}
+
+                </TouchableOpacity>
+
+               
+
+                <TouchableOpacity
+                  onPress={() => deleteRecord(item.id)}
+
+                  style={{
+
+                    position: "absolute",
+                    right: screenWidth * 0.03,
+                    bottom: screenHeight * 0.014,
+                    justifyContent: "center",
+                    // backgroundColor:"red",
+                    width: screenWidth * 0.07,
+                    height: screenHeight * 0.038,
+                  }}>
+
+                  <MaterialCommunityIcons name="delete"
+                  size={RFValue(24)}
+                  color="#FE9003"
+                  style={{
+                    // position: "absolute",
+                    // marginLeft: screenWidth * 0.0011
+                    // left: "35%",
+                  }}
+                />
+
+                </TouchableOpacity>
+
+
+              </View>
+            )}
+          />
+        )}
       </View>
 
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, Linking, Alert } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, Linking, Alert, ActivityIndicator, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
 import Carousel from "pinar";
@@ -10,9 +10,11 @@ import {
 import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 
 import { firebase } from '../config';
 
+import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
 
 
@@ -35,6 +37,15 @@ const DetailsScreen = ({ route }) => {
 
   const [userProfilePics, setuserProfilePics] = useState(null); // Update the initial state to null
   const [recipientEmail, setRecipientEmail] = useState(''); // Initialize recipient's email state
+
+
+  const [loading, setLoading] = useState(true); // State to manage loading state of images
+
+  // Function to handle image loading completion
+  const handleImageLoad = () => {
+    setLoading(false); // Update loading state to false when images are loaded
+  };
+
 
   useEffect(() => {
     if (participants && participants.length > 0) {
@@ -238,279 +249,290 @@ const DetailsScreen = ({ route }) => {
 
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1,backgroundColor:"white"}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
 
-      <View >
-        <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "5%", }}>
-
-
-          <TouchableOpacity onPress={handleGoBack}>
-            <Image style={{
-              width: 41,
-              width: screenWidth * 0.11,
-              height: 41,
-              height: screenHeight * 0.057,
-              // top: 20,
-              left: "40%"
-
-            }}
-              source={require("../assets/LostApp/back.png")} />
-          </TouchableOpacity>
-
-          <Text
-            style={{
-              fontSize: RFValue(18),
-              fontFamily: "Urbanist_600SemiBold",
-
-              marginLeft: "30%",
+        <View >
+          <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "5%", justifyContent: "space-between" }}>
 
 
-            }}
-          >
-            Details
-          </Text>
-          <TouchableOpacity onPress={shareData}>
-            <Image style={{
-              position: "absolute",
-              width: 17,
-              height: 15,
-              width: screenWidth * 0.053,
-              height: screenHeight * 0.03,
-              // marginLeft: "48%",
-              right: screenWidth * -0.35,
-              bottom: screenHeight * -0.017,
-              resizeMode: "contain"
-            }}
-              source={require("../assets/LostApp/ShareIcon.png")} />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={handleGoBack}>
+              <Image style={{
+                width: 41,
+                width: screenWidth * 0.11,
+                height: 41,
+                height: screenHeight * 0.057,
+                // top: 20,
+                left: "40%"
+
+              }}
+                source={require("../assets/LostApp/back.png")} />
+            </TouchableOpacity>
+
+            <Text
+              style={{
+                fontSize: RFValue(18),
+                fontFamily: "Urbanist_600SemiBold",
+                color: "#0F2944"
+                // marginLeft: "30%",
 
 
-
-
-        {userProfilePics ? (
-          <Image
-            source={{ uri: userProfilePics }}
-            style={{
-              width: screenWidth * 0.22,
-              height: screenHeight * 0.11,
-              alignSelf: "center",
-              backgroundColor: "red",
-              borderRadius: (screenWidth, screenHeight) * 0.07,
-              borderWidth: (screenWidth, screenHeight) * 0.007,
-              borderColor: "white"
-            }}
-          />
-        ) : (
-          <Image
-            source={require('../assets/LostApp/ProfilePicture.webp')}
-            style={{
-              width: screenWidth * 0.22,
-              height: screenHeight * 0.11,
-              alignSelf: "center",
-              backgroundColor: "red",
-              borderRadius: (screenWidth, screenHeight) * 0.07,
-              borderWidth: (screenWidth, screenHeight) * 0.007,
-              borderColor: "white"
-            }}
-          />
-        )}
-        <View style={{backgroundColor:"#7689D6",
-         paddingVertical:screenHeight* 0.005,
-         justifyContent:"center",alignItems:"center", 
-           position: "relative",marginTop:"1%",width:"45%",
-           alignSelf:"center",borderRadius:(screenWidth, screenHeight) * 0.07,}}>
-
-          <Text style={{
-            fontSize: RFValue(12),
-            fontFamily: "Urbanist_600SemiBold",
-            color: "white",
-          }}>
-            Posted By: {userHasData ? 'You' : recipientName}
-          </Text>
-
-        </View>
-
-        <View style={{
-          height: screenHeight * 0.307,
-          width: screenWidth * 0.64,
-          alignSelf: "center",
-          marginTop: "3%",
-          borderRadius: (screenWidth, screenHeight) * 0.007,
-        }}  >
-          <Carousel style={{ alignItems: "center", justifyContent: "center", borderRadius: (screenWidth, screenHeight) * 0.007, }}>
-            <View style={styles.slide1}>
-              <Image style={{ width: "100%", height: "100%", borderRadius: 10 }}
-                source={{ uri: imageUrl1 }}
-              />
-            </View>
-
-            <View style={styles.slide2}>
-              <Image style={{ width: "100%", height: "100%", borderRadius: 10 }}
-                source={{ uri: imageUrl2 }}
-              />
-            </View>
-
-            <View style={styles.slide3}>
-              <Image style={{ width: "100%", height: "100%", borderRadius: 10 }}
-                source={{ uri: imageUrl3 }}
-              />
-            </View>
-          </Carousel>
-        </View>
-
-
-
-        <View style={styles.buttons}>
-
-          <TouchableOpacity
-            onPress={startChat}
-            style={[{
-              width: "44%",
-              height: screenHeight * 0.059,
-              borderWidth: (screenWidth, screenHeight) * 0.0018,
-              borderColor: "#7689D6",
-              borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.016,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center"
-
-            }, selectedButton === 'button1' && styles.selectedButton]}
-
-          >
-            <Image style={selectedButton === 'button1' ? {
-
-              width: screenWidth * 0.035,
-              height: screenHeight * 0.03,
-              alignSelf: "center",
-              marginRight: "3%",
-              resizeMode: "contain",
-              tintColor: "white",
-            } : {
-
-              width: screenWidth * 0.035,
-              height: screenHeight * 0.03,
-              alignSelf: "center",
-              marginRight: "3%",
-              resizeMode: "contain"
-            }}
-
-              source={require("../assets/LostApp/Message.png")} />
-            <Text style={selectedButton === 'button1' ? styles.selectedButtonText : styles.buttonText}>Message</Text>
-          </TouchableOpacity>
-
-
-
-
-
-          <TouchableOpacity
-            onPress={makeCall}
-            style={[{
-              width: "44%",
-              height: screenHeight * 0.059,
-              borderWidth: (screenWidth, screenHeight) * 0.0018,
-              borderColor: "#7689D6",
-              borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.016,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center"
-            }, selectedButton === 'button2' && styles.selectedButton]}
-
-          >
-            <Image style={selectedButton === 'button2' ? {
-
-              width: screenWidth * 0.035,
-              height: screenHeight * 0.03,
-              alignSelf: "center",
-              marginRight: "3%",
-              resizeMode: "contain",
-              tintColor: "white",
-            } : {
-
-              width: screenWidth * 0.035,
-              height: screenHeight * 0.03,
-              alignSelf: "center",
-              marginRight: "3%",
-              resizeMode: "contain"
-            }}
-              source={require("../assets/LostApp/Call.png")} />
-            <Text style={selectedButton === 'button2' ? styles.selectedButtonText : styles.buttonText}>Call</Text>
-          </TouchableOpacity>
-        </View>
-
-
-
-
-
-        <View style={{ position: "relative", marginTop: "9%", alignSelf: "center", width: "93%", flexDirection: "row", }}>
-
-          <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(16), }}
-          >{lostItem}</Text>
-
-          <View style={{ backgroundColor: "#778899", borderRadius: 10, marginLeft: "2%", height: screenHeight * 0.028, alignItems: "center", justifyContent: "center" }}>
-            <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(11), color: "white" }}
-            >{Type}</Text>
-
-          </View>
-
-          <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), letterSpacing: 1, alignSelf: "center", color: "#1E1F4B", position: "absolute", right: screenWidth * 0.03, }}
-          > {date ? moment(date.toDate()).format("Do MMMM YYYY") : 'Date not available'}  </Text>
-
-        </View>
-
-
-        <View style={{ position: "relative", marginTop: "4%", alignSelf: "center", width: "93%", }}>
-          <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12) }}
-          >Description</Text>
-          <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), top: screenHeight * 0.004, color: "#8391A1" }}
-          >{description}</Text>
-
-          <View style={{ position: "relative", top: screenHeight * 0.015, flexDirection: "row", alignItems: "center" }}>
-            <Image style={{
-              width: screenWidth * 0.03,
-              height: screenHeight * 0.017,
-              resizeMode: "contain",
-            }}
-              source={require("../assets/LostApp/Locatioon.png")} />
-            <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), alignSelf: "center", color: "#8391A1", marginLeft: "1.5%" }}>
-              {location}
+              }}
+            >
+              {lostItem}
             </Text>
+            <TouchableOpacity onPress={shareData}>
+
+              <FontAwesome name="share-square-o"
+                size={RFValue(19)}
+                color="#888888"
+                style={{
+                  // position: "absolute",
+                  marginRight: screenWidth * 0.06
+                  // left: "35%",
+                }}
+              />
+            </TouchableOpacity>
+
+
           </View>
+
+
+
+
+          {userProfilePics ? (
+            <Image
+              source={{ uri: userProfilePics }}
+              style={{
+                width: screenWidth * 0.22,
+                height: screenHeight * 0.11,
+                alignSelf: "center",
+                backgroundColor: "red",
+                borderRadius: (screenWidth, screenHeight) * 0.07,
+                borderWidth: (screenWidth, screenHeight) * 0.007,
+                borderColor: "white",
+                resizeMode:"contain"
+              }}
+            />
+          ) : (
+            <Image
+              source={require('../assets/Dpp.png')}
+              style={{
+                width: screenWidth * 0.22,
+                height: screenHeight * 0.11,
+                alignSelf: "center",
+                // backgroundColor: "red",
+                resizeMode: "contain",
+                //   borderRadius: (screenWidth, screenHeight) * 0.07,
+                // borderWidth:(screenWidth, screenHeight) * 0.007,
+                borderColor: "white",
+                // backgroundColor:"red"
+              }}
+            />
+          )}
+          <View style={{
+            backgroundColor:"#0F2944",
+         paddingVertical:screenHeight* 0.001,
+         justifyContent:"center",alignItems:"center", 
+           position: "relative",marginTop:"1%",width:"auto",
+           alignSelf:"center",borderRadius:(screenWidth, screenHeight) * 0.07,     
+           borderWidth: (screenWidth, screenHeight) * 0.004,borderColor:"white",paddingHorizontal:screenWidth*0.03
+          //  paddingHorizontal:20
+          }}>
+      <Text
+      style={{
+        fontSize: RFValue(12),
+        fontFamily: "Urbanist_600SemiBold",
+        color: "white",
+        
+      }}
+    >
+              Posted By: {userHasData ? 'You' : recipientName}
+            </Text>
+
+          </View>
+
+          <View style={{ height: screenHeight * 0.307, width: screenWidth * 0.64, alignSelf: 'center', marginTop: '3%', borderRadius: (screenWidth, screenHeight) * 0.007 }}>
+            {loading && <ActivityIndicator size="large" color="#0000ff" />}
+            <Carousel style={{ alignItems: 'center', justifyContent: 'center', borderRadius: (screenWidth, screenHeight) * 0.007 }}>
+              <View style={styles.slide1}>
+                <Image
+                  onLoad={handleImageLoad} // Call the function when image is loaded
+                  style={{ width: '100%', height: '100%', borderRadius: 10 }}
+                  source={{ uri: imageUrl1 || imageUrl2 || imageUrl3 }}
+                />
+              </View>
+
+              <View style={styles.slide2}>
+                <Image
+                  onLoad={handleImageLoad} // Call the function when image is loaded
+                  style={{ width: '100%', height: '100%', borderRadius: 10 }}
+                  source={{ uri: imageUrl2 || imageUrl3 || imageUrl1 }}
+                />
+              </View>
+
+              <View style={styles.slide3}>
+                <Image
+                  onLoad={handleImageLoad} // Call the function when image is loaded
+                  style={{ width: '100%', height: '100%', borderRadius: 10 }}
+                  source={{ uri: imageUrl3 || imageUrl1 || imageUrl2 }}
+                />
+              </View>
+            </Carousel>
+          </View>
+
+
+
+          <View style={styles.buttons}>
+
+            <TouchableOpacity
+              onPress={startChat}
+              style={[{
+                width: "44%",
+                height: screenHeight * 0.059,
+                borderWidth: (screenWidth, screenHeight) * 0.0018,
+                borderColor: "#0F2944",
+                borderRadius: (screenWidth, screenHeight) * 0.007,
+                marginRight: screenWidth * 0.016,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center"
+
+              }, selectedButton === 'button1' && styles.selectedButton]}
+
+            >
+              <AntDesign
+                name="message1"
+                size={RFValue(15)}
+                color={selectedButton === 'button2' ? "#0F2944" : "#0F2944"} // Set color based on selectedButton
+                style={{
+                  width: screenWidth * 0.047,
+                  height: screenHeight * 0.03,
+                  alignSelf: "center",
+                  marginRight: "3%",
+                  // backgroundColor:"yellow",
+                  marginTop: "2%"
+
+                }}
+              />
+              <Text style={selectedButton === 'button1' ? styles.selectedButtonText : styles.buttonText}>Message</Text>
+            </TouchableOpacity>
+
+
+
+
+
+            <TouchableOpacity
+              onPress={makeCall}
+              style={[{
+                width: "44%",
+                height: screenHeight * 0.059,
+                borderWidth: (screenWidth, screenHeight) * 0.0018,
+                borderColor: "#0F2944",
+                borderRadius: (screenWidth, screenHeight) * 0.007,
+                marginRight: screenWidth * 0.016,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center"
+              }, selectedButton === 'button2' && styles.selectedButton]}
+
+            >
+              <Ionicons name="call-outline"
+                size={RFValue(17)}
+                color={selectedButton === 'button2' ? "#0F2944" : "#0F2944"} // Set color based on selectedButton
+                style={{
+                  width: screenWidth * 0.057,
+                  height: screenHeight * 0.04,
+                  alignSelf: "center",
+                  marginRight: "3%",
+                  // backgroundColor:"yellow",
+                  marginTop: "6%"
+
+                }}
+              />
+
+              <Text style={selectedButton === 'button2' ? styles.selectedButtonText : styles.buttonText}>Call</Text>
+            </TouchableOpacity>
+          </View>
+
+
+
+
+
+          <View style={{ position: "relative", marginTop: "9%", alignSelf: "center", width: "93%", flexDirection: "row", }}>
+
+            <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(16), color: "#0F2944" }}
+            >{lostItem}</Text>
+
+            <View style={{ backgroundColor: "#778899", borderRadius: 10, marginLeft: "2%", alignItems: "center", justifyContent: "center", height: screenHeight * 0.02 }}>
+              <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(11), color: "white", marginHorizontal: 5 }}
+              >{Type}</Text>
+
+            </View>
+
+            <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), letterSpacing: 1, alignSelf: "center", color: "#1E1F4B", position: "absolute", right: screenWidth * 0.03, }}
+            >
+              {date ? moment(date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
+
+            </Text>
+
+          </View>
+
+
+          <View style={{ position: "relative", marginTop: "4%", alignSelf: "center", width: "93%", }}>
+            <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), color: "#0F2944" }}
+            >Description</Text>
+            <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), top: screenHeight * 0.004, color: "#8391A1" }}
+            >{description}</Text>
+
+            <View style={{ position: "relative", top: screenHeight * 0.015, flexDirection: "row", alignItems: "center" }}>
+              <Ionicons name="md-location-sharp"
+                size={RFValue(15)}
+                color="#FE9003"
+                style={{
+                  marginTop: screenHeight * 0.0015, marginRight: screenWidth * 0.003
+                }}
+              />
+
+              <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), alignSelf: "center", color: "#8391A1", marginLeft: "1.5%" }}>
+                {location}
+              </Text>
+            </View>
+          </View>
+
+
+          <TouchableOpacity
+            // onPress={handler}
+            style={{
+              // position: "absolute",
+              // top: 427,
+              position: 'relative',
+              marginTop: screenHeight * 0.04,
+              marginBottom: screenHeight * 0.04,
+              borderRadius: 8,
+              backgroundColor: '#0F2944',
+              // padding: 10,
+              // width: 320,
+              width: "93%",
+              height: screenHeight * 0.059,
+              alignSelf: "center",
+
+              justifyContent: "center"
+            }}><Text style={{
+              fontSize: 15,
+              fontFamily: "Urbanist_600SemiBold",
+              lineHeight: 18,
+              alignSelf: "center",
+              color: '#F9F9F9',
+
+
+            }}
+            >View on map </Text>
+          </TouchableOpacity>
+
+
         </View>
-
-
-        <TouchableOpacity
-          // onPress={handler}
-          style={{
-            // position: "absolute",
-            // top: 427,
-            position: 'relative',
-            marginTop: screenHeight * 0.04,
-            borderRadius: 8,
-            backgroundColor: '#7689D6',
-            // padding: 10,
-            // width: 320,
-            width: "93%",
-            height: screenHeight * 0.059,
-            alignSelf: "center",
-
-            justifyContent: "center"
-          }}><Text style={{
-            fontSize: 15,
-            fontFamily: "Urbanist_600SemiBold",
-            lineHeight: 18,
-            alignSelf: "center",
-            color: '#F9F9F9',
-
-
-          }}
-          >View on map </Text>
-        </TouchableOpacity>
-
-
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -539,13 +561,13 @@ const styles = StyleSheet.create({
     fontSize: RFValue(18),
     fontFamily: "Urbanist_500Medium",
     // lineHeight: 18,
-    color: "#7689D6",
+    color: "#0F2944",
     textAlign: "center",
     marginLeft: "3%"
 
   },
   selectedButton: {
-    backgroundColor: '#7689D6',
+    backgroundColor: '#0F2944',
     shadowColor: "#363B64",
     borderWidth: 0
 

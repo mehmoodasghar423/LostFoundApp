@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, TextInput, FlatList, ActivityIndicator,AppState } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Image, Dimensions, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
@@ -30,55 +30,97 @@ const ChatList = () => {
   const [recipientProfilePic, setRecipientProfilePic] = useState('');
 
   const [userProfilePics, setUserProfilePics] = useState({});
+  const [online, setOnline] = useState({});
 
-  const updateUserStatus = (status) => {
-    const currentUser = firebase.auth().currentUser;
-    if (currentUser) {
-      firebase.firestore().collection('UserData').doc(currentUser.uid).update({
-        onlineStatus: status,
-      });
+
+// Function to listen for real-time updates
+const listenForOnlineStatus = () => {
+  const chatParticipants = chatList.reduce((participants, item) => {
+    const recipientId = item.participants.find(uid => uid !== firebase.auth().currentUser.uid);
+    if (recipientId) {
+      participants[recipientId] = true; // Store the participants to listen for their status
     }
+    return participants;
+  }, {});
+
+  const unsubscribeFunctions = Object.keys(chatParticipants).map(recipientId => {
+    return firebase.firestore().collection('UserData').doc(recipientId).onSnapshot(
+      (doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+          setOnline(prevOnline => ({
+            ...prevOnline,
+            [recipientId]: userData.onlineStatus,
+          }));
+        } else {
+          console.log('No such document for recipient:', recipientId);
+        }
+      },
+      (error) => {
+        console.error('Error getting document for recipient:', recipientId, error);
+      }
+    );
+  });
+
+  // Return an array of unsubscribe functions
+  return unsubscribeFunctions;
+};
+
+useEffect(() => {
+  const unsubscribeFunctions = listenForOnlineStatus();
+
+  // Cleanup function to unsubscribe when the component unmounts
+  return () => {
+    unsubscribeFunctions.forEach(unsubscribe => {
+      unsubscribe();
+    });
   };
-  
-  const handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'background') {
-      updateUserStatus('offline');
-    } else if (nextAppState === 'active') {
-      updateUserStatus('online');
-    }
-  };
-  
+}, [chatList]); 
+
+
+  // Inside your component or relevant function
+  // This assumes you're fetching onlineStatus for each recipient in the chat list
   useEffect(() => {
-    // Update user status to 'online' when the component is mounted
-    updateUserStatus('online');
-  
-    // Subscribe to app state changes
-    AppState.addEventListener('change', handleAppStateChange);
-  
-    // Cleanup function to remove the listener
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-      // Ensure user status is set to 'offline' when the component is unmounted
-      updateUserStatus('offline');
-    };
-  }, []);
-  
+    // Iterate through the chat list to fetch onlineStatus for each recipient
+    chatList.forEach((item) => {
+      const recipientId = item.participants.find(uid => uid !== firebase.auth().currentUser.uid);
+      if (recipientId) {
+        firebase.firestore().collection('UserData').doc(recipientId).get()
+          .then((doc) => {
+            if (doc.exists) {
+              const userData = doc.data();
+              // Update the 'online' state with the onlineStatus of the recipient
+              setOnline(prevOnline => ({
+                ...prevOnline,
+                [recipientId]: userData.onlineStatus,
+              }));
+            } else {
+              console.log('No such document for recipient:', recipientId);
+            }
+          })
+          .catch((error) => {
+            console.error('Error getting document for recipient:', recipientId, error);
+          });
+      }
+    });
+  }, [chatList]); // Dependency on chatList ensures it updates when the chat list changes
+
   useEffect(() => {
     const currentUserUid = firebase.auth().currentUser.uid;
     const chatRoomsRef = firebase.firestore().collection('chatRooms');
-  
+
     chatRoomsRef
       .where('participants', 'array-contains', currentUserUid)
       .onSnapshot((querySnapshot) => {
         const chatListData = [];
-  
+
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           chatListData.push({
             chatRoomId: doc.id,
             participants: data.participants,
           });
-  
+
           const messagesRef = doc.ref.collection('messages');
           messagesRef
             .orderBy('createdAt', 'desc')
@@ -92,20 +134,20 @@ const ChatList = () => {
                 }));
                 setLastMessageTimes((prevLastMessageTimes) => ({
                   ...prevLastMessageTimes,
-                  [doc.id]: messageDoc.data().createdAt.toDate(),
+                  [doc.id]: messageDoc.data().createdAt?.toDate() || new Date(), // Use a default value like 'new Date()' if 'createdAt' is null
                 }));
               });
             });
         });
-  
+
         setChatList(chatListData);
         setFilteredChatList(chatListData);
-  
+
         const participantIds = chatListData.flatMap((room) => room.participants);
         const uniqueParticipantIds = [...new Set(participantIds)];
-  
+
         const profilePics = {}; // Store profile pictures associated with users
-  
+
         Promise.all(
           uniqueParticipantIds.map((userId) =>
             firebase
@@ -120,12 +162,12 @@ const ChatList = () => {
                     ...prevNames,
                     [userId]: userData.username,
                   }));
-  
+
                   // Store the recipient's email in state
                   if (userId !== firebase.auth().currentUser.uid) {
                     setRecipientEmail(userData.email);
                   }
-  
+
                   // Fetch profile pictures associated with users
                   return firebase
                     .firestore()
@@ -158,7 +200,7 @@ const ChatList = () => {
           });
       });
   }, []);
-  
+
 
 
 
@@ -179,7 +221,7 @@ const ChatList = () => {
     }
   }, [recipientEmail]);
 
-  
+
   useEffect(() => {
     // Sort the chatList based on the last message time
     chatList.sort((a, b) => {
@@ -240,7 +282,7 @@ const ChatList = () => {
               letterSpacing: -1,
               position: 'relative',
               marginTop: '3.5%',
-              color: '#1E232C',
+              color: '#0F2944',
               alignSelf: 'center',
             }}
           >
@@ -290,17 +332,18 @@ const ChatList = () => {
 
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           {loading ? (
-            <ActivityIndicator size='large' color='#7689D6' />
+            <ActivityIndicator size='medium' color='#0F2944' />
           ) : dataFound ? (
             <FlatList
               data={filteredChatList}
               keyExtractor={(item) => item.chatRoomId}
               renderItem={({ item }) => {
-                const userName = userNames[item.participants.find(uid => uid !== firebase.auth().currentUser.uid)];
+                const recipientId = item.participants.find(uid => uid !== firebase.auth().currentUser.uid);
+                const recipientName = userNames[recipientId];
                 const date = lastMessageTimes[item.chatRoomId]?.toLocaleString();
+                const recipientOnlineStatus = online[recipientId]; // Retrieve the onlineStatus
 
-                // Check if userName contains the specific text you want to filter
-                if (userName && userName.includes(userName)&& date) {
+                if (recipientName && recipientName.includes(recipientName) && date) {
                   return (
                     <TouchableOpacity
                       style={{
@@ -322,31 +365,31 @@ const ChatList = () => {
                         marginTop: '4%',
                       }}
                       >
-                      <Image
-                      style={{
-                        height: screenHeight * 0.076,
-                        width: screenWidth * 0.137,
-                        // resizeMode: 'contain',
-                        borderRadius: (screenWidth, screenHeight) * 0.1,
-                        borderWidth: (screenWidth, screenHeight) * 0.004,
-                        borderColor: "white"
-          
-                      }}
-                      source={
-                        userProfilePics[item.participants.find(uid => uid !== firebase.auth().currentUser.uid)] 
-                        ? { uri: userProfilePics[item.participants.find(uid => uid !== firebase.auth().currentUser.uid)] }
-                        : require('../../assets/LostApp/ChatProfile.png')
-                      }
-                    
-                    />
-                  
+                        <Image
+                          style={{
+                            height: screenHeight * 0.076,
+                            width: screenWidth * 0.137,
+                            // resizeMode: 'contain',
+                            borderRadius: (screenWidth, screenHeight) * 0.1,
+                            borderWidth: (screenWidth, screenHeight) * 0.004,
+                            borderColor: "white"
+
+                          }}
+                          source={
+                            userProfilePics[item.participants.find(uid => uid !== firebase.auth().currentUser.uid)]
+                              ? { uri: userProfilePics[item.participants.find(uid => uid !== firebase.auth().currentUser.uid)] }
+                              : require('../../assets/Dpp.png')
+                          }
+
+                        />
+
                         <Text style={{
                           fontFamily: 'Urbanist_500Medium',
                           fontSize: RFValue(15),
                           position: 'absolute',
                           marginLeft: '16%',
                           marginTop: '1.6%',
-                          color: 'black',
+                          color: '#0F2944',
                         }}>{userNames[item.participants.find(uid => uid !== firebase.auth().currentUser.uid)]}</Text>
                         <Text style={{
                           fontFamily: 'Urbanist_400Regular',
@@ -367,6 +410,28 @@ const ChatList = () => {
                             marginRight: '1.5%',
                           }}
                         > {lastMessageTimes[item.chatRoomId]?.toLocaleString()}</Text>
+                        <Text
+                        style={{
+                          fontFamily: 'Urbanist_600SemiBold',
+                          fontSize: RFValue(12),
+                          position: 'absolute',
+                          right: 1,
+                          marginTop: '6.5%',
+                          color: online[recipientId] === 'online' ? '#38A169' : '#8391A1',
+                          marginRight: '1.5%',
+                        }}
+                      >
+                        {online[recipientId] === 'online' ? 'Online' : 'Offline'}
+                      </Text>
+                        <View style={{
+                          width: screenWidth*0.035, height: screenHeight*0.016,
+                           borderRadius: 30,
+                            backgroundColor: recipientOnlineStatus === 'online' ? '#38A169' : '#8391A1', 
+                            position: "absolute", marginTop: screenHeight * 0.05, marginLeft: screenWidth * 0.1,
+                             borderWidth: 2, borderColor: "white"
+                        }}>
+
+                        </View>
                       </View>
                     </TouchableOpacity>
                   );

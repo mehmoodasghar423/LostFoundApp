@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View,TouchableOpacity,Image,Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, TouchableWithoutFeedback } from 'react-native'
 // import React,{useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Urbanist_300Light,Urbanist_400Regular,Urbanist_500Medium,Urbanist_600SemiBold,Urbanist_700Bold, 
-} from  '@expo-google-fonts/urbanist';
-import { useFonts } from  '@expo-google-fonts/urbanist';
+  Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
+} from '@expo-google-fonts/urbanist';
+import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { Entypo, Ionicons } from '@expo/vector-icons';
 
 
 
@@ -18,6 +19,7 @@ const Middle = () => {
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
 
+  const [modalVisible, setmodalVisible] = useState(false);
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -36,7 +38,7 @@ const Middle = () => {
   };
 
   let [fontsLoaded] = useFonts({
-    Urbanist_300Light,Urbanist_400Regular,Urbanist_500Medium,Urbanist_600SemiBold,Urbanist_700Bold,  
+    Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
   });
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -47,105 +49,220 @@ const Middle = () => {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null; 
+    return null;
   }
 
 
   return (
     <SafeAreaView>
-    
-    <View>
+
+      <View>
 
 
-    <View style={{ flexDirection: "row", position: "relative", alignItems: "center",    marginTop:"5%",  }}>
-
- 
-      <TouchableOpacity onPress={handleGoBack}>
-        <Image style={{
-          width: 41,
-          width:screenWidth*0.11,
-          height: 41,
-          height: screenHeight*0.057,
-          // top: 20,
-          left: "40%"
-
-        }}
-          source={require("../../assets/LostApp/back.png")} />
-      </TouchableOpacity>
-
-      <Text
-        style={{
-           fontSize: RFValue(18),
-              fontFamily:"Urbanist_600SemiBold",
-              // lineHeight: 20,
-              // width: 280,
-              // left: 18,
-              // top: 1,
-            marginLeft:"30%",
-          
-
-        }}
-      >
-      Add Post
-      </Text>
-    </View>
-
-    <Text
-    style={{
-      fontSize: RFValue(16),
-     fontFamily:"Urbanist_500Medium",
-      // lineHeight: 24,
-      // left: "6%",
-      position: "relative",
-      // top: 94,
-     top:screenHeight*0.13,
-      alignSelf:"center",
-      color:"#8391A1",
-      
-    }}
-  >
-  What kind of Post you want to Add?
-  </Text>
+        <View style={{
+          flexDirection: "row",
+          position: "relative", alignItems: "center",
+          marginTop: "5%", justifyContent: "space-between"
+        }}>
 
 
-  <View style={styles.buttons}>
-  <TouchableOpacity
-    style={[{
-      padding: 9,
-      backgroundColor: '#F7F7F7',
-      // width:137.25,
-      width: "38%",
-      height:screenHeight*0.058,
-      borderWidth: 2,
-      borderColor: "#8391A1",
-      borderRadius: 8,
-      marginRight: 11,
-    }, selectedButton === 'button1' && styles.selectedButton]}
-    onPress={() => LostButtonPress('button1')}
-  >
-    <Text style={selectedButton === 'button1' ? styles.selectedButtonText : styles.buttonText}>Lost</Text>
-  </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              marginLeft: "4%"
+            }}
+            onPress={handleGoBack}>
+            <Ionicons name="ios-chevron-back-sharp"
+              size={screenWidth * 0.075}
+              color="black" />
+          </TouchableOpacity>
+
+          <Text
+            style={{
+              fontSize: RFValue(18),
+              fontFamily: "Urbanist_600SemiBold",
+
+            }}
+          >
+            Add Post
+          </Text>
+
+          <TouchableOpacity onPress={() => setmodalVisible(true)}>
+            <Image style={{
+              width: screenWidth * 0.1,
+              height: screenHeight * 0.047,
+              resizeMode: "contain",
+              marginRight: "4%",
+
+            }}
+              source={require("../../assets/HomeBack.png")} />
+          </TouchableOpacity>
+
+        </View>
+
+        <Text
+          style={{
+            fontSize: RFValue(16),
+            fontFamily: "Urbanist_500Medium",
+            // lineHeight: 24,
+            // left: "6%",
+            position: "relative",
+            // top: 94,
+            top: screenHeight * 0.13,
+            alignSelf: "center",
+            color: "#8391A1",
+
+          }}
+        >
+          What kind of Post you want to Add?
+        </Text>
 
 
-  <TouchableOpacity
-    style={[{
-      padding: 9,
-      backgroundColor: '#F7F7F7',
-      // width:137.25,
-      width: "38%",
-      height:screenHeight*0.058,
-      borderWidth: 2,
-      borderColor: "#8391A1",
-      borderRadius: 8,
-      marginRight: 11,
-    }, selectedButton === 'button2' && styles.selectedButton]}
-    onPress={() => FoundButtonPress('button2')}
-  >
-    <Text style={selectedButton === 'button2' ? styles.selectedButtonText : styles.buttonText}>Found</Text>
-  </TouchableOpacity>
-</View>
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            style={[{
+              // padding: 9,
 
-    </View>
+              backgroundColor: '#F7F7F7',
+              // width:137.25,
+              width: "38%",
+              height: screenHeight * 0.058,
+              borderRadius: (screenWidth, screenHeight) * 0.01,
+              borderWidth: (screenWidth, screenHeight) * 0.002,
+              borderColor: "#8391A1",
+              marginRight: screenWidth*0.03,
+              justifyContent:"center",
+              alignItems:"center"
+            }, selectedButton === 'button1' && styles.selectedButton]}
+            onPress={() => LostButtonPress('button1')}
+          >
+            <Text style={selectedButton === 'button1' ? styles.selectedButtonText : styles.buttonText}>Lost</Text>
+          </TouchableOpacity>
+
+
+          <TouchableOpacity
+            style={[{
+            
+              backgroundColor: '#F7F7F7',
+              // width:137.25,
+              width: "38%",
+              height: screenHeight * 0.058,
+              borderRadius: (screenWidth, screenHeight) * 0.01,
+              borderWidth: (screenWidth, screenHeight) * 0.002,
+              borderColor: "#8391A1",
+              marginRight: screenWidth*0.03,
+              justifyContent:"center",
+              alignItems:"center"
+            }, selectedButton === 'button2' && styles.selectedButton]}
+            onPress={() => FoundButtonPress('button2')}
+          >
+            <Text style={selectedButton === 'button2' ? styles.selectedButtonText : styles.buttonText}>Found</Text>
+          </TouchableOpacity>
+        </View>
+
+
+
+        {modalVisible && (
+          <TouchableWithoutFeedback onPress={() => setmodalVisible(false)}>
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: screenHeight * 1,
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              }}
+            >
+              <TouchableWithoutFeedback>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: (screenWidth, screenHeight) * 0.03,
+                    paddingVertical: screenHeight * 0.03,
+                    paddingHorizontal: screenWidth * 0.07,
+                    alignItems: 'center',
+
+                    // position:"absolute"
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setmodalVisible(false)}
+                    style={{ position: 'absolute', top: screenHeight * 0.007, right: screenWidth * 0.021 }}>
+
+                    <Entypo name="cross"
+                      size={screenWidth * 0.065}
+                      color="black" />
+                  </TouchableOpacity>
+
+                  <Text
+                    style={{
+                      fontSize: RFValue(12),
+                      fontFamily: "Urbanist_600SemiBold",
+                      color: "#778899"
+
+                    }}
+                  >Your Will Lost Your Post Data !</Text>
+                  <Text
+                    style={{
+                      fontSize: RFValue(16),
+                      fontFamily: "Urbanist_600SemiBold",
+                      color: "black", marginTop: "1%"
+
+                    }}
+                  >Do You Want to Continue ?</Text>
+
+                  <View style={{ flexDirection: 'row', marginTop: screenHeight * 0.02, marginLeft: "7%", }}>
+                    <TouchableOpacity
+                      onPress={() => setmodalVisible(false)}
+                      style={{
+                        marginRight: screenWidth * 0.05,
+                        width: "25%",
+                        height: screenHeight * 0.032,
+                        backgroundColor: "#3cb371",
+                        borderRadius: (screenWidth, screenHeight) * 0.03,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: RFValue(15),
+                          fontFamily: "Urbanist_600SemiBold",
+                          color: "white",
+                          // left: "6%",
+                        }}
+                      >Cancel</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={{
+                        marginRight: screenWidth * 0.05,
+                        width: "40%",
+                        height: screenHeight * 0.032,
+                        backgroundColor: "#0F2944",
+                        borderRadius: (screenWidth, screenHeight) * 0.03,
+                        alignItems: "center",
+                        justifyContent: "center",
+
+                      }}
+                      onPress={() => navigation.navigate("Home")}>
+                      <Text
+                        style={{
+                          fontSize: RFValue(15),
+                          fontFamily: "Urbanist_600SemiBold",
+                          color: "white",
+                          // left: "6%",
+                        }}>Go To Home</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+      </View>
     </SafeAreaView>
   )
 }
@@ -156,9 +273,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     position: "relative",
     // top: 118,
-    marginTop:"32%",
-    alignItems:"center",
-    justifyContent:"center"
+    marginTop: "32%",
+    alignItems: "center",
+    justifyContent: "center"
   },
   button: {
     padding: 9,
@@ -173,21 +290,21 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: RFValue(19.3),
-    fontFamily:"Urbanist_500Medium",
+    fontFamily: "Urbanist_500Medium",
     // lineHeight: 23.26,
     color: "#8391A1",
     textAlign: "center"
 
   },
   selectedButton: {
-    backgroundColor: '#7689D6',
+    backgroundColor: '#0F2944',
     shadowColor: "#363B64",
-    borderWidth:0
+    borderWidth: 0
 
   },
   selectedButtonText: {
     fontSize: RFValue(19.3),
-   fontFamily:"Urbanist_500Medium",
+    fontFamily: "Urbanist_500Medium",
     // lineHeight: 23.26,
     color: "#FFFFFF",
     textAlign: "center"
