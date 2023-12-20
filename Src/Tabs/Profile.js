@@ -247,8 +247,8 @@ const Profile = () => {
             style={
               {
 
-                width: screenWidth * 0.29,
-                height: screenHeight * 0.14,
+                width: screenWidth * 0.305,
+                height: screenHeight * 0.1468,
                 alignSelf: "center",
                 // backgroundColor: "red",
                 resizeMode: "contain",
@@ -262,13 +262,15 @@ const Profile = () => {
             source={{ uri: selectedImage }}
             style={{
 
-              width: screenWidth * 0.29,
-              height: screenHeight * 0.14,
+              width: 110,
+              height: 110,
+              width: screenWidth * 0.305,
+              height: screenHeight * 0.1468,
               alignSelf: "center",
               position: "absolute",
               borderColor: "white",
               // borderWidth:(screenWidth, screenHeight) * 0.007,
-              borderRadius:(screenWidth, screenHeight) * 0.08,
+              borderRadius:(screenWidth, screenHeight) * 0.1,
             }}
 
           />}

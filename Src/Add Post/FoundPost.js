@@ -146,59 +146,85 @@ const FoundPost = ({ route }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1,backgroundColor:"white"}}>
 
       <View>
 
 
-      <View style={{ flexDirection: "row",
-     position: "relative", alignItems: "center",
-      marginTop: "5%", justifyContent: "space-between" }}>
+      
+      <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
 
 
-    <TouchableOpacity
-      style={{
-        marginLeft: "4%"
-      }}
-      onPress={handleGoBack}>
-      <Ionicons name="ios-chevron-back-sharp"
-        size={screenWidth * 0.075}
-        color="black" />
-    </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            marginLeft: "4%",
+            // marginTop:screenHeight*0.003,
+            // backgroundColor: "red",
+            height: screenHeight * 0.055,
+            width: "11.4%",
+            borderRadius: (screenWidth, screenHeight) * 0.016,
+            borderWidth: (screenWidth, screenHeight) * 0.0013,
+            borderColor: "#E0E0E0",
+            justifyContent: "center",
+            alignSelf: "center",
+            alignItems: "center",
 
-    <Text
-      style={{
-        fontSize: RFValue(18),
-        fontFamily: "Urbanist_600SemiBold",
-color:"#0F2944"
-      }}
-    >
-    Found Post
-    </Text>
+          }}
+          onPress={handleGoBack}>
+          <Ionicons name="ios-chevron-back-sharp"
+            size={screenWidth * 0.08}
+            color="#6A707C"
+            style={{
+            }} />
+        </TouchableOpacity>
 
-    <TouchableOpacity onPress={() => setmodalVisible(true)}>
-      <Image style={{
-        width: screenWidth * 0.1,
-        height: screenHeight * 0.047,
-        resizeMode: "contain",
-        marginRight: "4%",
 
-      }}
-        source={require("../../assets/HomeBack.png")} />
-    </TouchableOpacity>
+        <Text
+          style={{
+            fontSize: RFValue(20),
+            fontFamily: "Urbanist_600SemiBold",
+            color: "#0F2944"
+            // marginLeft: "30%",
 
-  </View>
+
+          }}
+        >
+        Found Post
+        </Text>
+
+
+        <TouchableOpacity 
+        style={{
+          marginRight: "4%",
+        }}
+        onPress={() => setmodalVisible(true)}>
+        <Image style={{
+          width: screenWidth * 0.1,
+          height: screenHeight * 0.047,
+          resizeMode: "contain",
+          justifyContent: "center",
+          alignSelf: "center",
+          alignItems: "center",
+
+        }}
+          source={require("../../assets/HomeBack.png")} />
+      </TouchableOpacity>
+
+
+     
+
+
+      </View>
 
         <Text
           style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "6%",
+            left: "4.5%",
             position: "relative",
             top: screenHeight * 0.03,
-            color:"#0F2944"
-
+            color: "#0F2944"
           }}
         >
           Category
@@ -208,70 +234,79 @@ color:"#0F2944"
           // position: "absolute",
           // top: 105,
           position: "relative",
-          top: screenHeight * 0.04
+          top: screenHeight * 0.04,
+          // backgroundColor:"red"
         }}>
-         
 
-        <TouchableOpacity>
-        
-      
-        <SelectList 
-        setSelected={setCategory} data={data}
 
-        boxStyles={{
-          backgroundColor: "#EDEEEF",
-            borderWidth: 1,
-            borderColor: categoryError ? '#0F2944' : '#EDEEEF',
-            width: "91%",
-            // height: screenHeight * 0.052,
-            borderRadius: 8,
-            fontSize: RFValue(12),
+          <TouchableOpacity>
+
+
+            <SelectList
+              setSelected={setCategory} data={data}
           
-            paddingLeft: screenWidth * 0.1,
-          
-            color: "#8C9199",
-            // marginLeft: "6%"
-            alignSelf: "center"
-        }}
-        
-        dropdownStyles={{
-          borderWidth: 1,
-          borderColor: "#EDEEEF",
-          width: "91%",
-          alignSelf: "center"
-        }}
 
-        dropdownTextStyles={{
-          fontSize: RFValue(12),
-          fontFamily: "Urbanist_500Medium",
-        }}
-        inputStyles={{
-          // backgroundColor:"red",
-          fontSize: RFValue(12),
-          fontFamily: "Urbanist_500Medium",
-          color:"#8391A1"
-        }}
-        />
-      
-      
-        <MaterialIcons name="category"
-        size={RFValue(20)}
-        color="#8391A1"
+              boxStyles={{
+                backgroundColor: "#EDEEEF",
+                borderWidth: 1,
+                borderColor: categoryError ? '#0F2944' : '#EDEEEF',
+                width: "92%",
+                // height: screenHeight * 0.052,
+                borderRadius: 8,
+                fontSize: RFValue(12),
+                paddingLeft: screenWidth * 0.1,
+                height: screenHeight * 0.052,
+                color: "#8C9199",
+                // marginLeft: "6%"
+                alignSelf: "center",
+                alignItems:"center",
+                
+              }}
+              dropdownStyles={{
+                borderWidth: 1,
+                borderColor: "#EDEEEF",
+                width: "91%",
+                alignSelf: "center"
+              }}
 
-        style={{
-          position: "absolute",
-          left: "7%",
-          top:screenHeight*0.013,
-          marginRight:screenWidth*0.01,
-       
-   
+              dropdownTextStyles={{
+                fontSize: RFValue(12),
+                fontFamily: "Urbanist_500Medium",
+              }}
+              inputStyles={{
+                // backgroundColor:"red",
+                fontSize: RFValue(12),
+                fontFamily: "Urbanist_500Medium",
+                color: "#8391A1",
+                textAlign:"center",
+                marginLeft:screenWidth*0.06,
+                marginTop:screenHeight * 0.005,
+                height:screenHeight * 0.022,
+               
 
-        }}
-      />
+              }}
+            />
+
+
+            <MaterialIcons name="category"
+              size={RFValue(20)}
+              color="#8391A1"
+
+              style={{
+                position: "absolute",
+                left: "12.5%",
+                top: screenHeight * 0.012,
+                // alignSelf:"center",
+                marginRight: screenWidth * 0.01,
 
 
 
-        </TouchableOpacity>
+              }}
+            />
+
+
+
+          </TouchableOpacity>
         </View>
 
 
@@ -280,9 +315,10 @@ color:"#0F2944"
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "6%",
+            left: "4.5%",
             position: "relative",
-            top: screenHeight * 0.063,
+            top: screenHeight * 0.07,
+            color: "#0F2944"
 
             // position: "absolute",
             // top: 164,
@@ -292,51 +328,52 @@ color:"#0F2944"
           Location
         </Text>
 
-        <TouchableOpacity 
-        onPress={locationHandler}
-        style={{
-          position: "relative",
-          top: screenHeight * 0.073,
-          // position:"absolute",
-          // top:187,
-          backgroundColor: "#EDEEEF",
-          borderWidth: 1,
-          borderColor: locationError ? '#0F2944' : '#EDEEEF',
-          width: "91%",
-          // width:279,
-          height: 38,
-          height: screenHeight * 0.052,
-          borderRadius: 8,
-          fontSize: RFValue(12),
-          alignSelf:"center",
-          flexDirection:"row",
-          alignItems:"center",justifyContent:"center",
-        }}>
-         
-      
-        <MaterialIcons name="location-city"
-        size={RFValue(20)}
-        color="#8391A1"
+        <TouchableOpacity
+          onPress={locationHandler}
+          style={{
+            position: "relative",
+            top: screenHeight * 0.08,
+            // position:"absolute",
+            // top:187,
+            backgroundColor: "#EDEEEF",
+            borderWidth: 1,
+            borderColor: locationError ? '#0F2944' : '#EDEEEF',
+            width: "91%",
+            // width:279,
+            height: 38,
+            height: screenHeight * 0.052,
+            borderRadius: 8,
+            fontSize: RFValue(12),
+            alignSelf: "center",
+            flexDirection: "row",
+            alignItems: "center",
+            //  justifyContent: "center",
+          }}>
 
-        style={{
-          // position: "absolute",
-          // left: "17%",
-          // top: 2,
-          marginRight:screenWidth*0.01,
-          alignSelf: "center",
-   
 
-        }}
-      />
-            
-       <Text style={{ 
-        fontSize: RFValue(12),
-        fontFamily: "Urbanist_500Medium",
-        color:"#8391A1",marginRight:10
-      }}>
-       {location || '  Please Select Your Specific Location here '}
-       </Text>
-            <AntDesign name="down" 
+          <MaterialIcons name="location-city"
+            size={RFValue(20)}
+            color="#8391A1"
+
+            style={{
+              // position: "absolute",
+              // left: "17%",
+              // top: 2,
+              marginLeft: screenWidth * 0.08,
+              alignSelf: "center",
+
+
+            }}
+          />
+
+          <Text style={{
+            fontSize: RFValue(12),
+            fontFamily: "Urbanist_500Medium",
+            color: "#8391A1", marginRight: 10
+          }}>
+            {location || 'Please Select Your Specific Location here'}
+          </Text>
+          <AntDesign name="down"
             size={RFValue(13)}
             color="#8391A1"
 
@@ -345,119 +382,120 @@ color:"#0F2944"
               left: "17%",
               top: 2,
               alignSelf: "center",
-       
+
 
             }}
           />
         </TouchableOpacity>
 
 
-     
 
-        <View style={{
-          position: "relative",
-          top: screenHeight * 0.119,
-          flexDirection: "row",
-          width: "89%",
-          justifyContent: "space-between",
-          alignSelf: "center"
-        }}>
 
-          <View style={{
+       
 
-            width: "47.3%",
-
-          }}>
+        
             <Text
               style={{
+              
                 fontSize: RFValue(12),
                 fontFamily: "Urbanist_500Medium",
-color:"#0F2944"
-
+                // lineHeight: 14.4,
+                left: "4.5%",
+                position: "relative",
+                top: screenHeight * 0.11,
+                color: "#0F2944"
                 // lineHeight: 14.4,
               }}
             >
               Date Lost
             </Text>
-          </View>
+       
 
 
-        
 
 
-        </View>
 
+       
 
-        <View style={{
-          // backgroundColor: "green",
-          left: "5%",
+        <TouchableOpacity 
+        onPress={showDatePicker}
+        style={{
           position: "relative",
-          top: screenHeight * 0.128,
-          // position: "absolute",
-          // top: 264,
-          backgroundColor: '#E8ECF4',
-          width: "55%",
-          height: screenHeight * 0.054,
-          borderRadius: 8,
+          top: screenHeight * 0.12,
+          // position:"absolute",
+          // top:187,
+          backgroundColor: "#EDEEEF",
           borderWidth: 1,
-          borderColor: dateError ? '#0F2944' : '#E8ECF4',
+          borderColor: dateError ? '#0F2944' : '#EDEEEF',
+          width: "60%",
+          // width:279,
+          height: 38,
+          height: screenHeight * 0.052,
+          borderRadius: 8,
+          fontSize: RFValue(12),
+          // alignSelf: "center",
+          marginLeft:"4.5%",
           flexDirection: "row",
           alignItems: "center",
-         
+          //  justifyContent: "center",
         }}>
 
 
 
-            <TouchableOpacity style={{ flexDirection: "row", width: "100%", alignItems: "center" }} onPress={showDatePicker}>
 
-           
+      
+
+
             <Fontisto name="date"
             size={RFValue(17)}
             color="#8391A1"
 
             style={{
-            
-              marginLeft: "5%"
+              // position: "absolute",
+              // left: "17%",
+              // top: 2,
+              marginLeft: screenWidth * 0.07,
+              left: "12.5%",
+              alignSelf: "center",
 
 
             }}
           />
 
 
-              
 
-              <Text
-                style={{
-                  fontSize: RFValue(12),
-                  fontFamily: "Urbanist_500Medium",
-                  // lineHeight: 15,
-                  marginLeft: "6%",
-                  color: "#8391A1"
-                }}
-              >
-                {selectedDate
-                  ? `${moment(selectedDate).format("MMMM Do YYYY")}`
-                  : 'Select Date'}
-              </Text>
 
-              <AntDesign name="down" 
-              size={RFValue(13)}
-              color="#8391A1"
-  
+            <Text
               style={{
-                // position: "absolute",
-                left: "26%",
-               
-                alignSelf: "center",
-         
-  
+                fontSize: RFValue(12),
+            fontFamily: "Urbanist_500Medium",
+            color: "#8391A1", marginLeft:screenWidth*0.043
               }}
-            />
+            >
+              {selectedDate
+                ? `${moment(selectedDate).format("MMMM Do YYYY")}`
+                : 'Select Date'}
+            </Text>
+
+            <AntDesign name="down"
+            size={RFValue(13)}
+            color="#8391A1"
+
+            style={{
+              // position: "absolute",
+              left: "17%",
+              top: 2,
+              alignSelf: "center",
+
+
+            }}
+          />
+      
 
 
 
-            </TouchableOpacity>
-          
+        
+
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
@@ -465,20 +503,7 @@ color:"#0F2944"
             onCancel={hideDatePicker}
           />
 
-
-
-
-
-
-
-
-
-
-
-
-
-        </View>
-
+          </TouchableOpacity>
 
 
         <TouchableOpacity
@@ -487,12 +512,12 @@ color:"#0F2944"
             // position: "absolute",
             // top: 427,
             position: 'relative',
-            top: screenHeight * 0.155,
+            top: screenHeight * 0.164,
             borderRadius: 8,
             backgroundColor: '#0F2944',
             // padding: 10,
             // width: 320,
-            width: "93%",
+            width: "92%",
             // width:335,
             height: screenHeight * 0.059,
             alignSelf: "center",
@@ -534,25 +559,25 @@ color:"#0F2944"
                     paddingVertical: screenHeight * 0.03,
                     paddingHorizontal: screenWidth * 0.07,
                     alignItems: 'center',
-  
+
                     // position:"absolute"
                   }}
                 >
                   <TouchableOpacity
                     onPress={() => setmodalVisible(false)}
                     style={{ position: 'absolute', top: screenHeight * 0.007, right: screenWidth * 0.021 }}>
-  
+
                     <Entypo name="cross"
                       size={screenWidth * 0.065}
                       color="black" />
                   </TouchableOpacity>
-  
+
                   <Text
                     style={{
                       fontSize: RFValue(12),
                       fontFamily: "Urbanist_600SemiBold",
                       color: "#778899"
-  
+
                     }}
                   >Your Will Lost Your Post Data !</Text>
                   <Text
@@ -560,11 +585,11 @@ color:"#0F2944"
                       fontSize: RFValue(16),
                       fontFamily: "Urbanist_600SemiBold",
                       color: "black", marginTop: "1%"
-  
+
                     }}
                   >Do You Want to Continue ?</Text>
-  
-                  <View style={{ flexDirection: 'row', marginTop: screenHeight*0.02 ,marginLeft:"7%",}}>
+
+                  <View style={{ flexDirection: 'row', marginTop: screenHeight * 0.02, marginLeft: "7%", }}>
                     <TouchableOpacity
                       onPress={() => setmodalVisible(false)}
                       style={{
@@ -585,7 +610,7 @@ color:"#0F2944"
                         }}
                       >Cancel</Text>
                     </TouchableOpacity>
-  
+
                     <TouchableOpacity
                       style={{
                         marginRight: screenWidth * 0.05,
@@ -595,7 +620,7 @@ color:"#0F2944"
                         borderRadius: (screenWidth, screenHeight) * 0.03,
                         alignItems: "center",
                         justifyContent: "center",
-                        
+
                       }}
                       onPress={() => navigation.navigate("Home")}>
                       <Text

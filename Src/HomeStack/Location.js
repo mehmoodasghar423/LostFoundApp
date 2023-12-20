@@ -112,38 +112,46 @@ const Location = () => {
 
 
 
-            <View style={{  marginTop: screenHeight * 0.007, flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", }}>
+
 
             <TouchableOpacity
-            style={{
-              marginLeft: "4%",
-              // marginTop:screenHeight*0.003,
-              // backgroundColor:"red",
-              height:screenHeight*0.047,
-              justifyContent:"center",
-              alignSelf:"center"
-            }}
-            onPress={handleGoBack}>
-            <Ionicons name="ios-chevron-back-sharp"
-              size={screenWidth * 0.073}
-              color="black" 
               style={{
-              }}/>
-          </TouchableOpacity>
-
-
-
-            <Text style={{
-                fontFamily: "Urbanist_600SemiBold",
-                marginTop: "1%",
+                marginLeft: "4%",
+                // marginTop:screenHeight*0.003,
+                // backgroundColor: "red",
+                height: screenHeight * 0.055,
+                width: "11.4%",
+                borderRadius: (screenWidth, screenHeight) * 0.016,
+                borderWidth: (screenWidth, screenHeight) * 0.0013,
+                borderColor: "#E0E0E0",
+                justifyContent: "center",
+                alignSelf: "center",
                 alignItems: "center",
-                marginLeft: "6%",
-                //   alignSelf: "center",
-                fontSize: RFValue(17),
-
-            }}>Select City</Text>
-
-        </View>
+  
+              }}
+              onPress={handleGoBack}>
+              <Ionicons name="ios-chevron-back-sharp"
+                size={screenWidth * 0.08}
+                color="#6A707C"
+                style={{
+                }} />
+            </TouchableOpacity>
+  
+            <Text
+              style={{
+                fontSize: RFValue(18),
+                fontFamily: "Urbanist_600SemiBold",
+                color: "#0F2944",
+                marginLeft: "4%",
+  
+                // lineHeight: 21.6,
+  
+              }}
+            >
+            Select City
+            </Text>
+          </View>
 
                 <View style={{
                     position: 'relative',

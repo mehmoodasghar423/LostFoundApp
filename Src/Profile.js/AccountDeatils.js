@@ -78,43 +78,70 @@ const { selectedImage,profilname } = route.params;
     <SafeAreaView>
       <View>
       
-    <View style={{ flexDirection: "row",
-    position: "relative", alignItems: "center",
-     marginTop: "5%", justifyContent: "space-between" }}>
+      <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
 
 
-   <TouchableOpacity
-     style={{
-       marginLeft: "4%"
-     }}
-     onPress={handleGoBack}>
-     <Ionicons name="ios-chevron-back-sharp"
-       size={screenWidth * 0.075}
-       color="black" />
-   </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          marginLeft: "4%",
+          // marginTop:screenHeight*0.003,
+          // backgroundColor: "red",
+          height: screenHeight * 0.055,
+          width: "11.4%",
+          borderRadius: (screenWidth, screenHeight) * 0.016,
+          borderWidth: (screenWidth, screenHeight) * 0.0013,
+          borderColor: "#E0E0E0",
+          justifyContent: "center",
+          alignSelf: "center",
+          alignItems: "center",
 
-   <Text
-     style={{
-       fontSize: RFValue(18),
-       fontFamily: "Urbanist_600SemiBold",
+        }}
+        onPress={handleGoBack}>
+        <Ionicons name="ios-chevron-back-sharp"
+          size={screenWidth * 0.08}
+          color="#6A707C"
+          style={{
+          }} />
+      </TouchableOpacity>
 
-     }}
-   >
-   Account Deatils
-   </Text>
 
-   <TouchableOpacity onPress={() => setmodalVisible(true)}>
-     <Image style={{
-       width: screenWidth * 0.1,
-       height: screenHeight * 0.047,
-       resizeMode: "contain",
-       marginRight: "4%",
+      <Text
+        style={{
+          fontSize: RFValue(20),
+          fontFamily: "Urbanist_600SemiBold",
+          color: "#0F2944"
+          // marginLeft: "30%",
 
-     }}
-       source={require("../../assets/HomeBack.png")} />
-   </TouchableOpacity>
 
- </View>
+        }}
+      >
+      Account Detail
+      </Text>
+
+
+      <TouchableOpacity 
+      style={{
+        marginRight: "4%",
+      }}
+      onPress={() => setmodalVisible(true)}>
+      <Image style={{
+        width: screenWidth * 0.1,
+        height: screenHeight * 0.047,
+        resizeMode: "contain",
+        justifyContent: "center",
+        alignSelf: "center",
+        alignItems: "center",
+
+      }}
+        source={require("../../assets/HomeBack.png")} />
+    </TouchableOpacity>
+
+
+   
+
+
+    </View>
+
         <Text
         style={{
           fontSize: RFValue(14),

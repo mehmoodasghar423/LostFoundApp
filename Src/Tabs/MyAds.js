@@ -101,22 +101,7 @@ const MyAds = ({ route }) => {
           
         }}>
 
-        <TouchableOpacity
-        style={{
-          marginLeft: "4%",
-          marginTop:screenHeight*0.025,
-          // backgroundColor:"red",
-          height:screenHeight*0.047,
-          justifyContent:"center",
-          alignSelf:"center"
-        }}
-        onPress={handleGoBack}>
-        <Ionicons name="ios-chevron-back-sharp"
-          size={screenWidth * 0.08}
-          color="black" 
-          style={{
-          }}/>
-      </TouchableOpacity>
+       
           <Text
             style={{
               fontSize: RFValue(20),
@@ -131,17 +116,7 @@ const MyAds = ({ route }) => {
           >
             My Ads
           </Text>
-          <TouchableOpacity onPress={() => setmodalVisible(true)}>
-          <Image style={{
-            width: screenWidth * 0.1,
-            height: screenHeight * 0.047,
-            resizeMode: "contain",
-            marginLeft: screenWidth*0.73,
-            marginTop:screenHeight*0.02
-    
-          }}
-            source={require("../../assets/HomeBack.png")} />
-        </TouchableOpacity>
+       
         </View>
 
 

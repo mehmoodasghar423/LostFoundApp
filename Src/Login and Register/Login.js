@@ -106,7 +106,25 @@ export default function Login() {
             color:"#0F2944"
           }}
         >
-          Welcome back! Glad to {'\n'}       see you, Again!
+                Welcome back!     
+
+        </Text>
+        <Text
+          style={{
+            fontFamily:"Urbanist_600SemiBold",
+            fontSize: RFValue(20),
+            // lineHeight: 20,
+            // left: "6%",
+            letterSpacing: -0.5,
+            position: "relative",
+            // top: 78,
+            // marginTop: "1%",
+            // width: 210,
+            alignSelf:"center",
+            color:"#0F2944"
+          }}
+        >
+        Glad to see you, Again!
 
         </Text>
 
@@ -115,7 +133,7 @@ export default function Login() {
           borderWidth: 1,
           borderColor: emailError ? 'red' : '#E8ECF4',
           // width: 335,
-          width: "90%",
+          width: "92%",
           height: screenHeight*0.06,
           alignSelf: "center",
           borderRadius: 8,
@@ -146,8 +164,8 @@ export default function Login() {
             borderWidth: 1,
             borderColor: passwordError ? 'red' : '#E8ECF4',
             // width: 335,
-            width: "90%",
-            width: screenWidth*0.9,
+            width: "92%",
+            // width: screenWidth*0.92,
             height: 43,
             height: screenHeight*0.06,
             alignSelf: "center",
@@ -205,11 +223,11 @@ export default function Login() {
             position: "relative",
             borderRadius: 8,
             backgroundColor: '#0F2944',
-            width: "90%",
+            width: "92%",
             height:33,
             height: screenHeight*0.06,
             alignSelf: "center",
-            marginTop:"2%",
+            marginTop:"8%",
             justifyContent: "center"
           }}><Text style={{
             fontSize: RFValue(15),
@@ -262,34 +280,27 @@ export default function Login() {
           style={{
             position: "relative",
             borderRadius: 5,
-            backgroundColor: '#0F2944',
-            width: "60%",
-            height:33,
-            height: screenHeight*0.04,
+           justifyContent:"center",
+           alignItems:"center",
+           width: "17.2%",
+            height: screenHeight*0.044,
             alignSelf: "center",
             marginTop:"6%",
-            justifyContent: "center",
-            flexDirection:"row"
+         borderWidth:0.6,
+         borderColor:"#FBBB00"
           }}>
 
           <Image
           style={{
-            height:screenHeight*0.03,
-            width:screenWidth*0.05,
+            height:screenHeight*0.024,
+            width:screenWidth*0.04,
             resizeMode:"contain",
             alignSelf:"center",
-            marginRight:10,
+        //  backgroundColor:"red"
 
           }}
-           source={require('../../assets/Google.webp')}/>
-          <Text style={{
-            fontSize: RFValue(13),
-            fontFamily:"Urbanist_600SemiBold",
-            // lineHeight: 18,
-            alignSelf: "center",
-            color: '#F9F9F9',
-          }}
-          >Sign in with Google </Text>
+           source={require('../../assets/google.png')}/>
+         
         </TouchableOpacity>
 
 
@@ -310,10 +321,10 @@ export default function Login() {
             fontFamily:"Urbanist_500Medium",
             // lineHeight: 16.8,
             letterSpacing: 1,
-            color: "#6A707C",
+            color: "#6A707C", 
             alignSelf: "center",
             // marginHorizontal: 20,
-            color: "#1E232C",
+            // color: "#1E232C",
           }}
         >
           Dont have an account? 

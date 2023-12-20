@@ -146,58 +146,85 @@ const LostPost = ({ route }) => {
   }
 
   return (
-    <SafeAreaView>
-
-      <View>
-
-
-        <View style={{
-          flexDirection: "row",
-          position: "relative", alignItems: "center",
-          marginTop: "5%", justifyContent: "space-between"
-        }}>
+    
+    
+    <SafeAreaView style={{flex:1,backgroundColor:"white"}}>
+    
+    <View>
+    <Image style={{width:100,height:400,position:"absolute",marginLeft:10}} source={require('../../assets/line.png')}/>                                  
 
 
-          <TouchableOpacity
+      
+      <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
+
+
+        <TouchableOpacity
+          style={{
+            marginLeft: "4%",
+            // marginTop:screenHeight*0.003,
+            // backgroundColor: "red",
+            height: screenHeight * 0.055,
+            width: "11.4%",
+            borderRadius: (screenWidth, screenHeight) * 0.016,
+            borderWidth: (screenWidth, screenHeight) * 0.0013,
+            borderColor: "#E0E0E0",
+            justifyContent: "center",
+            alignSelf: "center",
+            alignItems: "center",
+
+          }}
+          onPress={handleGoBack}>
+          <Ionicons name="ios-chevron-back-sharp"
+            size={screenWidth * 0.08}
+            color="#6A707C"
             style={{
-              marginLeft: "4%"
-            }}
-            onPress={handleGoBack}>
-            <Ionicons name="ios-chevron-back-sharp"
-              size={screenWidth * 0.075}
-              color="black" />
-          </TouchableOpacity>
+            }} />
+        </TouchableOpacity>
 
-          <Text
-            style={{
-              fontSize: RFValue(18),
-              fontFamily: "Urbanist_600SemiBold",
-              color:"#0F2944"
 
-            }}
-          >
-            Lost Post
-          </Text>
+        <Text
+          style={{
+            fontSize: RFValue(20),
+            fontFamily: "Urbanist_600SemiBold",
+            color: "#0F2944"
+            // marginLeft: "30%",
 
-          <TouchableOpacity onPress={() => setmodalVisible(true)}>
-            <Image style={{
-              width: screenWidth * 0.1,
-              height: screenHeight * 0.047,
-              resizeMode: "contain",
-              marginRight: "4%",
 
-            }}
-              source={require("../../assets/HomeBack.png")} />
-          </TouchableOpacity>
+          }}
+        >
+        Lost Post
+        </Text>
 
-        </View>
+
+        <TouchableOpacity 
+        style={{
+          marginRight: "4%",
+        }}
+        onPress={() => setmodalVisible(true)}>
+        <Image style={{
+          width: screenWidth * 0.1,
+          height: screenHeight * 0.047,
+          resizeMode: "contain",
+          justifyContent: "center",
+          alignSelf: "center",
+          alignItems: "center",
+
+        }}
+          source={require("../../assets/HomeBack.png")} />
+      </TouchableOpacity>
+
+
+     
+
+
+      </View>
 
         <Text
           style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "6%",
+            left: "4.5%",
             position: "relative",
             top: screenHeight * 0.03,
             color: "#0F2944"
@@ -210,7 +237,8 @@ const LostPost = ({ route }) => {
           // position: "absolute",
           // top: 105,
           position: "relative",
-          top: screenHeight * 0.04
+          top: screenHeight * 0.04,
+          // backgroundColor:"red"
         }}>
 
 
@@ -225,18 +253,18 @@ const LostPost = ({ route }) => {
                 backgroundColor: "#EDEEEF",
                 borderWidth: 1,
                 borderColor: categoryError ? '#0F2944' : '#EDEEEF',
-                width: "91%",
+                width: "92%",
                 // height: screenHeight * 0.052,
                 borderRadius: 8,
                 fontSize: RFValue(12),
-
                 paddingLeft: screenWidth * 0.1,
-
+                height: screenHeight * 0.052,
                 color: "#8C9199",
                 // marginLeft: "6%"
-                alignSelf: "center"
+                alignSelf: "center",
+                alignItems:"center",
+                
               }}
-
               dropdownStyles={{
                 borderWidth: 1,
                 borderColor: "#EDEEEF",
@@ -253,6 +281,12 @@ const LostPost = ({ route }) => {
                 fontSize: RFValue(12),
                 fontFamily: "Urbanist_500Medium",
                 color: "#8391A1",
+                textAlign:"center",
+                marginLeft:screenWidth*0.06,
+                marginTop:screenHeight * 0.005,
+                height:screenHeight * 0.022,
+               
+
               }}
             />
 
@@ -263,7 +297,7 @@ const LostPost = ({ route }) => {
 
               style={{
                 position: "absolute",
-                left: "7%",
+                left: "12.5%",
                 top: screenHeight * 0.012,
                 // alignSelf:"center",
                 marginRight: screenWidth * 0.01,
@@ -284,9 +318,9 @@ const LostPost = ({ route }) => {
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "6%",
+            left: "4.5%",
             position: "relative",
-            top: screenHeight * 0.063,
+            top: screenHeight * 0.07,
             color: "#0F2944"
 
             // position: "absolute",
@@ -301,13 +335,13 @@ const LostPost = ({ route }) => {
           onPress={locationHandler}
           style={{
             position: "relative",
-            top: screenHeight * 0.073,
+            top: screenHeight * 0.08,
             // position:"absolute",
             // top:187,
             backgroundColor: "#EDEEEF",
             borderWidth: 1,
             borderColor: locationError ? '#0F2944' : '#EDEEEF',
-            width: "91%",
+            width: "92%",
             // width:279,
             height: 38,
             height: screenHeight * 0.052,
@@ -315,7 +349,8 @@ const LostPost = ({ route }) => {
             fontSize: RFValue(12),
             alignSelf: "center",
             flexDirection: "row",
-            alignItems: "center", justifyContent: "center",
+            alignItems: "center",
+            //  justifyContent: "center",
           }}>
 
 
@@ -327,7 +362,7 @@ const LostPost = ({ route }) => {
               // position: "absolute",
               // left: "17%",
               // top: 2,
-              marginRight: screenWidth * 0.01,
+              marginLeft: screenWidth * 0.08,
               alignSelf: "center",
 
 
@@ -337,9 +372,10 @@ const LostPost = ({ route }) => {
           <Text style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
+            marginLeft: screenWidth * 0.02,
             color: "#8391A1", marginRight: 10
           }}>
-            {location || '  Please Select Your Specific Location here '}
+            {location || 'Please Select Your Specific Location here '}
           </Text>
           <AntDesign name="down"
             size={RFValue(13)}
@@ -359,74 +395,76 @@ const LostPost = ({ route }) => {
 
 
 
-        <View style={{
-          position: "relative",
-          top: screenHeight * 0.119,
-          flexDirection: "row",
-          width: "89%",
-          justifyContent: "space-between",
-          alignSelf: "center"
-        }}>
+       
 
-          <View style={{
-
-            width: "47.3%",
-
-          }}>
+        
             <Text
               style={{
+              
                 fontSize: RFValue(12),
                 fontFamily: "Urbanist_500Medium",
+                // lineHeight: 14.4,
+                left: "4.5%",
+                position: "relative",
+                top: screenHeight * 0.11,
                 color: "#0F2944"
-
                 // lineHeight: 14.4,
               }}
             >
               Date Lost
             </Text>
-          </View>
+       
 
 
 
 
 
-        </View>
+       
 
-
-        <View style={{
-          // backgroundColor: "green",
-          left: "5%",
+        <TouchableOpacity 
+        onPress={showDatePicker}
+        style={{
           position: "relative",
-          top: screenHeight * 0.128,
-          // position: "absolute",
-          // top: 264,
-          backgroundColor: '#E8ECF4',
-          width: "55%",
-          height: screenHeight * 0.054,
-          borderRadius: 8,
+          top: screenHeight * 0.12,
+          // position:"absolute",
+          // top:187,
+          backgroundColor: "#EDEEEF",
           borderWidth: 1,
-          borderColor: dateError ? '#0F2944' : '#E8ECF4',
+          borderColor: dateError ? '#0F2944' : '#EDEEEF',
+          width: "60%",
+          // width:279,
+          height: 38,
+          height: screenHeight * 0.052,
+          borderRadius: 8,
+          fontSize: RFValue(12),
+          // alignSelf: "center",
+          marginLeft:"4.5%",
           flexDirection: "row",
           alignItems: "center",
-
+          //  justifyContent: "center",
         }}>
 
 
 
-          <TouchableOpacity style={{ flexDirection: "row", width: "100%", alignItems: "center" }} onPress={showDatePicker}>
+
+      
 
 
             <Fontisto name="date"
-              size={RFValue(17)}
-              color="#8391A1"
+            size={RFValue(17)}
+            color="#8391A1"
 
-              style={{
+            style={{
+              // position: "absolute",
+              // left: "17%",
+              // top: 2,
+              marginLeft: screenWidth * 0.07,
+              left: "12.5%",
+              alignSelf: "center",
 
-                marginLeft: "5%"
 
-
-              }}
-            />
+            }}
+          />
 
 
 
@@ -434,10 +472,8 @@ const LostPost = ({ route }) => {
             <Text
               style={{
                 fontSize: RFValue(12),
-                fontFamily: "Urbanist_500Medium",
-                // lineHeight: 15,
-                marginLeft: "6%",
-                color: "#8391A1"
+            fontFamily: "Urbanist_500Medium",
+            color: "#8391A1", marginLeft:screenWidth*0.043
               }}
             >
               {selectedDate
@@ -446,22 +482,23 @@ const LostPost = ({ route }) => {
             </Text>
 
             <AntDesign name="down"
-              size={RFValue(13)}
-              color="#8391A1"
+            size={RFValue(13)}
+            color="#8391A1"
 
-              style={{
-                // position: "absolute",
-                left: "26%",
-
-                alignSelf: "center",
-
-
-              }}
-            />
+            style={{
+              // position: "absolute",
+              left: "17%",
+              top: 2,
+              alignSelf: "center",
 
 
+            }}
+          />
+      
 
-          </TouchableOpacity>
+
+
+        
 
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
@@ -470,20 +507,7 @@ const LostPost = ({ route }) => {
             onCancel={hideDatePicker}
           />
 
-
-
-
-
-
-
-
-
-
-
-
-
-        </View>
-
+          </TouchableOpacity>
 
 
         <TouchableOpacity
@@ -492,12 +516,12 @@ const LostPost = ({ route }) => {
             // position: "absolute",
             // top: 427,
             position: 'relative',
-            top: screenHeight * 0.155,
+            top: screenHeight * 0.164,
             borderRadius: 8,
             backgroundColor: '#0F2944',
             // padding: 10,
             // width: 320,
-            width: "93%",
+            width: "92%",
             // width:335,
             height: screenHeight * 0.059,
             alignSelf: "center",

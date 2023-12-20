@@ -320,13 +320,13 @@ const data = citiesOfPakistan.map(city => ({ key: city, value: city }));
 
             fontSize: RFValue(12),
             fontFamily: "Urbanist_400Regular",
-            // lineHeight: 14.4,
+            lineHeight:  RFValue(15),
             // left: 28,
-            marginLeft: screenWidth * 0.062,
+            marginLeft: "4.5%",
             position: "relative",
             // top: 20,
             top: screenHeight * 0.013,
-            color: "#0F2944"
+            color: "#6A707C"
           }}
         >Location</Text>
 
@@ -336,7 +336,7 @@ const data = citiesOfPakistan.map(city => ({ key: city, value: city }));
           // position: "absolute",
           // top: 105,
           // position: "relative",
-          marginLeft: "5%",
+          marginLeft: "4%",
           top: "0.5%",
           // flexDirection: 'row', 
           // backgroundColor:"yellow",
@@ -382,7 +382,8 @@ const data = citiesOfPakistan.map(city => ({ key: city, value: city }));
 
         <Text style={{
           fontSize: RFValue(15),
-          fontFamily: "Urbanist_600SemiBold",
+          lineHeight:24,
+          fontFamily: "Urbanist_500Medium",
           color: "#8391A1", marginRight: 10
         }}>
           {selectedCityState || '  No City Selected '}
@@ -433,7 +434,7 @@ const data = citiesOfPakistan.map(city => ({ key: city, value: city }));
             borderRadius: 8,
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
-            // lineHeight: 22,
+            lineHeight: 15,
             position: "relative",
             // paddingLeft:"5%",
             // paddingLeft:"20%",
@@ -500,7 +501,7 @@ const data = citiesOfPakistan.map(city => ({ key: city, value: city }));
           <ScrollView showsHorizontalScrollIndicator={false} horizontal>
 
             <TouchableOpacity
-              style={[styles.button, { width: buttonWidth, height: screenHeight * 0.047 }, selectedButton === 'All' && styles.selectedButton]}
+              style={[styles.button, { width: buttonWidth, height: screenHeight * 0.047 ,}, selectedButton === 'All' && styles.selectedButton]}
               onPress={() => handleButtonPress('All')}
             >
               <Text style={selectedButton === 'All' ? styles.selectedButtonText : styles.buttonText}>All Data</Text>
@@ -717,9 +718,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
 
-    fontFamily: "Urbanist_400Regular",
+    fontFamily: "Urbanist_500Medium",
     fontSize: RFValue(12),
-    //  lineHeight:14.09,
+     lineHeight:14.09,
     color: "#858585",
     textAlign: "center"
 
@@ -732,9 +733,9 @@ const styles = StyleSheet.create({
 
   },
   selectedButtonText: {
-    fontFamily: "Urbanist_400Regular",
+    fontFamily: "Urbanist_500Medium",
     fontSize: RFValue(12),
-    //  lineHeight:14.4,
+     lineHeight:14.4,
     color: "#FFFFFF",
     textAlign: "center"
   },
@@ -758,7 +759,7 @@ const styles = StyleSheet.create({
   },
   filterbuttontext: {
     fontFamily: "Urbanist_500Medium",
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     //  lineHeight:14.4,
     color: "#838383",
     marginHorizontal:10

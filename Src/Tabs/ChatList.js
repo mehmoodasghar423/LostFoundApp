@@ -296,9 +296,9 @@ useEffect(() => {
         }}>
           <TextInput
             style={{
-              backgroundColor: '#EDEEEF',
+              backgroundColor: '#F3F4F6',
               borderWidth: 1,
-              borderColor: '#EDEEEF',
+              borderColor: '#E0E0E0',
               width: '91%',
               height: screenHeight * 0.052,
               borderRadius: 8,
@@ -367,9 +367,11 @@ useEffect(() => {
                       >
                         <Image
                           style={{
-                            height: screenHeight * 0.076,
-                            width: screenWidth * 0.137,
-                            // resizeMode: 'contain',
+                            height: 53,
+                            width: 53,
+                            height: screenHeight * 0.07,
+                            width: screenWidth * 0.144,
+                            resizeMode: 'contain',
                             borderRadius: (screenWidth, screenHeight) * 0.1,
                             borderWidth: (screenWidth, screenHeight) * 0.004,
                             borderColor: "white"
@@ -387,7 +389,7 @@ useEffect(() => {
                           fontFamily: 'Urbanist_500Medium',
                           fontSize: RFValue(15),
                           position: 'absolute',
-                          marginLeft: '16%',
+                          marginLeft: '17%',
                           marginTop: '1.6%',
                           color: '#0F2944',
                         }}>{userNames[item.participants.find(uid => uid !== firebase.auth().currentUser.uid)]}</Text>

@@ -46,8 +46,8 @@ export default function TabScreens() {
         width: screenWidth * 0.153,
         height: screenHeight * 0.073,
         borderRadius: (screenWidth, screenHeight) * 0.16,
-        // backgroundColor: "red",
         backgroundColor: "#0F2944",
+        // backgroundColor: "red",
         borderColor: "#ddd",
         borderWidth: (screenWidth, screenHeight) * 0.0025,
         shadowOpacity: 0.3,
@@ -158,19 +158,21 @@ export default function TabScreens() {
                  alignItems: "center",
                 }}>
         
-              <MaterialIcons name="add"
-                  size={RFValue(23)}
-                  color="#0F2944" // Set color based on selectedButton
-                  style={{
-              
-              
-                    // alignSelf: "center",
-                    // marginLeft: "3%",
-                    // backgroundColor:"yellow",
-                    // marginTop: "2%"
 
-                  }}
-                />
+                <Image style={{
+            
+                  width: 52.5,
+                  width: screenWidth * 0.1455,
+                  // height: 52.5,
+                  height: screenHeight * 0.08,
+                  resizeMode: "contain",
+                  alignSelf: "center",
+                
+                  // backgroundColor:"yellow"
+
+              }}
+                  source={require("../assets/midlle2.png")} />
+            
               </View>
             </View>
 

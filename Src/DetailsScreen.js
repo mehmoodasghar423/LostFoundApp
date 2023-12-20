@@ -162,6 +162,7 @@ const DetailsScreen = ({ route }) => {
     const url = imageUrl1; // Replace with the URL you want to share
 
     Linking.openURL(`whatsapp://send?text=${message}%20${url}`);
+
   };
 
 
@@ -249,29 +250,40 @@ const DetailsScreen = ({ route }) => {
 
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:"white"}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView showsVerticalScrollIndicator={false}>
 
         <View >
           <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "5%", justifyContent: "space-between" }}>
 
 
-            <TouchableOpacity onPress={handleGoBack}>
-              <Image style={{
-                width: 41,
-                width: screenWidth * 0.11,
-                height: 41,
-                height: screenHeight * 0.057,
-                // top: 20,
-                left: "40%"
+            <TouchableOpacity
+              style={{
+                marginLeft: "4%",
+                // marginTop:screenHeight*0.003,
+                // backgroundColor: "red",
+                height: screenHeight * 0.055,
+                width: "11.4%",
+                borderRadius: (screenWidth, screenHeight) * 0.016,
+                borderWidth: (screenWidth, screenHeight) * 0.0013,
+                borderColor: "#E0E0E0",
+                justifyContent: "center",
+                alignSelf: "center",
+                alignItems: "center",
 
               }}
-                source={require("../assets/LostApp/back.png")} />
+              onPress={handleGoBack}>
+              <Ionicons name="ios-chevron-back-sharp"
+                size={screenWidth * 0.08}
+                color="#6A707C"
+                style={{
+                }} />
             </TouchableOpacity>
+
 
             <Text
               style={{
-                fontSize: RFValue(18),
+                fontSize: RFValue(20),
                 fontFamily: "Urbanist_600SemiBold",
                 color: "#0F2944"
                 // marginLeft: "30%",
@@ -279,16 +291,33 @@ const DetailsScreen = ({ route }) => {
 
               }}
             >
-              {lostItem}
+              Details
             </Text>
-            <TouchableOpacity onPress={shareData}>
+
+
+            <TouchableOpacity
+              style={{
+                marginRight: "4%",
+                // marginTop:screenHeight*0.003,
+                // backgroundColor: "red",
+                height: screenHeight * 0.055,
+                width: "11.4%",
+                borderRadius: (screenWidth, screenHeight) * 0.016,
+                borderWidth: (screenWidth, screenHeight) * 0.0013,
+                borderColor: "#E0E0E0",
+                justifyContent: "center",
+                alignSelf: "center",
+                alignItems: "center",
+
+              }}
+              onPress={shareData}>
 
               <FontAwesome name="share-square-o"
                 size={RFValue(19)}
-                color="#888888"
+                color="#6A707C"
                 style={{
                   // position: "absolute",
-                  marginRight: screenWidth * 0.06
+                  // marginRight: screenWidth * 0.06
                   // left: "35%",
                 }}
               />
@@ -300,59 +329,17 @@ const DetailsScreen = ({ route }) => {
 
 
 
-          {userProfilePics ? (
-            <Image
-              source={{ uri: userProfilePics }}
-              style={{
-                width: screenWidth * 0.22,
-                height: screenHeight * 0.11,
-                alignSelf: "center",
-                backgroundColor: "red",
-                borderRadius: (screenWidth, screenHeight) * 0.07,
-                borderWidth: (screenWidth, screenHeight) * 0.007,
-                borderColor: "white",
-                resizeMode:"contain"
-              }}
-            />
-          ) : (
-            <Image
-              source={require('../assets/Dpp.png')}
-              style={{
-                width: screenWidth * 0.22,
-                height: screenHeight * 0.11,
-                alignSelf: "center",
-                // backgroundColor: "red",
-                resizeMode: "contain",
-                //   borderRadius: (screenWidth, screenHeight) * 0.07,
-                // borderWidth:(screenWidth, screenHeight) * 0.007,
-                borderColor: "white",
-                // backgroundColor:"red"
-              }}
-            />
-          )}
+
+
           <View style={{
-            backgroundColor:"#0F2944",
-         paddingVertical:screenHeight* 0.001,
-         justifyContent:"center",alignItems:"center", 
-           position: "relative",marginTop:"1%",width:"auto",
-           alignSelf:"center",borderRadius:(screenWidth, screenHeight) * 0.07,     
-           borderWidth: (screenWidth, screenHeight) * 0.004,borderColor:"white",paddingHorizontal:screenWidth*0.03
-          //  paddingHorizontal:20
+            height: screenHeight * 0.307,
+            width: screenWidth * 0.64,
+            alignSelf: 'center',
+            marginTop: '8%',
+            borderRadius: (screenWidth, screenHeight) * 0.013,
+            //  backgroundColor:"red",
+            elevation: 3
           }}>
-      <Text
-      style={{
-        fontSize: RFValue(12),
-        fontFamily: "Urbanist_600SemiBold",
-        color: "white",
-        
-      }}
-    >
-              Posted By: {userHasData ? 'You' : recipientName}
-            </Text>
-
-          </View>
-
-          <View style={{ height: screenHeight * 0.307, width: screenWidth * 0.64, alignSelf: 'center', marginTop: '3%', borderRadius: (screenWidth, screenHeight) * 0.007 }}>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
             <Carousel style={{ alignItems: 'center', justifyContent: 'center', borderRadius: (screenWidth, screenHeight) * 0.007 }}>
               <View style={styles.slide1}>
@@ -383,6 +370,8 @@ const DetailsScreen = ({ route }) => {
 
 
 
+
+
           <View style={styles.buttons}>
 
             <TouchableOpacity
@@ -393,7 +382,7 @@ const DetailsScreen = ({ route }) => {
                 borderWidth: (screenWidth, screenHeight) * 0.0018,
                 borderColor: "#0F2944",
                 borderRadius: (screenWidth, screenHeight) * 0.007,
-                marginRight: screenWidth * 0.016,
+                marginRight: screenWidth * 0.012,
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center"
@@ -430,7 +419,8 @@ const DetailsScreen = ({ route }) => {
                 borderWidth: (screenWidth, screenHeight) * 0.0018,
                 borderColor: "#0F2944",
                 borderRadius: (screenWidth, screenHeight) * 0.007,
-                marginRight: screenWidth * 0.016,
+                // marginRight: screenWidth * 0.016,
+                marginLeft: screenWidth * 0.012,
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center"
@@ -457,83 +447,113 @@ const DetailsScreen = ({ route }) => {
 
 
 
+          <View style={{
+            backgroundColor: "#0F29440D",
+            marginTop: screenHeight * 0.04,
+            borderTopLeftRadius: (screenWidth, screenHeight) * 0.032,
+            borderTopRightRadius: (screenWidth, screenHeight) * 0.032,
+            height: screenHeight * 0.43
+            // borderTopLeftRadius: 24,
+          }}>
 
 
-          <View style={{ position: "relative", marginTop: "9%", alignSelf: "center", width: "93%", flexDirection: "row", }}>
+            <View style={{ position: "relative", marginTop: "9%", alignSelf: "center", width: "94%", flexDirection: "row", }}>
 
-            <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(16), color: "#0F2944" }}
-            >{lostItem}</Text>
+              <Text style={{
+                fontFamily: "Urbanist_600SemiBold",
+                fontSize: RFValue(16),
+                color: "#0F2944",
+                lineHeight: RFValue(19.2),
+                marginLeft: "1.5%"
+              }}
+              >{lostItem}</Text>
 
-            <View style={{ backgroundColor: "#778899", borderRadius: 10, marginLeft: "2%", alignItems: "center", justifyContent: "center", height: screenHeight * 0.02 }}>
-              <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(11), color: "white", marginHorizontal: 5 }}
-              >{Type}</Text>
+              <View style={{ backgroundColor: "#0F2944", borderRadius: 5, marginLeft: "2%", alignItems: "center", justifyContent: "center", height: screenHeight * 0.02 }}>
+                <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(11), color: "white", marginHorizontal: 5 }}
+                >{Type}</Text>
 
-            </View>
+              </View>
 
-            <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), letterSpacing: 1, alignSelf: "center", color: "#1E1F4B", position: "absolute", right: screenWidth * 0.03, }}
-            >
-              {date ? moment(date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
+              <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), letterSpacing: 2, alignSelf: "center", color: "#1E1F4B", position: "absolute", right: screenWidth * 0.017, }}
+              >
+                {date ? moment(date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
 
-            </Text>
-
-          </View>
-
-
-          <View style={{ position: "relative", marginTop: "4%", alignSelf: "center", width: "93%", }}>
-            <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), color: "#0F2944" }}
-            >Description</Text>
-            <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), top: screenHeight * 0.004, color: "#8391A1" }}
-            >{description}</Text>
-
-            <View style={{ position: "relative", top: screenHeight * 0.015, flexDirection: "row", alignItems: "center" }}>
-              <Ionicons name="md-location-sharp"
-                size={RFValue(15)}
-                color="#FE9003"
-                style={{
-                  marginTop: screenHeight * 0.0015, marginRight: screenWidth * 0.003
-                }}
-              />
-
-              <Text style={{ fontFamily: "Urbanist_400Regular", fontSize: RFValue(12), alignSelf: "center", color: "#8391A1", marginLeft: "1.5%" }}>
-                {location}
               </Text>
+
             </View>
+
+
+            <View style={{ position: "relative", marginTop: "3%", alignSelf: "center", width: "94%", }}>
+              <Text style={{
+                fontFamily: "Urbanist_500Medium",
+                fontSize: RFValue(12),
+                color: "#0F2944",
+                marginLeft:"1.5%",
+              }}
+              >Description</Text>
+              <Text style={{
+                 fontFamily: "Urbanist_400Regular", 
+                 fontSize: RFValue(10),
+                  top: screenHeight * 0.005, 
+                  color: "#6A707C" ,
+                  marginLeft:"1.5%",
+                // backgroundColor:"red",
+                width:"95%",
+                marginTop:screenHeight*0.006
+                }}
+              >{description}</Text>
+
+              <View style={{ position: "relative", top: screenHeight * 0.015, flexDirection: "row", alignItems: "center",marginLeft:"0.6%" }}>
+                <Ionicons name="md-location-sharp"
+                  size={RFValue(15)}
+                  color="#FE9003"
+                  style={{
+                    marginTop: screenHeight * 0.0015, marginRight: screenWidth * 0.003
+                  }}
+                />
+
+                <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), alignSelf: "center", color: "#8391A1", marginLeft: "1.5%",letterSpacing:1 }}>
+                  {location}
+                </Text>
+              </View>
+            </View>
+
+
+            <TouchableOpacity
+              // onPress={handler}
+              style={{
+                // position: "absolute",
+                // top: 427,
+                position: 'relative',
+                marginTop: screenHeight * 0.06,
+                marginBottom: screenHeight * 0.04,
+                borderRadius: 8,
+                backgroundColor: '#0F2944',
+                // padding: 10,
+                // width: 320,
+                width: "91.4%",
+                height: screenHeight * 0.059,
+                alignSelf: "center",
+
+                justifyContent: "center"
+              }}><Text style={{
+                fontSize: 15,
+                fontFamily: "Urbanist_600SemiBold",
+                lineHeight: 18,
+                alignSelf: "center",
+                color: '#F9F9F9',
+
+
+              }}
+              >View on map </Text>
+            </TouchableOpacity>
+
           </View>
-
-
-          <TouchableOpacity
-            // onPress={handler}
-            style={{
-              // position: "absolute",
-              // top: 427,
-              position: 'relative',
-              marginTop: screenHeight * 0.04,
-              marginBottom: screenHeight * 0.04,
-              borderRadius: 8,
-              backgroundColor: '#0F2944',
-              // padding: 10,
-              // width: 320,
-              width: "93%",
-              height: screenHeight * 0.059,
-              alignSelf: "center",
-
-              justifyContent: "center"
-            }}><Text style={{
-              fontSize: 15,
-              fontFamily: "Urbanist_600SemiBold",
-              lineHeight: 18,
-              alignSelf: "center",
-              color: '#F9F9F9',
-
-
-            }}
-            >View on map </Text>
-          </TouchableOpacity>
 
 
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
@@ -544,17 +564,6 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     alignItems: "center",
     justifyContent: "center"
-  },
-  button: {
-
-
-  },
-
-  Image: {
-
-  },
-  selectedImage: {
-
   },
 
   buttonText: {

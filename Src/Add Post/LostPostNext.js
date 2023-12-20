@@ -302,42 +302,71 @@ const LostPostNext = ({ route }) => {
 
       <View>
 
-        <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "5%", justifyContent: "space-between" }}>
+      
+      <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
 
 
-          <TouchableOpacity
-            style={{
-              marginLeft: "4%"
-            }}
-            onPress={handleGoBack}>
-            <Ionicons name="ios-chevron-back-sharp"
-              size={screenWidth * 0.075}
-              color="black" />
-          </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          marginLeft: "4%",
+          // marginTop:screenHeight*0.003,
+          // backgroundColor: "red",
+          height: screenHeight * 0.055,
+          width: "11.4%",
+          borderRadius: (screenWidth, screenHeight) * 0.016,
+          borderWidth: (screenWidth, screenHeight) * 0.0013,
+          borderColor: "#E0E0E0",
+          justifyContent: "center",
+          alignSelf: "center",
+          alignItems: "center",
 
-          <Text
-            style={{
-              fontSize: RFValue(18),
-              fontFamily: "Urbanist_600SemiBold",
+        }}
+        onPress={handleGoBack}>
+        <Ionicons name="ios-chevron-back-sharp"
+          size={screenWidth * 0.08}
+          color="#6A707C"
+          style={{
+          }} />
+      </TouchableOpacity>
 
-            }}
-          >
-            Lost Post
-          </Text>
 
-          <TouchableOpacity onPress={() => sethomemodalVisibleNew(true)}>
-            <Image style={{
-              width: screenWidth * 0.1,
-              height: screenHeight * 0.047,
-              resizeMode: "contain",
-              marginRight: "4%",
+      <Text
+        style={{
+          fontSize: RFValue(20),
+          fontFamily: "Urbanist_600SemiBold",
+          color: "#0F2944"
+          // marginLeft: "30%",
 
-            }}
-              source={require("../../assets/HomeBack.png")} />
-          </TouchableOpacity>
 
-        </View>
+        }}
+      >
+        Lost Post 
+      </Text>
 
+
+      <TouchableOpacity
+        style={{
+          marginRight: "4%",
+        }}
+        onPress={() => sethomemodalVisibleNew(true)}>
+
+        <Image style={{
+          width: screenWidth * 0.1,
+          height: screenHeight * 0.047,
+          resizeMode: "contain",
+          justifyContent: "center",
+          alignSelf: "center",
+          alignItems: "center",
+
+        }}
+          source={require("../../assets/HomeBack.png")} />
+      </TouchableOpacity>
+
+
+
+
+
+    </View>
 
 
 
@@ -355,7 +384,7 @@ const LostPostNext = ({ route }) => {
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "6%",
+            left: "4.5%",
             position: "relative",
             top: screenHeight * 0.03
 
@@ -368,7 +397,7 @@ const LostPostNext = ({ route }) => {
           backgroundColor: "#EDEEEF",
           borderWidth: 1,
           borderColor: nameError ? '#483d8b' : '#EDEEEF',
-          width: "91%",
+          width: "92%",
           // width:279,
           height: 38,
           height: screenHeight * 0.052,
@@ -397,11 +426,10 @@ const LostPostNext = ({ route }) => {
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "6%",
+            left: "4.5%",
             position: "relative",
-            top: screenHeight * 0.063
-            // position: "absolute",
-            // top: 164,
+            top: screenHeight * 0.07,
+            color: "#0F2944"
 
           }}
         >
@@ -414,7 +442,7 @@ const LostPostNext = ({ route }) => {
             backgroundColor: "#EDEEEF",
             borderWidth: 1,
             borderColor: descriptionError ? '#483d8b' : '#EDEEEF',
-            width: "91%",
+            width: "92%",
             // width:279,
             height: 38,
             height: screenHeight * 0.16,
@@ -422,7 +450,7 @@ const LostPostNext = ({ route }) => {
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             position: "relative",
-            top: screenHeight * 0.073,
+            top: screenHeight * 0.08,
             paddingLeft: screenWidth * 0.05,
             letterSpacing: 0.1,
             color: "#8C9199",
@@ -455,11 +483,10 @@ const LostPostNext = ({ route }) => {
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "6%",
+            left: "4.5%",
             position: "relative",
-            top: screenHeight * 0.1
-            // position: "absolute",
-            // top: 164,
+            top: screenHeight * 0.11,
+            color: "#0F2944"
 
           }}
         >
@@ -471,7 +498,7 @@ const LostPostNext = ({ route }) => {
 
           position: "relative",
           top: screenHeight * 0.12,
-          left: "6%",
+          left: "4.5%",
           flexDirection: "row"
         }}>
 
@@ -582,7 +609,7 @@ const LostPostNext = ({ route }) => {
 
 
 
-          <View style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: "#E8ECF4", alignItems: "center", justifyContent: "center", borderRadius: 8, marginRight: 10 }}>
+          <View style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: "#F3F4F6", alignItems: "center", justifyContent: "center", borderRadius: 8, marginRight: 10 }}>
             {!image1 && !isImageUploading && (
 
               <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -628,7 +655,7 @@ const LostPostNext = ({ route }) => {
 
 
 
-          <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#E8ECF4', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
+          <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
             {!image2 && !isImageUploading2 && (
               <TouchableOpacity onPress={pickImage2}>
               <Ionicons name="add-circle-sharp"
@@ -671,7 +698,7 @@ const LostPostNext = ({ route }) => {
 
 
 
-          <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#E8ECF4', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
+          <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
             {!image3 && !isImageUploading3 && (
               <TouchableOpacity onPress={pickImage3}>
               <Ionicons name="add-circle-sharp"
@@ -739,7 +766,7 @@ const LostPostNext = ({ route }) => {
             backgroundColor: '#0F2944',
             height: screenHeight * 0.059,
             alignSelf: "center",
-            width: "93%",
+            width: "92%",
             justifyContent: "center"
           }}><Text style={{
             fontSize: RFValue(15),

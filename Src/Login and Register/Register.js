@@ -170,7 +170,7 @@ export default function Register() {
           borderWidth: 1,
           borderColor: "#E0E0E0",
           // width: 335,
-          width: "90%",
+          width: "92%",
           height: screenHeight*0.06,
           alignSelf: "center",
           borderRadius: 8,
@@ -198,7 +198,7 @@ export default function Register() {
           borderWidth: 1,
           borderColor: "#E0E0E0",
           // width: 335,
-          width: "90%",
+          width: "92%",
           height: screenHeight*0.06,
           alignSelf: "center",
           borderRadius: 8,
@@ -228,7 +228,7 @@ export default function Register() {
           borderWidth: 1,
           borderColor: "#E0E0E0",
           // width: 335,
-          width: "90%",
+          width: "92%",
           height: screenHeight*0.06,
           alignSelf: "center",
           borderRadius: 8,
@@ -255,7 +255,7 @@ export default function Register() {
             borderWidth: 1,
             borderColor: "#E0E0E0",
             // width: 335,
-            width: "90%",
+            width: "92%",
             height: screenHeight*0.06,
             alignSelf: "center",
             borderRadius: 8,
@@ -287,7 +287,7 @@ export default function Register() {
             borderWidth: 1,
             borderColor: "#E0E0E0",
             // width: 335,
-            width: "90%",
+            width: "92%",
             height: screenHeight*0.06,
             alignSelf: "center",
             borderRadius: 8,
@@ -327,7 +327,7 @@ export default function Register() {
             backgroundColor: '#0F2944',
             // padding: 10,
             // width: 320,
-            width: "90%",
+            width: "92%",
             height: screenHeight*0.06,
             alignSelf: "center",
             justifyContent: "center"
@@ -353,25 +353,24 @@ export default function Register() {
           justifyContent: "center",
           // backgroundColor:"red",
           position:"relative",
-          marginTop:"6%",
-
+          marginTop:"7%",
 
         }}>
 
           <View style={styles.line} />
             <Text
               style={{
-                fontSize:  RFValue(14),
+                fontSize: RFValue(14),
                 fontFamily:"Urbanist_600SemiBold",
                 // lineHeight: 16.8,
-                // letterSpacing: -1,
+                letterSpacing: -0.5,
                 // position: "relative",
                 color: "#6A707C",
                 // alignSelf: "center"
                 marginHorizontal: 20
               }}
             >
-            Or register with
+            Or Register with
             </Text>
           <View style={styles.line} />
         </View>
@@ -379,45 +378,39 @@ export default function Register() {
 
 
         <TouchableOpacity
-    // onPress={SigninWith}
+    
           style={{
             position: "relative",
             borderRadius: 5,
-            backgroundColor: '#0F2944',
-            width: "60%",
-            height:33,
-            height: screenHeight*0.04,
+           justifyContent:"center",
+           alignItems:"center",
+           width: "17.2%",
+            height: screenHeight*0.044,
             alignSelf: "center",
             marginTop:"6%",
-            justifyContent: "center",
-            flexDirection:"row"
+         borderWidth:0.6,
+         borderColor:"#FBBB00"
           }}>
 
           <Image
           style={{
-            height:screenHeight*0.03,
-            width:screenWidth*0.05,
+            height:screenHeight*0.024,
+            width:screenWidth*0.04,
             resizeMode:"contain",
             alignSelf:"center",
-            marginRight:10,
+        //  backgroundColor:"red"
 
           }}
-           source={require('../../assets/Google.webp')}/>
-          <Text style={{
-            fontSize: RFValue(13),
-            fontFamily:"Urbanist_600SemiBold",
-            // lineHeight: 18,
-            alignSelf: "center",
-            color: '#F9F9F9',
-          }}
-          >Sign up with Google </Text>
-        </TouchableOpacity>
-      
-       
+           source={require('../../assets/google.png')}/>
          
+        </TouchableOpacity>
+
+
+
+
         <View   style={{
           position: "relative",
-          marginTop:"6%",
+          marginTop:"5%",
           alignSelf: "center",
           flexDirection:"row"
         }}>
@@ -426,17 +419,17 @@ export default function Register() {
        
         <Text
           style={{
-            fontSize:  RFValue(12),
+            fontSize:RFValue(12),
             fontFamily:"Urbanist_500Medium",
             // lineHeight: 16.8,
-            letterSpacing: .5,
-            color: "#6A707C",
+            letterSpacing: 1,
+            color: "#6A707C", 
             alignSelf: "center",
             // marginHorizontal: 20,
-            color: "#6A707C",
+            // color: "#1E232C",
           }}
         >
-        Already Have an account? 
+          Dont have an account? 
         </Text>
 
         <TouchableOpacity
@@ -445,14 +438,15 @@ export default function Register() {
             justifyContent:"center"
           }} >
           <Text style={{
-            // lineHeight: 16.8,
-            letterSpacing: 1,
-             alignSelf: "center",
              color: "#FE9003",
-             fontSize:  RFValue(12),
+             fontSize: RFValue(12),
              fontFamily:"Urbanist_700Bold",
+            //  lineHeight: 16.8,
+             letterSpacing: 1,
+             alignSelf: "center",
+          
              }}>
-           Login Now
+             Login Now!
           </Text>
           
           </TouchableOpacity>
@@ -566,7 +560,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     // borderBottomColor: 'black',
     borderBottomColor: "#E8ECF4",
-    width: "28%",
+    width: "25%",
     
     
   },

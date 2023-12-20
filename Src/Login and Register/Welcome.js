@@ -65,14 +65,14 @@ const Welcome = () => {
                 <Image style={{
             
                     width: screenWidth * 0.7,
-                    height: screenHeight * 0.45,
+                    height: screenHeight * 0.43,
                     resizeMode: "contain",
                     alignSelf: "center",
                   
                     // backgroundColor:"red"
 
                 }}
-                    source={require("../../assets/LostApp/Welcome.png")} />
+                    source={require("../../assets/Welcome.png")} />
 
                 <View style={{ top: "13%",}}>
 

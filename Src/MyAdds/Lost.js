@@ -131,8 +131,10 @@ const Lost = () => {
                   height: screenHeight * 0.106,
                   borderRadius: 8,
                   backgroundColor: "white",
-                  elevation: 3,
-                  marginTop: 9,
+                  elevation: 1,
+                  marginTop: screenHeight*0.008,
+                  borderWidth:1,
+                  borderColor:"#E0E0E0"
                 }}
                 onPress={() => {
                   navigation.navigate('DetailsScreen', {
@@ -157,7 +159,8 @@ const Lost = () => {
                   borderRadius: 10,
                   position: "absolute",
                   marginLeft: "1.7%",
-                  marginTop: "1%"
+                  marginTop: "1%",
+
                 }} />
 
 
@@ -177,7 +180,7 @@ const Lost = () => {
                   fontFamily: "Urbanist_400Regular",
                   fontSize: RFValue(8),
                   position: "absolute",
-                  marginLeft: "28.3%",
+                  marginLeft: "28%",
                   top: screenHeight * 0.046,
                   color: "#1E1F4B",
                 }}>
@@ -189,8 +192,8 @@ const Lost = () => {
               color="#FE9003"
               style={{
                 position: "absolute",
-                left: screenWidth * 0.25,
-                top: screenHeight * 0.066,
+                left: screenWidth * 0.245,
+                top: screenHeight * 0.073,
               }}
             />
 
@@ -200,8 +203,8 @@ const Lost = () => {
                   fontFamily: "Urbanist_400Regular",
                   fontSize: RFValue(8),
                   position: "absolute",
-                  left: screenWidth * 0.29,
-                  top: screenHeight * 0.067,
+                  left: screenWidth * 0.279,
+                  top: screenHeight * 0.073,
                   color: "#FE9003",
                 }}>{item.location}</Text>
 

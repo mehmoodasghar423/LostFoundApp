@@ -29,6 +29,7 @@ const FoundPostNext = ({ route }) => {
   const [image3, setImage3] = useState(null);
   const { category, location, number, date, } = route.params;
 
+  const [homemodalVisibleNew, sethomemodalVisibleNew] = useState(false);
 
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isImageUploading2, setIsImageUploading2] = useState(false);
@@ -304,137 +305,169 @@ const FoundPostNext = ({ route }) => {
 
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
 
-      <View>
+    <View>
 
-        <View style={{
-          flexDirection: "row",
-          position: "relative", alignItems: "center",
-          marginTop: "5%", justifyContent: "space-between"
-        }}>
+    
+    <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
 
 
-          <TouchableOpacity
-            style={{
-              marginLeft: "4%"
-            }}
-            onPress={handleGoBack}>
-            <Ionicons name="ios-chevron-back-sharp"
-              size={screenWidth * 0.075}
-              color="black" />
-          </TouchableOpacity>
+    <TouchableOpacity
+      style={{
+        marginLeft: "4%",
+        // marginTop:screenHeight*0.003,
+        // backgroundColor: "red",
+        height: screenHeight * 0.055,
+        width: "11.4%",
+        borderRadius: (screenWidth, screenHeight) * 0.016,
+        borderWidth: (screenWidth, screenHeight) * 0.0013,
+        borderColor: "#E0E0E0",
+        justifyContent: "center",
+        alignSelf: "center",
+        alignItems: "center",
 
-          <Text
-            style={{
-              fontSize: RFValue(18),
-              fontFamily: "Urbanist_600SemiBold",
-              color: "#0F2944"
+      }}
+      onPress={handleGoBack}>
+      <Ionicons name="ios-chevron-back-sharp"
+        size={screenWidth * 0.08}
+        color="#6A707C"
+        style={{
+        }} />
+    </TouchableOpacity>
 
-            }}
-          >
-            Found Post
-          </Text>
 
-          <TouchableOpacity onPress={() => sethomeModalVisible(true)}>
-            <Image style={{
-              width: screenWidth * 0.1,
-              height: screenHeight * 0.047,
-              resizeMode: "contain",
-              marginRight: "4%",
+    <Text
+      style={{
+        fontSize: RFValue(20),
+        fontFamily: "Urbanist_600SemiBold",
+        color: "#0F2944"
+        // marginLeft: "30%",
 
-            }}
-              source={require("../../assets/HomeBack.png")} />
-          </TouchableOpacity>
 
-        </View>
+      }}
+    >
+      Found Post 
+    </Text>
 
-        <Text
-          style={{
-            fontSize: RFValue(12),
-            fontFamily: "Urbanist_500Medium",
-            // lineHeight: 14.4,
-            left: "6%",
-            position: "relative",
-            top: screenHeight * 0.03,
-            color: "#0F2944"
 
-          }}
-        >
-          Name
-        </Text>
+    <TouchableOpacity
+      style={{
+        marginRight: "4%",
+      }}
+      onPress={() => sethomemodalVisibleNew(true)}>
 
-        <TextInput style={{
+      <Image style={{
+        width: screenWidth * 0.1,
+        height: screenHeight * 0.047,
+        resizeMode: "contain",
+        justifyContent: "center",
+        alignSelf: "center",
+        alignItems: "center",
+
+      }}
+        source={require("../../assets/HomeBack.png")} />
+    </TouchableOpacity>
+
+
+
+
+
+  </View>
+
+
+
+
+
+
+
+
+
+
+
+
+      <Text
+        style={{
+          fontSize: RFValue(12),
+          fontFamily: "Urbanist_500Medium",
+          // lineHeight: 14.4,
+          left: "4.5%",
+          position: "relative",
+          top: screenHeight * 0.03
+
+        }}
+      >
+        Name
+      </Text>
+
+      <TextInput style={{
+        backgroundColor: "#EDEEEF",
+        borderWidth: 1,
+        borderColor: nameError ? '#483d8b' : '#EDEEEF',
+        width: "92%",
+        // width:279,
+        height: 38,
+        height: screenHeight * 0.052,
+        borderRadius: 8,
+        fontSize: RFValue(12),
+        fontFamily: "Urbanist_500Medium",
+        position: "relative",
+        top: screenHeight * 0.04,
+        paddingLeft: screenWidth * 0.05,
+        letterSpacing: 0.1,
+        color: "#8C9199",
+        // marginLeft: "6%"
+        alignSelf: "center",
+      }}
+
+        placeholder='Enter Lost item Name '
+        placeholderTextColor="#8391A1"
+        value={lostItem}
+        onChangeText={text => setlostItem(text)}
+      />
+
+
+
+      <Text
+        style={{
+          fontSize: RFValue(12),
+          fontFamily: "Urbanist_500Medium",
+          // lineHeight: 14.4,
+          left: "4.5%",
+          position: "relative",
+          top: screenHeight * 0.07,
+          color: "#0F2944"
+
+        }}
+      >
+        Description
+      </Text>
+
+      <TextInput
+        multiline
+        style={{
           backgroundColor: "#EDEEEF",
           borderWidth: 1,
-          borderColor: nameError ? '#0F2944' : '#EDEEEF',
-          width: "91%",
+          borderColor: descriptionError ? '#483d8b' : '#EDEEEF',
+          width: "92%",
           // width:279,
           height: 38,
-          height: screenHeight * 0.052,
+          height: screenHeight * 0.16,
           borderRadius: 8,
           fontSize: RFValue(12),
           fontFamily: "Urbanist_500Medium",
           position: "relative",
-          top: screenHeight * 0.04,
+          top: screenHeight * 0.08,
           paddingLeft: screenWidth * 0.05,
           letterSpacing: 0.1,
           color: "#8C9199",
           // marginLeft: "6%"
-          alignSelf: "center",
+          alignSelf: "center"
         }}
+        placeholder='Enter Description '
+        placeholderTextColor="#8391A1"
+        value={description}
+        onChangeText={text => setdescription(text)}
 
-          placeholder='Enter Lost item Name '
-          placeholderTextColor="#8391A1"
-          value={lostItem}
-          onChangeText={text => setlostItem(text)}
-        />
-
-
-
-        <Text
-          style={{
-            fontSize: RFValue(12),
-            fontFamily: "Urbanist_500Medium",
-            // lineHeight: 14.4,
-            left: "6%",
-            position: "relative",
-            top: screenHeight * 0.063,
-            color: "#0F2944"
-
-            // position: "absolute",
-            // top: 164,
-
-          }}
-        >
-          Description
-        </Text>
-
-        <TextInput
-          multiline
-          style={{
-            backgroundColor: "#EDEEEF",
-            borderWidth: 1,
-            borderColor: descriptionError ? '#0F2944' : '#EDEEEF',
-            width: "91%",
-            // width:279,
-            height: 38,
-            height: screenHeight * 0.16,
-            borderRadius: 8,
-            fontSize: RFValue(12),
-            fontFamily: "Urbanist_500Medium",
-            position: "relative",
-            top: screenHeight * 0.073,
-            paddingLeft: screenWidth * 0.05,
-            letterSpacing: 0.1,
-            color: "#8C9199",
-            // marginLeft: "6%"
-            alignSelf: "center"
-          }}
-          placeholder='Enter Description '
-          placeholderTextColor="#8391A1"
-          value={description}
-          onChangeText={text => setdescription(text)}
-
-        />
+      />
 
 
 
@@ -450,416 +483,414 @@ const FoundPostNext = ({ route }) => {
 
 
 
-        <Text
-          style={{
-            fontSize: RFValue(12),
-            fontFamily: "Urbanist_500Medium",
-            // lineHeight: 14.4,
-            left: "6%",
-            position: "relative",
-            top: screenHeight * 0.1,
-            color: "#0F2944"
-
-            // position: "absolute",
-            // top: 164,
-
-          }}
-        >
-          Upload Photos
-        </Text>
-
-
-        <View style={{
-
+      <Text
+        style={{
+          fontSize: RFValue(12),
+          fontFamily: "Urbanist_500Medium",
+          // lineHeight: 14.4,
+          left: "4.5%",
           position: "relative",
-          top: screenHeight * 0.12,
-          left: "6%",
-          flexDirection: "row"
+          top: screenHeight * 0.11,
+          color: "#0F2944"
+
+        }}
+      >
+        Upload Photos
+      </Text>
+
+
+      <View style={{
+
+        position: "relative",
+        top: screenHeight * 0.12,
+        left: "4.5%",
+        flexDirection: "row"
+      }}>
+
+
+
+
+
+
+
+
+
+      <Modal
+      animationType="fade"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        // Alert.alert('Modal has been closed.');
+        setModalVisible(!modalVisible);
+      }}>
+
+
+      <View style={{
+        // backgroundColor:"red",
+        alignItems: "center"
+      }}>
+        <View style={{
+          // margin: 20,
+          backgroundColor: 'white',
+          borderRadius: 20,
+          top: screenHeight * 0.43,
+          paddingVertical: screenHeight * 0.03,
+          alignItems: 'center',
+          shadowColor: '#000',
+          width: screenWidth * 0.65,
+          height: screenHeight * 0.189,
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 4,
+          elevation: 5,
         }}>
+          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}
+            style={{ position: "absolute", right: screenWidth * 0.03, top: screenHeight * -0.02 }} >
+            <Image style={{ width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#0F2944", resizeMode: "contain", }}
+              source={require('../../assets/LostApp/Close.png')}
+            />
+          </TouchableOpacity>
 
-
-
-
-
-
-
-
-
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              // Alert.alert('Modal has been closed.');
-              setModalVisible(!modalVisible);
-            }}>
-
-
-            <View style={{
-              // backgroundColor:"red",
-              alignItems: "center"
-            }}>
-              <View style={{
-                // margin: 20,
-                backgroundColor: 'white',
-                borderRadius: 20,
-                top: screenHeight * 0.43,
-                paddingVertical: screenHeight * 0.03,
-                alignItems: 'center',
-                shadowColor: '#000',
-                width: screenWidth * 0.65,
-                height: screenHeight * 0.189,
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 5,
-              }}>
-                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}
-                  style={{ position: "absolute", right: screenWidth * 0.03, top: screenHeight * -0.02 }} >
-                  <Image style={{ width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#0F2944", resizeMode: "contain", }}
-                    source={require('../../assets/LostApp/Close.png')}
-                  />
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={GallerypickImage1}
-                  style={{ flexDirection: "row", marginTop: "3%" }}>
-                  <AntDesign name="picture"
-                    size={RFValue(19)}
-                    color="#0F2944" // Set color based on selectedButton
-                    style={{
-                      width: screenWidth * 0.06,
-                      height: screenHeight * 0.031,
-                      alignSelf: "center",
-                      marginRight: "3%",
-                      // backgroundColor:"yellow",
-                      // marginTop: "2%"
-
-                    }}
-                  />
-
-                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Gallery</Text>
-
-
-                </TouchableOpacity>
-
-                <Image style={{ width: "80%", marginTop: "7.5%", height: screenHeight * 0.003 }}
-                  source={require('../../assets/LostApp/Linee.png')}
-                />
-
-                <TouchableOpacity onPress={CamerapickImage1}
-                  style={{ flexDirection: "row", marginTop: "7%" }}>
-               
-                  <SimpleLineIcons name="camera"
-                    size={RFValue(19)}
-                    color="#0F2944" // Set color based on selectedButton
-                    style={{
-                      width: screenWidth * 0.06,
-                      height: screenHeight * 0.031,
-                      alignSelf: "center",
-                      marginRight: "3%",
-                      // backgroundColor:"yellow",
-                      // marginTop: "2%"
-
-                    }}
-                  />
-
-                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Camera</Text>
-                </TouchableOpacity>
-
-              </View>
-            </View>
-          </Modal>
-
-
-
-
-
-
-
-
-
-
-
-
-          <View style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: "#E8ECF4", alignItems: "center", justifyContent: "center", borderRadius: 8, marginRight: 10 }}>
-            {!image1 && !isImageUploading && (
-
-              <TouchableOpacity onPress={() => setModalVisible(true)}>
-              <Ionicons name="add-circle-sharp"
-              size={RFValue(29)}
+          <TouchableOpacity onPress={GallerypickImage1}
+            style={{ flexDirection: "row", marginTop: "3%" }}>
+            <AntDesign name="picture"
+              size={RFValue(19)}
               color="#0F2944" // Set color based on selectedButton
               style={{
-                width: screenWidth * 0.08,
-                  height: screenHeight * 0.041,
+                width: screenWidth * 0.06,
+                height: screenHeight * 0.031,
                 alignSelf: "center",
-                // marginRight: "3%",
+                marginRight: "3%",
                 // backgroundColor:"yellow",
                 // marginTop: "2%"
 
               }}
             />
-              </TouchableOpacity>
-            )}
-            {isImageUploading && currentImageIndex === 1 ? (
-              <ActivityIndicator size="large" color="#0F2944" style={{ position: "absolute", }} />
-            ) : (
-              image1 && (
-                <View style={{ position: 'relative' }}>
-                  <Image source={{ uri: image1 }} style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, alignSelf: 'center', borderRadius: 8 }} />
-                  {showCrosImage1 && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setImage1(null); // Replace this with the action you want to perform when dismissing the image
-                        setShowCrosImage1(false);
-                      }}
-                      style={{ position: 'absolute', top: screenHeight * 0.001, right: screenWidth * -0.006 }}
-                    >
-                      <Image style={{ width: screenWidth * 0.05, height: screenHeight * 0.02, resizeMode: 'contain', borderRadius: 100 }} source={require('../../assets/cros.jpg')} />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )
-            )}
-          </View>
+
+            <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Gallery</Text>
 
 
+          </TouchableOpacity>
 
+          <Image style={{ width: "80%", marginTop: "7.5%", height: screenHeight * 0.003 }}
+            source={require('../../assets/LostApp/Linee.png')}
+          />
 
-          <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#E8ECF4', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
-            {!image2 && !isImageUploading2 && (
-              <TouchableOpacity onPress={pickImage2}>
-
-              <Ionicons name="add-circle-sharp"
-              size={RFValue(29)}
+          <TouchableOpacity onPress={CamerapickImage1}
+            style={{ flexDirection: "row", marginTop: "7%" }}>
+         
+            <SimpleLineIcons name="camera"
+              size={RFValue(19)}
               color="#0F2944" // Set color based on selectedButton
               style={{
-                width: screenWidth * 0.08,
-                  height: screenHeight * 0.041,
+                width: screenWidth * 0.06,
+                height: screenHeight * 0.031,
                 alignSelf: "center",
-                // marginRight: "3%",
+                marginRight: "3%",
                 // backgroundColor:"yellow",
                 // marginTop: "2%"
 
               }}
             />
+
+            <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Camera</Text>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+        <View style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: "#F3F4F6", alignItems: "center", justifyContent: "center", borderRadius: 8, marginRight: 10 }}>
+          {!image1 && !isImageUploading && (
+
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Ionicons name="add-circle-sharp"
+            size={RFValue(29)}
+            color="#0F2944" // Set color based on selectedButton
+            style={{
+              width: screenWidth * 0.08,
+                height: screenHeight * 0.041,
+              alignSelf: "center",
+              // marginRight: "3%",
+              // backgroundColor:"yellow",
+              // marginTop: "2%"
+
+            }}
+          />
+       
+           
             </TouchableOpacity>
-            )}
-
-            {isImageUploading2 && currentImageIndex === 1 ? (
-              <ActivityIndicator size="large" color="#0F2944" style={{ position: 'absolute' }} />
-            ) : (
-              image2 && (
-                <View style={{ position: 'relative' }}>
-                  <Image source={{ uri: image2 }} style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, alignSelf: 'center', borderRadius: 8 }} />
-                  {showCrosImage2 && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setImage2(null); // Replace this with the action you want to perform when dismissing the image
-                        setShowCrosImage2(false);
-                      }}
-                      style={{ position: 'absolute', top: screenHeight * 0.001, right: screenWidth * -0.006 }}
-                    >
-                      <Image style={{ width: screenWidth * 0.05, height: screenHeight * 0.02, resizeMode: 'contain', borderRadius: 100 }} source={require('../../assets/cros.jpg')} />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )
-            )}
-          </View>
-
-
-
-          <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#E8ECF4', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
-            {!image3 && !isImageUploading3 && (
-              <TouchableOpacity onPress={pickImage3}>
-              <Ionicons name="add-circle-sharp"
-              size={RFValue(29)}
-              color="#0F2944" // Set color based on selectedButton
-              style={{
-                width: screenWidth * 0.08,
-                  height: screenHeight * 0.041,
-                alignSelf: "center",
-                // marginRight: "3%",
-                // backgroundColor:"yellow",
-                // marginTop: "2%"
-
-              }}
-            />
-              </TouchableOpacity>
-            )}
-
-            {isImageUploading3 && currentImageIndex === 1 ? (
-              <ActivityIndicator size="large" color="#0F2944" style={{ position: 'absolute' }} />
-            ) : (
-              image3 && (
-                <View style={{ position: 'relative' }}>
-                  <Image source={{ uri: image3 }} style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, alignSelf: 'center', borderRadius: 8 }} />
-                  {showCrosImage3 && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setImage3(null); // Replace this with the action you want to perform when dismissing the image
-                        setShowCrosImage3(false);
-                      }}
-                      style={{ position: 'absolute', top: screenHeight * 0.001, right: screenWidth * -0.006 }}
-                    >
-                      <Image style={{ width: screenWidth * 0.05, height: screenHeight * 0.02, resizeMode: 'contain', borderRadius: 100 }} source={require('../../assets/cros.jpg')} />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )
-            )}
-          </View>
-
-
-
-
-
-
-
-
-
-
-
+          )}
+          {isImageUploading && currentImageIndex === 1 ? (
+            <ActivityIndicator size="large" color="#0F2944" style={{ position: "absolute", }} />
+          ) : (
+            image1 && (
+              <View style={{ position: 'relative' }}>
+                <Image source={{ uri: image1 }} style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, alignSelf: 'center', borderRadius: 8 }} />
+                {showCrosImage1 && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setImage1(null); // Replace this with the action you want to perform when dismissing the image
+                      setShowCrosImage1(false);
+                    }}
+                    style={{ position: 'absolute', top: screenHeight * 0.001, right: screenWidth * -0.006 }}
+                  >
+                    <Image style={{ width: screenWidth * 0.05, height: screenHeight * 0.02, resizeMode: 'contain', borderRadius: 100 }} source={require('../../assets/cros.jpg')} />
+                  </TouchableOpacity>
+                )}
+              </View>
+            )
+          )}
         </View>
 
 
-        {loading && <LoadingModal modalVisible={true} />}
 
 
-        <TouchableOpacity
-          onPress={saveDataToFirestore}
+        <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
+          {!image2 && !isImageUploading2 && (
+            <TouchableOpacity onPress={pickImage2}>
+            <Ionicons name="add-circle-sharp"
+            size={RFValue(29)}
+            color="#0F2944" // Set color based on selectedButton
+            style={{
+              width: screenWidth * 0.08,
+                height: screenHeight * 0.041,
+              alignSelf: "center",
+              // marginRight: "3%",
+              // backgroundColor:"yellow",
+              // marginTop: "2%"
 
-          style={{
-            // position: "absolute",
-            // top: 427,
-            position: 'relative',
-            top: screenHeight * 0.17,
-            borderRadius: 8,
-            backgroundColor: '#0F2944',
-            height: screenHeight * 0.059,
-            alignSelf: "center",
-            width: "93%",
-            justifyContent: "center"
-          }}><Text style={{
-            fontSize: RFValue(15),
-            fontFamily: 'Urbanist_600SemiBold',
-            // lineHeight: 18,
-            alignSelf: "center",
-            color: '#F9F9F9',
+            }}
+          />
+            </TouchableOpacity>
+          )}
 
-
-          }}
-          >Publish </Text>
-        </TouchableOpacity>
-
-        {homeModalVisible && (
-          <TouchableWithoutFeedback onPress={() => sethomeModalVisible(false)}>
-            <View
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: screenHeight * 1,
-                backgroundColor: 'rgba(0, 0, 0, 0.4)',
-              }}
-            >
-              <TouchableWithoutFeedback>
-                <View
-                  style={{
-                    backgroundColor: 'white',
-                    borderRadius: (screenWidth, screenHeight) * 0.03,
-                    paddingVertical: screenHeight * 0.03,
-                    paddingHorizontal: screenWidth * 0.07,
-                    alignItems: 'center',
-
-                    // position:"absolute"
-                  }}
-                >
+          {isImageUploading2 && currentImageIndex === 1 ? (
+            <ActivityIndicator size="large" color="#0F2944" style={{ position: 'absolute' }} />
+          ) : (
+            image2 && (
+              <View style={{ position: 'relative' }}>
+                <Image source={{ uri: image2 }} style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, alignSelf: 'center', borderRadius: 8 }} />
+                {showCrosImage2 && (
                   <TouchableOpacity
-                    onPress={() => sethomeModalVisible(false)}
-                    style={{ position: 'absolute', top: screenHeight * 0.007, right: screenWidth * 0.021 }}>
-
-                    <Entypo name="cross"
-                      size={screenWidth * 0.065}
-                      color="black" />
+                    onPress={() => {
+                      setImage2(null); // Replace this with the action you want to perform when dismissing the image
+                      setShowCrosImage2(false);
+                    }}
+                    style={{ position: 'absolute', top: screenHeight * 0.001, right: screenWidth * -0.006 }}
+                  >
+                    <Image style={{ width: screenWidth * 0.05, height: screenHeight * 0.02, resizeMode: 'contain', borderRadius: 100 }} source={require('../../assets/cros.jpg')} />
                   </TouchableOpacity>
+                )}
+              </View>
+            )
+          )}
+        </View>
 
-                  <Text
-                    style={{
-                      fontSize: RFValue(12),
-                      fontFamily: "Urbanist_600SemiBold",
-                      color: "#778899"
 
+
+        <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
+          {!image3 && !isImageUploading3 && (
+            <TouchableOpacity onPress={pickImage3}>
+            <Ionicons name="add-circle-sharp"
+            size={RFValue(29)}
+            color="#0F2944" // Set color based on selectedButton
+            style={{
+              width: screenWidth * 0.08,
+                height: screenHeight * 0.041,
+              alignSelf: "center",
+              // marginRight: "3%",
+              // backgroundColor:"yellow",
+              // marginTop: "2%"
+
+            }}
+          />
+            </TouchableOpacity>
+          )}
+
+          {isImageUploading3 && currentImageIndex === 1 ? (
+            <ActivityIndicator size="large" color="#0F2944" style={{ position: 'absolute' }} />
+          ) : (
+            image3 && (
+              <View style={{ position: 'relative' }}>
+                <Image source={{ uri: image3 }} style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, alignSelf: 'center', borderRadius: 8 }} />
+                {showCrosImage3 && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setImage3(null); // Replace this with the action you want to perform when dismissing the image
+                      setShowCrosImage3(false);
                     }}
-                  >Your Will Lost Your Post Data !</Text>
-                  <Text
-                    style={{
-                      fontSize: RFValue(16),
-                      fontFamily: "Urbanist_600SemiBold",
-                      color: "black", marginTop: "1%"
+                    style={{ position: 'absolute', top: screenHeight * 0.001, right: screenWidth * -0.006 }}
+                  >
+                    <Image style={{ width: screenWidth * 0.05, height: screenHeight * 0.02, resizeMode: 'contain', borderRadius: 100 }} source={require('../../assets/cros.jpg')} />
+                  </TouchableOpacity>
+                )}
+              </View>
+            )
+          )}
+        </View>
 
-                    }}
-                  >Do You Want to Continue ?</Text>
 
-                  <View style={{ flexDirection: 'row', marginTop: screenHeight * 0.02, marginLeft: "7%", }}>
-                    <TouchableOpacity
-                      onPress={() => sethomeModalVisible(false)}
-                      style={{
-                        marginRight: screenWidth * 0.05,
-                        width: "25%",
-                        height: screenHeight * 0.032,
-                        backgroundColor: "#3cb371",
-                        borderRadius: (screenWidth, screenHeight) * 0.03,
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: RFValue(15),
-                          fontFamily: "Urbanist_600SemiBold",
-                          color: "white",
-                          // left: "6%",
-                        }}
-                      >Cancel</Text>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity
-                      style={{
-                        marginRight: screenWidth * 0.05,
-                        width: "40%",
-                        height: screenHeight * 0.032,
-                        backgroundColor: "#0F2944",
-                        borderRadius: (screenWidth, screenHeight) * 0.03,
-                        alignItems: "center",
-                        justifyContent: "center",
 
-                      }}
-                      onPress={() => navigation.navigate("Home")}>
-                      <Text
-                        style={{
-                          fontSize: RFValue(15),
-                          fontFamily: "Urbanist_600SemiBold",
-                          color: "white",
-                          // left: "6%",
-                        }}>Go To Home</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        )}
+
+
+
+
+
 
 
       </View>
-    </SafeAreaView>
+
+
+
+      {loading && <LoadingModal modalVisible={true} />}
+      <TouchableOpacity
+        onPress={saveDataToFirestore}
+
+        style={{
+          // position: "absolute",
+          // top: 427,
+          position: 'relative',
+          top: screenHeight * 0.17,
+          borderRadius: 8,
+          backgroundColor: '#0F2944',
+          height: screenHeight * 0.059,
+          alignSelf: "center",
+          width: "92%",
+          justifyContent: "center"
+        }}><Text style={{
+          fontSize: RFValue(15),
+          fontFamily: 'Urbanist_600SemiBold',
+          // lineHeight: 18,
+          alignSelf: "center",
+          color: '#F9F9F9',
+
+
+        }}
+        >Publish </Text>
+      </TouchableOpacity>
+
+
+
+      {homemodalVisibleNew && (
+        <TouchableWithoutFeedback onPress={() => sethomemodalVisibleNew(false)}>
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: screenHeight * 1,
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            }}
+          >
+            <TouchableWithoutFeedback>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: (screenWidth, screenHeight) * 0.03,
+                  paddingVertical: screenHeight * 0.03,
+                  paddingHorizontal: screenWidth * 0.07,
+                  alignItems: 'center',
+
+                  // position:"absolute"
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => sethomemodalVisibleNew(false)}
+                  style={{ position: 'absolute', top: screenHeight * 0.007, right: screenWidth * 0.021 }}>
+
+                  <Entypo name="cross"
+                    size={screenWidth * 0.065}
+                    color="black" />
+                </TouchableOpacity>
+
+                <Text
+                  style={{
+                    fontSize: RFValue(12),
+                    fontFamily: "Urbanist_600SemiBold",
+                    color: "#778899"
+
+                  }}
+                >Your Will Lost Your Post Data !</Text>
+                <Text
+                  style={{
+                    fontSize: RFValue(16),
+                    fontFamily: "Urbanist_600SemiBold",
+                    color: "black", marginTop: "1%"
+
+                  }}
+                >Do You Want to Continue ?</Text>
+
+                <View style={{ flexDirection: 'row', marginTop: screenHeight*0.02 ,marginLeft:"7%",}}>
+                  <TouchableOpacity
+                    onPress={() => sethomemodalVisibleNew(false)}
+                    style={{
+                      marginRight: screenWidth * 0.05,
+                      width: "25%",
+                      height: screenHeight * 0.032,
+                      backgroundColor: "#3cb371",
+                      borderRadius: (screenWidth, screenHeight) * 0.03,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: RFValue(15),
+                        fontFamily: "Urbanist_600SemiBold",
+                        color: "white",
+                        // left: "6%",
+                      }}
+                    >Cancel</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{
+                      marginRight: screenWidth * 0.05,
+                      width: "40%",
+                      height: screenHeight * 0.032,
+                      backgroundColor: "#0F2944",
+                      borderRadius: (screenWidth, screenHeight) * 0.03,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      
+                    }}
+                    onPress={() => navigation.navigate("Home")}>
+                    <Text
+                      style={{
+                        fontSize: RFValue(15),
+                        fontFamily: "Urbanist_600SemiBold",
+                        color: "white",
+                        // left: "6%",
+                      }}>Go To Home</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+
+    </View>
+  </SafeAreaView>
   )
 }
 

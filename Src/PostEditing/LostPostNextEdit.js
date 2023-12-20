@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Pressable, Alert, Modal, Dimensions ,ActivityIndicator,TouchableWithoutFeedback} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Pressable, Alert, Modal, Dimensions, ActivityIndicator, TouchableWithoutFeedback } from 'react-native'
 // import React,{useState,useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import { useNavigation } from '@react-navigation/native';
@@ -12,37 +12,37 @@ import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { firebase } from '../../config';
 import 'firebase/storage';
-import { Entypo ,Fontisto,MaterialIcons,Ionicons,AntDesign ,SimpleLineIcons } from '@expo/vector-icons';
+import { Entypo, Fontisto, MaterialIcons, Ionicons, AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { LoadingModal } from "react-native-loading-modal";
 
 
 
-const LostPostNextEdit = ({ route,navigation}) => {
-    const { documentId } = route.params;
-  const { selectedCity } = route.params || { selectedCity: null};
-// const { documentId, lostItem, location, date, time, description, imageUrl1, imageUrl2, imageUrl3 } = route.params;
-// Use the received data as needed in your 'LostPostNextEdit' component
+const LostPostNextEdit = ({ route, navigation }) => {
+  const { documentId } = route.params;
+  const { selectedCity } = route.params || { selectedCity: null };
+  // const { documentId, lostItem, location, date, time, description, imageUrl1, imageUrl2, imageUrl3 } = route.params;
+  // Use the received data as needed in your 'LostPostNextEdit' component
 
 
-  
+
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
   const [lostItem, setlostItem] = useState('');
   const [description, setdescription] = useState('')
-  const [image1, setImage1] = useState(null); 
-  const [image2, setImage2] = useState(null); 
-  const [image3, setImage3] = useState(null); 
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
- 
+
 
 
   // console.log('nextedit' ,documentId);
   // console.log(category);
- 
 
-  const [loading, setLoading] = useState(false); 
+
+  const [loading, setLoading] = useState(false);
 
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isImageUploading2, setIsImageUploading2] = useState(false);
@@ -50,7 +50,7 @@ const LostPostNextEdit = ({ route,navigation}) => {
 
 
   const [currentImageIndex, setCurrentImageIndex] = useState(null);
-  
+
   const [nameError, setNameError] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
   const [imag1Error, setImage1Error] = useState('');
@@ -62,20 +62,20 @@ const LostPostNextEdit = ({ route,navigation}) => {
 
   const [defaultSelectedCategory, setDefaultSelectedCategory] = useState('');
 
-    // Update the selected city state when received from route.params
-useEffect(() => {
-  if (route.params && route.params.selectedCity) {
-    setLocation(route.params.selectedCity);
-  }
-}, [route.params]);
+  // Update the selected city state when received from route.params
+  useEffect(() => {
+    if (route.params && route.params.selectedCity) {
+      setLocation(route.params.selectedCity);
+    }
+  }, [route.params]);
 
 
 
-const locationHandler = () => {
-  navigation.navigate("LostPELocation", {
-    documentId: documentId // Pass the documentId in the route params
-  });
-};
+  const locationHandler = () => {
+    navigation.navigate("LostPELocation", {
+      documentId: documentId // Pass the documentId in the route params
+    });
+  };
 
 
   useEffect(() => {
@@ -132,7 +132,7 @@ const locationHandler = () => {
         .then((doc) => {
           if (doc.exists) {
             const data = doc.data();
-  
+
             // Set all the relevant state variables based on the fetched data
             setCategory(data.category);
             setLocation(data.location);
@@ -141,7 +141,7 @@ const locationHandler = () => {
             setImage1(data.imageUrl1); // Set the URL of the first image
             setImage2(data.imageUrl2); // Set the URL of the second image
             setImage3(data.imageUrl3); // Set the URL of the third image
-  
+
             // Check if the category is available in the data
             if (data && data.category) {
               // Set the category as the default selected category
@@ -159,10 +159,10 @@ const locationHandler = () => {
         });
     }
   }, [documentId]);
-  
 
 
-  
+
+
   const data = [
     { key: 'Electronics', value: 'Electronics' },
     { key: 'Jewelry', value: 'Jewelry' },
@@ -178,24 +178,24 @@ const locationHandler = () => {
 
   const saveDataToFirestore = () => {
     let isValid = true;
-  
+
     if (!lostItem) {
       setNameError('Please Enter a name');
       isValid = false;
     } else {
       setNameError(''); // Clear the error
     }
-  
+
     if (!description) {
       setDescriptionError('Please enter a description');
       isValid = false;
     } else {
       setDescriptionError(''); // Clear the errors
     }
-  
+
     if (isValid) {
       setLoading(true); // Set loading to true before Firestore operation
-  
+
       const user = firebase.auth().currentUser;
       if (user) {
         const userDataRef = firebase.firestore().collection("UserData").doc(documentId);
@@ -210,7 +210,7 @@ const locationHandler = () => {
           location,
           Type: "Lost"
         };
-  
+
         userDataRef.update(userData)
           .then(() => {
             setLoading(false); // Set loading to false after Firestore operation
@@ -223,27 +223,27 @@ const locationHandler = () => {
       }
     }
   };
-  
-  
 
-  
-  
+
+
+
+
   const [modalVisible, setModalVisible] = useState(false);
   const [homeModalVisible, sethomeModalVisible] = useState(false);
- 
+
 
 
 
   const GallerypickImage1 = async () => {
     setIsImageUploading(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-    
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-  
+
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
       setModalVisible(!modalVisible);
@@ -260,7 +260,7 @@ const locationHandler = () => {
       //if the user cancels the image selection
       setIsImageUploading(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-    
+
     }
   };
 
@@ -268,13 +268,13 @@ const locationHandler = () => {
   const CamerapickImage1 = async () => {
     setIsImageUploading(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-    
+
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-  
+
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
       setModalVisible(!modalVisible);
@@ -291,22 +291,22 @@ const locationHandler = () => {
       //if the user cancels the image selection
       setIsImageUploading(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-    
+
     }
   };
   const pickImage2 = async () => {
     setIsImageUploading2(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-    
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-  
+
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
-     
+
       const storageRef = firebase.storage().ref();
       const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
       const imageRef = storageRef.child(imageName);
@@ -320,24 +320,24 @@ const locationHandler = () => {
       //if the user cancels the image selection
       setIsImageUploading2(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-    
+
     }
   };
-  
+
 
   const pickImage3 = async () => {
     setIsImageUploading3(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
-    
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
     });
-  
+
     if (!result.canceled) {
       const selectedAsset = result.assets[0];
-     
+
       const storageRef = firebase.storage().ref();
       const imageName = `${user.uid}/${new Date().getTime()}.jpg`;
       const imageRef = storageRef.child(imageName);
@@ -351,19 +351,19 @@ const locationHandler = () => {
       //if the user cancels the image selection
       setIsImageUploading3(false); // Set loading indicator to false
       setCurrentImageIndex(null); // Reset the current image index
-    
+
     }
   };
- 
 
- 
- 
+
+
+
   ///
 
 
 
- 
-  
+
+
 
 
   let [fontsLoaded] = useFonts({
@@ -389,49 +389,75 @@ const locationHandler = () => {
 
       <View>
 
-      <View style={{ flexDirection: "row",
-      position: "relative", alignItems: "center",
-       marginTop: "5%", justifyContent: "space-between" }}>
- 
- 
-     <TouchableOpacity
-       style={{
-         marginLeft: "4%"
-       }}
-       onPress={handleGoBack}>
-       <Ionicons name="ios-chevron-back-sharp"
-         size={screenWidth * 0.075}
-         color="black" />
-     </TouchableOpacity>
- 
-     <Text
-       style={{
-         fontSize: RFValue(18),
-         fontFamily: "Urbanist_600SemiBold",
-         color:"#0F2944"
- 
-       }}
-     >
-       Lost Post Editing
-     </Text>
- 
-     <TouchableOpacity onPress={() => sethomeModalVisible(true)}>
-       <Image style={{
-         width: screenWidth * 0.1,
-         height: screenHeight * 0.047,
-         resizeMode: "contain",
-         marginRight: "4%",
- 
-       }}
-         source={require("../../assets/HomeBack.png")} />
-     </TouchableOpacity>
- 
-   </View>
- 
+        <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
+
+
+          <TouchableOpacity
+            style={{
+              marginLeft: "4%",
+              // marginTop:screenHeight*0.003,
+              // backgroundColor: "red",
+              height: screenHeight * 0.055,
+              width: "11.4%",
+              borderRadius: (screenWidth, screenHeight) * 0.016,
+              borderWidth: (screenWidth, screenHeight) * 0.0013,
+              borderColor: "#E0E0E0",
+              justifyContent: "center",
+              alignSelf: "center",
+              alignItems: "center",
+
+            }}
+            onPress={handleGoBack}>
+            <Ionicons name="ios-chevron-back-sharp"
+              size={screenWidth * 0.08}
+              color="#6A707C"
+              style={{
+              }} />
+          </TouchableOpacity>
+
+
+          <Text
+            style={{
+              fontSize: RFValue(20),
+              fontFamily: "Urbanist_600SemiBold",
+              color: "#0F2944"
+              // marginLeft: "30%",
+
+
+            }}
+          >
+            Lost Post Editing
+          </Text>
+
+
+          <TouchableOpacity
+            style={{
+              marginRight: "4%",
+            }}
+            onPress={() => sethomeModalVisible(true)}>
+
+            <Image style={{
+              width: screenWidth * 0.1,
+              height: screenHeight * 0.047,
+              resizeMode: "contain",
+              justifyContent: "center",
+              alignSelf: "center",
+              alignItems: "center",
+
+            }}
+              source={require("../../assets/HomeBack.png")} />
+          </TouchableOpacity>
 
 
 
-   <Text
+
+
+        </View>
+
+
+
+
+        <Text
           style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
@@ -490,19 +516,19 @@ const locationHandler = () => {
             }}
           />
           <MaterialIcons name="category"
-          size={RFValue(20)}
-          color="#8391A1"
-  
-          style={{
-            position: "absolute",
-            left: "7%",
-            top:screenHeight*0.013,
-            marginRight:screenWidth*0.01,
-         
-     
-  
-          }}
-        />
+            size={RFValue(20)}
+            color="#8391A1"
+
+            style={{
+              position: "absolute",
+              left: "7%",
+              top: screenHeight * 0.013,
+              marginRight: screenWidth * 0.01,
+
+
+
+            }}
+          />
         </View>
 
 
@@ -522,51 +548,51 @@ const locationHandler = () => {
           Location
         </Text>
 
-        <TouchableOpacity 
-        onPress={locationHandler}
-        style={{
-          position: "relative",
-          top: screenHeight * 0.063,
-          // position:"absolute",
-          // top:187,
-          backgroundColor: "#EDEEEF",
-          borderWidth: 1,
-          borderColor:  '#EDEEEF',
-          width: "91%",
-          // width:279,
-          height: 38,
-          height: screenHeight * 0.052,
-          borderRadius: 8,
-          fontSize: RFValue(12),
-          alignSelf:"center",
-          flexDirection:"row",
-          alignItems:"center",justifyContent:"center",
-        }}>
-         
-      
-        <MaterialIcons name="location-city"
-        size={RFValue(20)}
-        color="#8391A1"
+        <TouchableOpacity
+          onPress={locationHandler}
+          style={{
+            position: "relative",
+            top: screenHeight * 0.063,
+            // position:"absolute",
+            // top:187,
+            backgroundColor: "#EDEEEF",
+            borderWidth: 1,
+            borderColor: '#EDEEEF',
+            width: "91%",
+            // width:279,
+            height: 38,
+            height: screenHeight * 0.052,
+            borderRadius: 8,
+            fontSize: RFValue(12),
+            alignSelf: "center",
+            flexDirection: "row",
+            alignItems: "center", justifyContent: "center",
+          }}>
 
-        style={{
-          // position: "absolute",
-          // left: "17%",
-          // top: 2,
-          marginRight:screenWidth*0.01,
-          alignSelf: "center",
-   
 
-        }}
-      />
-            
-       <Text style={{ 
-        fontSize: RFValue(12),
-        fontFamily: "Urbanist_500Medium",
-        color:"#8391A1",marginRight:10
-      }}>
-       {location || '  Please Select Your Specific Location here '}
-       </Text>
-            <AntDesign name="down" 
+          <MaterialIcons name="location-city"
+            size={RFValue(20)}
+            color="#8391A1"
+
+            style={{
+              // position: "absolute",
+              // left: "17%",
+              // top: 2,
+              marginRight: screenWidth * 0.01,
+              alignSelf: "center",
+
+
+            }}
+          />
+
+          <Text style={{
+            fontSize: RFValue(12),
+            fontFamily: "Urbanist_500Medium",
+            color: "#8391A1", marginRight: 10
+          }}>
+            {location || '  Please Select Your Specific Location here '}
+          </Text>
+          <AntDesign name="down"
             size={RFValue(13)}
             color="#8391A1"
 
@@ -575,7 +601,7 @@ const locationHandler = () => {
               left: "17%",
               top: 2,
               alignSelf: "center",
-       
+
 
             }}
           />
@@ -599,7 +625,7 @@ const locationHandler = () => {
         <TextInput style={{
           backgroundColor: "#EDEEEF",
           borderWidth: 1,
-          borderColor: nameError ? '#483d8b' : '#EDEEEF', 
+          borderColor: nameError ? '#483d8b' : '#EDEEEF',
           width: "91%",
           // width:279,
           height: 38,
@@ -645,7 +671,7 @@ const locationHandler = () => {
           style={{
             backgroundColor: "#EDEEEF",
             borderWidth: 1,
-            borderColor: descriptionError ? '#483d8b' : '#EDEEEF', 
+            borderColor: descriptionError ? '#483d8b' : '#EDEEEF',
             width: "91%",
             // width:279,
             height: 38,
@@ -714,96 +740,93 @@ const locationHandler = () => {
 
 
 
-        <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          // Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              // Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
 
 
-        <View style={{
-          // backgroundColor:"red",
-          alignItems: "center"
-        }}>
-          <View style={{
-            // margin: 20,
-            backgroundColor: 'white',
-            borderRadius: 20,
-            top: screenHeight * 0.43,
-            paddingVertical: screenHeight * 0.03,
-            alignItems: 'center',
-            shadowColor: '#000',
-            width: screenWidth * 0.65,
-            height: screenHeight * 0.189,
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-          }}>
-            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}
-              style={{ position: "absolute", right: screenWidth * 0.03, top: screenHeight * -0.02 }} >
-              <Image style={{ width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#0F2944", resizeMode: "contain", }}
-                source={require('../../assets/LostApp/Close.png')}
-              />
-            </TouchableOpacity>
+            <View style={{
+              // backgroundColor:"red",
+              alignItems: "center"
+            }}>
+              <View style={{
+                // margin: 20,
+                backgroundColor: 'white',
+                borderRadius: 20,
+                top: screenHeight * 0.43,
+                paddingVertical: screenHeight * 0.03,
+                alignItems: 'center',
+                shadowColor: '#000',
+                width: screenWidth * 0.65,
+                height: screenHeight * 0.189,
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 5,
+              }}>
+                <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}
+                  style={{ position: "absolute", right: screenWidth * 0.03, top: screenHeight * -0.02 }} >
+                  <Image style={{ width: screenWidth * 0.06, height: screenHeight * 0.1, tintColor: "#0F2944", resizeMode: "contain", }}
+                    source={require('../../assets/LostApp/Close.png')}
+                  />
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={GallerypickImage1}
-              style={{ flexDirection: "row", marginTop: "3%" }}>
-              <AntDesign name="picture"
-                size={RFValue(19)}
-                color="#0F2944" // Set color based on selectedButton
-                style={{
-                  width: screenWidth * 0.06,
-                  height: screenHeight * 0.031,
-                  alignSelf: "center",
-                  marginRight: "3%",
-                  // backgroundColor:"yellow",
-                  // marginTop: "2%"
+                <TouchableOpacity onPress={GallerypickImage1}
+                  style={{ flexDirection: "row", marginTop: "3%" }}>
+                  <AntDesign name="picture"
+                    size={RFValue(19)}
+                    color="#0F2944" // Set color based on selectedButton
+                    style={{
+                      width: screenWidth * 0.06,
+                      height: screenHeight * 0.031,
+                      alignSelf: "center",
+                      marginRight: "3%",
+                      // backgroundColor:"yellow",
+                      // marginTop: "2%"
 
-                }}
-              />
+                    }}
+                  />
 
-              <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Gallery</Text>
-
-
-            </TouchableOpacity>
-
-            <Image style={{ width: "80%", marginTop: "7.5%", height: screenHeight * 0.003 }}
-              source={require('../../assets/LostApp/Linee.png')}
-            />
-
-            <TouchableOpacity onPress={CamerapickImage1}
-              style={{ flexDirection: "row", marginTop: "7%" }}>
-           
-              <SimpleLineIcons name="camera"
-                size={RFValue(19)}
-                color="#0F2944" // Set color based on selectedButton
-                style={{
-                  width: screenWidth * 0.06,
-                  height: screenHeight * 0.031,
-                  alignSelf: "center",
-                  marginRight: "3%",
-                  // backgroundColor:"yellow",
-                  // marginTop: "2%"
-
-                }}
-              />
-
-              <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Camera</Text>
-            </TouchableOpacity>
-
-          </View>
-        </View>
-      </Modal>
+                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Gallery</Text>
 
 
+                </TouchableOpacity>
 
+                <Image style={{ width: "80%", marginTop: "7.5%", height: screenHeight * 0.003 }}
+                  source={require('../../assets/LostApp/Linee.png')}
+                />
+
+                <TouchableOpacity onPress={CamerapickImage1}
+                  style={{ flexDirection: "row", marginTop: "7%" }}>
+
+                  <SimpleLineIcons name="camera"
+                    size={RFValue(19)}
+                    color="#0F2944" // Set color based on selectedButton
+                    style={{
+                      width: screenWidth * 0.06,
+                      height: screenHeight * 0.031,
+                      alignSelf: "center",
+                      marginRight: "3%",
+                      // backgroundColor:"yellow",
+                      // marginTop: "2%"
+
+                    }}
+                  />
+
+                  <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(14), }}>Camera</Text>
+                </TouchableOpacity>
+
+              </View>
+            </View>
+          </Modal>
 
 
 
@@ -812,25 +835,28 @@ const locationHandler = () => {
 
 
 
-         
+
+
+
+
           <View style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: "#E8ECF4", alignItems: "center", justifyContent: "center", borderRadius: 8, marginRight: 10 }}>
-          {!image1 && !isImageUploading && (
+            {!image1 && !isImageUploading && (
 
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Ionicons name="add-circle-sharp"
-            size={RFValue(29)}
-            color="#0F2944" // Set color based on selectedButton
-            style={{
-              width: screenWidth * 0.08,
-                height: screenHeight * 0.041,
-              alignSelf: "center",
-              // marginRight: "3%",
-              // backgroundColor:"yellow",
-              // marginTop: "2%"
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <Ionicons name="add-circle-sharp"
+                  size={RFValue(29)}
+                  color="#0F2944" // Set color based on selectedButton
+                  style={{
+                    width: screenWidth * 0.08,
+                    height: screenHeight * 0.041,
+                    alignSelf: "center",
+                    // marginRight: "3%",
+                    // backgroundColor:"yellow",
+                    // marginTop: "2%"
 
-            }}
-          />
-            </TouchableOpacity>
+                  }}
+                />
+              </TouchableOpacity>
             )}
             {isImageUploading && currentImageIndex === 1 ? (
               <ActivityIndicator size="large" color="#0F2944" style={{ position: "absolute", }} />
@@ -854,25 +880,25 @@ const locationHandler = () => {
             )}
           </View>
 
-          
+
 
 
           <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#E8ECF4', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
             {!image2 && !isImageUploading2 && (
               <TouchableOpacity onPress={pickImage2}>
-              <Ionicons name="add-circle-sharp"
-              size={RFValue(29)}
-              color="#0F2944" // Set color based on selectedButton
-              style={{
-                width: screenWidth * 0.08,
-                  height: screenHeight * 0.041,
-                alignSelf: "center",
-                // marginRight: "3%",
-                // backgroundColor:"yellow",
-                // marginTop: "2%"
+                <Ionicons name="add-circle-sharp"
+                  size={RFValue(29)}
+                  color="#0F2944" // Set color based on selectedButton
+                  style={{
+                    width: screenWidth * 0.08,
+                    height: screenHeight * 0.041,
+                    alignSelf: "center",
+                    // marginRight: "3%",
+                    // backgroundColor:"yellow",
+                    // marginTop: "2%"
 
-              }}
-            />
+                  }}
+                />
               </TouchableOpacity>
             )}
 
@@ -899,23 +925,23 @@ const locationHandler = () => {
           </View>
 
 
-          
+
           <View style={{ position: 'relative', width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: '#E8ECF4', alignItems: 'center', justifyContent: 'center', borderRadius: 8, marginRight: 10 }}>
             {!image3 && !isImageUploading3 && (
               <TouchableOpacity onPress={pickImage3}>
-              <Ionicons name="add-circle-sharp"
-              size={RFValue(29)}
-              color="#0F2944" // Set color based on selectedButton
-              style={{
-                width: screenWidth * 0.08,
-                  height: screenHeight * 0.041,
-                alignSelf: "center",
-                // marginRight: "3%",
-                // backgroundColor:"yellow",
-                // marginTop: "2%"
+                <Ionicons name="add-circle-sharp"
+                  size={RFValue(29)}
+                  color="#0F2944" // Set color based on selectedButton
+                  style={{
+                    width: screenWidth * 0.08,
+                    height: screenHeight * 0.041,
+                    alignSelf: "center",
+                    // marginRight: "3%",
+                    // backgroundColor:"yellow",
+                    // marginTop: "2%"
 
-              }}
-            />
+                  }}
+                />
               </TouchableOpacity>
             )}
 
@@ -1000,37 +1026,37 @@ const locationHandler = () => {
                     paddingVertical: screenHeight * 0.03,
                     paddingHorizontal: screenWidth * 0.07,
                     alignItems: 'center',
-  
+
                     // position:"absolute"
                   }}
                 >
                   <TouchableOpacity
                     onPress={() => sethomeModalVisible(false)}
                     style={{ position: 'absolute', top: screenHeight * 0.007, right: screenWidth * 0.021 }}>
-  
+
                     <Entypo name="cross"
                       size={screenWidth * 0.065}
                       color="black" />
                   </TouchableOpacity>
-  
+
                   <Text
                     style={{
                       fontSize: RFValue(12),
                       fontFamily: "Urbanist_600SemiBold",
                       color: "#778899"
-  
+
                     }}
-                    >Changes Are not Saved in this Post!</Text>
+                  >Changes Are not Saved in this Post!</Text>
                   <Text
                     style={{
                       fontSize: RFValue(16),
                       fontFamily: "Urbanist_600SemiBold",
                       color: "black", marginTop: "1%"
-  
+
                     }}
                   >Do You Want to Continue ?</Text>
-  
-                  <View style={{ flexDirection: 'row', marginTop: screenHeight*0.02 ,marginLeft:"7%",}}>
+
+                  <View style={{ flexDirection: 'row', marginTop: screenHeight * 0.02, marginLeft: "7%", }}>
                     <TouchableOpacity
                       onPress={() => sethomeModalVisible(false)}
                       style={{
@@ -1051,7 +1077,7 @@ const locationHandler = () => {
                         }}
                       >Cancel</Text>
                     </TouchableOpacity>
-  
+
                     <TouchableOpacity
                       style={{
                         marginRight: screenWidth * 0.05,
@@ -1061,7 +1087,7 @@ const locationHandler = () => {
                         borderRadius: (screenWidth, screenHeight) * 0.03,
                         alignItems: "center",
                         justifyContent: "center",
-                        
+
                       }}
                       onPress={() => navigation.navigate("Home")}>
                       <Text
@@ -1078,7 +1104,7 @@ const locationHandler = () => {
             </View>
           </TouchableWithoutFeedback>
         )}
-  
+
       </View>
     </SafeAreaView>
   )

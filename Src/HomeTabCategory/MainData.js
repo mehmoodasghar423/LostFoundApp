@@ -176,8 +176,15 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
                 }} />
                 <Text style={styles.itemTitle}> {item.lostItem}</Text>
            
-                <View  style={{backgroundColor:"#0F2944",borderRadius:10,marginLeft:"4.5%",position:"absolute",bottom:screenHeight*0.002,
-                height:screenHeight*0.015,alignItems:"center",justifyContent:"center"}}>
+                <View  style={{
+                  backgroundColor:"#0F2944",
+                borderRadius:4,
+                marginLeft:"4.5%",
+                position:"absolute",
+                bottom:screenHeight*0.002,
+                height:screenHeight*0.015,
+                alignItems:"center",
+                justifyContent:"center"}}>
 
                 <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(9),color:"white" }}
                 >{item.Type}</Text>
@@ -310,7 +317,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#D7D7D7",
     width: 45,
     height: 25,
-    borderRadius: 8,
+    borderRadius: 4,
     paddingLeft: 8,
     right: 12,
     top: 12,
@@ -339,35 +346,34 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
     fontWeight: "600",
   },
-  LostListView: {
-
-  },
-  ItemImage: {
-
-  },
   itemTitle: {
     marginLeft: 10,
-    marginLeft: "3%",
-    marginTop: 12,
+    marginLeft: "2.7%",
+    marginTop: 11.5,
     fontSize: RFValue(14),
     fontFamily: "Urbanist_500Medium",
-    color:"#0F2944"
+    fontWeight:"500",
+    color:"#0F2944",
+    lineHeight:RFValue(16.44) ,
+    // backgroundColor:"red"
   },
   itemDate: {
     position: "absolute",
     right: "3.5%",
-    top: 11.3,
+    top: 11.5,
     color: "#6A707C",
-    fontSize: 10,
+    fontSize: RFValue(12),
     fontFamily: "Urbanist_400Regular",
-    fontSize: RFValue(10),
+    lineHeight:RFValue(14.09),
+     
+
   },
   SecondView: {
     flexDirection: "row",
     // bottom: 21,
     bottom: "6%",
     marginLeft: 65,
-    marginLeft: "20%",
+    marginLeft: "20.2%",
     // backgroundColor:"red"
   },
   LocationImg: {
@@ -378,21 +384,24 @@ const styles = StyleSheet.create({
   Locationtxt: {
     color: "#6A707C",
     fontFamily: "Urbanist_400Regular",
-    fontSize: RFValue(10),
+    fontSize: RFValue(12),
+    lineHeight:RFValue(14.09), 
+marginLeft:"1%"
     // backgroundColor:"yellow"
 
   },
   detailsView: {
     position: "absolute",
-    right: 13,
-    right: "5%"
+    right: 15,
+    right: "9.8%"
   },
   detailbtb: {
     color: "#FE9003",
-    fontSize: RFValue(9),
+    fontSize: RFValue(12),
     fontFamily: "Urbanist_600SemiBold",
     // lineHeight:10.63,
-    right: -7
+    right: -7,
+    lineHeight:RFValue(14.09) 
 
 
   },

@@ -96,7 +96,7 @@ const Found = () => {
 
   return (
     <View style={{ backgroundColor: "white", height: screenHeight * 0.9 }}>
-      <View style={{ justifyContent: "center", alignItems: "center" ,height:screenHeight*0.75}}>
+      <View style={{ justifyContent: "center", alignItems: "center",height:screenHeight*0.75 }}>
 
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />
@@ -113,8 +113,10 @@ const Found = () => {
                   height: screenHeight * 0.106,
                   borderRadius: 8,
                   backgroundColor: "white",
-                  elevation: 3,
-                  marginTop: 9,
+                  elevation: 1,
+                  marginTop: screenHeight*0.008,
+                  borderWidth:1,
+                  borderColor:"#E0E0E0"
                 }}
                 onPress={() => {
                   navigation.navigate('DetailsScreen', {
@@ -139,7 +141,8 @@ const Found = () => {
                   borderRadius: 10,
                   position: "absolute",
                   marginLeft: "1.7%",
-                  marginTop: "1%"
+                  marginTop: "1%",
+
                 }} />
 
 
@@ -159,22 +162,20 @@ const Found = () => {
                   fontFamily: "Urbanist_400Regular",
                   fontSize: RFValue(8),
                   position: "absolute",
-                  marginLeft: "28.3%",
+                  marginLeft: "28%",
                   top: screenHeight * 0.046,
                   color: "#1E1F4B",
                 }}>
                   {item.date ? moment(item.date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
                 </Text>
 
-
-
                 <Ionicons name="md-location-sharp" 
                 size={RFValue(11)}
               color="#FE9003"
               style={{
                 position: "absolute",
-                left: screenWidth * 0.25,
-                top: screenHeight * 0.066,
+                left: screenWidth * 0.245,
+                top: screenHeight * 0.073,
               }}
             />
 
@@ -184,71 +185,70 @@ const Found = () => {
                   fontFamily: "Urbanist_400Regular",
                   fontSize: RFValue(8),
                   position: "absolute",
-                  left: screenWidth * 0.29,
-                  top: screenHeight * 0.067,
+                  left: screenWidth * 0.279,
+                  top: screenHeight * 0.073,
                   color: "#FE9003",
                 }}>{item.location}</Text>
 
 
 
                 <TouchableOpacity
-                onPress={() => editRecord(item.id)}
+                  onPress={() => editRecord(item.id)}
 
-                style={{
+                  style={{
 
-                  position: "absolute",
-                  right: screenWidth * 0.03,
-                  top: screenHeight * 0.013,
-                  justifyContent: "center",
-                  width: screenWidth * 0.07,
-                  height: screenHeight * 0.038,
-                  // backgroundColor:"red"
-                }}>
+                    position: "absolute",
+                    right: screenWidth * 0.03,
+                    top: screenHeight * 0.013,
+                    justifyContent: "center",
+                    width: screenWidth * 0.07,
+                    height: screenHeight * 0.038,
+                    // backgroundColor:"red"
+                  }}>
+
+                 
+
+                  <MaterialCommunityIcons name="circle-edit-outline"
+                  size={RFValue(24)}
+                  color="#0F2944"
+                  style={{
+                    // position: "absolute",
+                    // marginLeft: screenWidth * 0.0011
+                    // left: "35%",
+                  }}
+                />
+
+
+
+                </TouchableOpacity>
 
                
 
-                <MaterialCommunityIcons name="circle-edit-outline"
-                size={RFValue(24)}
-                color="#0F2944"
-                style={{
-                  // position: "absolute",
-                  // marginLeft: screenWidth * 0.0011
-                  // left: "35%",
-                }}
-              />
+                <TouchableOpacity
+                  onPress={() => deleteRecord(item.id)}
 
+                  style={{
 
+                    position: "absolute",
+                    right: screenWidth * 0.03,
+                    bottom: screenHeight * 0.014,
+                    justifyContent: "center",
+                    // backgroundColor:"red",
+                    width: screenWidth * 0.07,
+                    height: screenHeight * 0.038,
+                  }}>
 
-              </TouchableOpacity>
+                  <MaterialCommunityIcons name="delete"
+                  size={RFValue(24)}
+                  color="#FE9003"
+                  style={{
+                    // position: "absolute",
+                    // marginLeft: screenWidth * 0.0011
+                    // left: "35%",
+                  }}
+                />
 
-             
-
-              <TouchableOpacity
-                onPress={() => deleteRecord(item.id)}
-
-                style={{
-
-                  position: "absolute",
-                  right: screenWidth * 0.03,
-                  bottom: screenHeight * 0.014,
-                  justifyContent: "center",
-                  // backgroundColor:"red",
-                  width: screenWidth * 0.07,
-                  height: screenHeight * 0.038,
-                }}>
-
-                <MaterialCommunityIcons name="delete"
-                size={RFValue(24)}
-                color="#FE9003"
-                style={{
-                  // position: "absolute",
-                  // marginLeft: screenWidth * 0.0011
-                  // left: "35%",
-                }}
-              />
-
-              </TouchableOpacity>
-
+                </TouchableOpacity>
 
 
               </View>
