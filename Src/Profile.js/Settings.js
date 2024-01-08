@@ -28,7 +28,13 @@ const Settings = () => {
   const [modalVisible, setmodalVisible] = useState(false);
 
   const [category, setCategory] = useState('Pakistan');
+  const [selected, setSelected]  = useState('');
   const [defaultCountry, setDefaultCountry] = useState({ key: 'Pakistan', value: 'Pakistan' });
+
+  const [currentPassword , setCurrentPassword ] =useState("")
+  const [newPassword , setNewPassword ] =useState("")
+  const [confiemPassword , setConfiemPassword ] =useState("")
+
 
   const data = [
     { key: 'Pakistan', value: 'Pakistan' },
@@ -55,6 +61,15 @@ const Settings = () => {
   ];
   
 
+  const data2 = [
+    {key:'1', value:'Mobiles', disabled:true},
+    {key:'2', value:'Appliances'},
+    {key:'3', value:'Cameras'},
+    {key:'4', value:'Computers', disabled:true},
+    {key:'5', value:'Vegetables'},
+    {key:'6', value:'Diary Products'},
+    {key:'7', value:'Drinks'},
+]
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -106,8 +121,28 @@ const Settings = () => {
     <SafeAreaView style={{flex:1,backgroundColor:"white"}}>
     <View>
 
-    <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
-
+    <View
+    style={{
+      flexDirection: "row",
+      marginTop:"1%",
+       position: "relative",
+        alignItems: "center",
+       justifyContent: "space-between" ,
+      paddingBottom: "2.15%",
+      borderBottomWidth: RFValue(3),
+      borderBottomColor: 'rgba(0, 0, 0, 0.1)', 
+      ...Platform.select({
+        ios: {
+          shadowColor: 'transparent',
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0,
+          shadowRadius: 0,
+        },
+        android: {
+          elevation: 0,
+        },
+      }),
+    }}>
 
     <TouchableOpacity
       style={{
@@ -125,47 +160,73 @@ const Settings = () => {
 
       }}
       onPress={handleGoBack}>
-      <Ionicons name="ios-chevron-back-sharp"
-        size={screenWidth * 0.08}
-        color="#6A707C"
-        style={{
-        }} />
+      <Image style={{
+        width: 10,
+        height: 16,
+        width: screenWidth * 0.0285,
+        height: screenHeight * 0.021,
+        resizeMode: "contain",
+        tintColor: "#6A707C",
+        // backgroundColor:"red",
+        // marginLeft: screenWidth*0.73,
+        // position:"absolute",
+        // marginTop:screenHeight*-0.023
+
+
+      }}
+        source={require("../../assets/back.png")} />
+
     </TouchableOpacity>
 
 
     <Text
-      style={{
-        fontSize: RFValue(20),
-        fontFamily: "Urbanist_600SemiBold",
-        color: "#0F2944"
-        // marginLeft: "30%",
-
-
-      }}
-    >
-    Settings
-    </Text>
-
-
-    <TouchableOpacity 
     style={{
-      marginRight: "4%",
-    }}
-    onPress={() => setmodalVisible(true)}>
-    <Image style={{
-      width: screenWidth * 0.1,
-      height: screenHeight * 0.047,
-      resizeMode: "contain",
-      justifyContent: "center",
-      alignSelf: "center",
-      alignItems: "center",
+      fontSize: RFValue(20),
+      fontFamily: "Urbanist_600SemiBold",
+      color: "#0F2944"
+      // marginLeft: "30%",
+
 
     }}
-      source={require("../../assets/HomeBack.png")} />
-  </TouchableOpacity>
+  >
+Settings
+  </Text>
+
+   
+  <TouchableOpacity
+  style={{
+    marginRight: "4%",
+    // marginTop:screenHeight*0.003,
+    // backgroundColor: "red",
+    height: screenHeight * 0.055,
+    width: "11.4%",
+    borderRadius: (screenWidth, screenHeight) * 0.016,
+    borderWidth: (screenWidth, screenHeight) * 0.0013,
+    borderColor: "#E0E0E0",
+    justifyContent: "center",
+    alignSelf: "center",
+    alignItems: "center",
+
+  }}
+  onPress={() => setmodalVisible(true)}
+  >
+
+  <Image
+            style={{
+              width: 19,
+              height: 20,
+              width: screenWidth * 0.053,
+              height: screenHeight * 0.027,
+              alignSelf: "center",
+              marginRight: "3%",
+              resizeMode: "contain",
+              //  backgroundColor:"red"
+            }}
+
+            source={require('../../assets/Homeicon.png')} />
+</TouchableOpacity>
 
 
- 
 
 
   </View>
@@ -173,19 +234,21 @@ const Settings = () => {
 
   <Text
   style={{
-    fontSize:  RFValue(18),
-   fontFamily:"Urbanist_600SemiBold",
+    fontSize:  RFValue(13),
+   fontFamily:"Urbanist_500Medium",
     // lineHeight: 20,
     // left: "6%",
     // letterSpacing: -1,
     position: "relative",
-    marginTop: "12%",
+    // marginTop: "12%",
+    marginTop: 13,
     // width: 210,
-    alignSelf:"center",
-    color:"#0F2944"
+    // alignSelf:"center",
+    color:"#0F2944",
+    marginLeft:"5%"
   }}
 >
-Select Your Country Here !
+Select Country
 </Text>
 
 
@@ -194,7 +257,10 @@ Select Your Country Here !
     // position: "absolute",
     // top: 105,
     position: "relative",
-    top: screenHeight * 0.04
+    // top: screenHeight * 0.04
+    marginTop: 13,
+  
+
   }}>
    
   <SelectList 
@@ -204,14 +270,17 @@ Select Your Country Here !
   defaultOption={defaultCountry}
   
   boxStyles={{
-    backgroundColor: "#EDEEEF",
+    // backgroundColor: "#EDEEEF",
       borderWidth: 1,
+    borderWidth: (screenWidth, screenHeight) * 0.0013,
+
       borderColor: '#EDEEEF',
-      width: "91%",
+      width: "91%", 
+      //  height:38,
       // height: screenHeight * 0.052,
       // borderRadiush: 8,
       fontSize: RFValue(12),
-    
+  
       paddingLeft: screenWidth * 0.1,
       // borderBottomLeftRadius:8,
     
@@ -228,12 +297,12 @@ Select Your Country Here !
   }}
 
   dropdownTextStyles={{
-    fontSize: RFValue(17),
+    fontSize: RFValue(14),
     fontFamily: "Urbanist_500Medium",
   }}
   inputStyles={{
     // backgroundColor:"red",
-    fontSize: RFValue(17),
+    fontSize: RFValue(14),
     fontFamily:"Urbanist_600SemiBold",
 
     color:"#0F2944"
@@ -245,6 +314,8 @@ Select Your Country Here !
 
 
 
+ 
+
     <Text
     style={{
       fontSize:  RFValue(18),
@@ -253,18 +324,23 @@ Select Your Country Here !
       // left: "6%",
       // letterSpacing: -1,
       position: "relative",
-      marginTop: "22%",
+      marginTop: "9%",
+      marginTop: 21,
       // width: 210,
       alignSelf:"center",
       color:"#0F2944"
     }}
   >
- You can Change or Reset your Account {'\n'}                    Password here !
+  Change Password
   </Text>
 
+
+
+
   <TextInput style={{
-    backgroundColor: "#F7F8F9",
+    // backgroundColor: "#F7F8F9",
     borderWidth: 1,
+    borderWidth: (screenWidth, screenHeight) * 0.0013,
     borderColor: "#E8ECF4",
     // width: 335,
     width: "90%",
@@ -280,10 +356,66 @@ Select Your Country Here !
     marginTop: "6.4%",
     padding: 10
   }}
-    placeholder='Enter your Email Here'
+    placeholder='Current Password'
     placeholderTextColor="#8391A1"
-    value={email}
-    onChangeText={text => setEmail(text)}
+    value={currentPassword}
+    onChangeText={text => setCurrentPassword(text)}
+    autoCorrect={false}
+  />
+
+  
+  <TextInput style={{
+    // backgroundColor: "#F7F8F9",
+    borderWidth: 1,
+    borderWidth: (screenWidth, screenHeight) * 0.0013,
+    borderColor: "#E8ECF4",
+    // width: 335,
+    width: "90%",
+    height: screenHeight*0.06,
+    alignSelf: "center",
+    borderRadius: 8,
+    fontSize:  RFValue(12),
+    fontFamily:"Urbanist_500Medium",
+    // lineHeight: 15,
+    // position: "absolute",
+    // top: 156,
+    position: "relative",
+    marginTop: 8,
+    marginTop: "2.2%",
+    padding: 10
+  }}
+    placeholder='New Password'
+    placeholderTextColor="#8391A1"
+    value={newPassword}
+    onChangeText={text => setNewPassword(text)}
+    autoCorrect={false}
+  />
+  <TextInput style={{
+    // backgroundColor: "#F7F8F9",
+    borderWidth: 1,
+    borderWidth: (screenWidth, screenHeight) * 0.0013,
+
+    borderColor: "#E8ECF4",
+    // width: 335,
+    width: "90%",
+    height: screenHeight*0.06,
+    alignSelf: "center",
+    borderRadius: 8,
+    fontSize:  RFValue(12),
+    fontFamily:"Urbanist_500Medium",
+    // lineHeight: 15,
+    // position: "absolute",
+    // top: 156,
+    position: "relative",
+    // marginTop: "6.4%",
+    marginTop: 8,
+    marginTop: "2.2%",
+    padding: 10
+  }}
+    placeholder='Confirm New Password'
+    placeholderTextColor="#8391A1"
+    value={confiemPassword}
+    onChangeText={text => setConfiemPassword(text)}
     autoCorrect={false}
   />
 

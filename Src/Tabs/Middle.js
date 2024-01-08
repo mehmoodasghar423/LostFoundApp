@@ -78,11 +78,21 @@ const Middle = () => {
 
         }}
         onPress={handleGoBack}>
-        <Ionicons name="ios-chevron-back-sharp"
-          size={screenWidth * 0.08}
-          color="#6A707C"
-          style={{
-          }} />
+        <Image style={{
+          width: 9.4,
+          width: screenWidth * 0.05,
+          height: 14.02,
+          height: screenHeight * 0.025,
+          resizeMode: "contain",
+          tintColor:"#6A707C"
+          // backgroundColor:"red",
+          // marginLeft: screenWidth*0.73,
+          // position:"absolute",
+          // marginTop:screenHeight*-0.023
+
+
+        }}
+          source={require("../../assets/back.png")} />
       </TouchableOpacity>
 
 
@@ -109,7 +119,7 @@ const Middle = () => {
           style={{
             fontSize: RFValue(16),
             fontFamily: "Urbanist_600SemiBold",
-            lineHeight: 24,
+            lineHeight: RFValue(24),
             // left: "6%",
             position: "relative",
             // top: 94,
@@ -135,7 +145,7 @@ const Middle = () => {
               borderRadius: (screenWidth, screenHeight) * 0.01,
               borderWidth: (screenWidth, screenHeight) * 0.002,
               borderColor: "#6A707C",
-              marginRight: screenWidth*0.032,
+              // marginRight: screenWidth*0.032,
               justifyContent:"center",
               alignItems:"center"
             }, selectedButton === 'button1' && styles.selectedButton]}
@@ -155,7 +165,7 @@ const Middle = () => {
               borderRadius: (screenWidth, screenHeight) * 0.01,
               borderWidth: (screenWidth, screenHeight) * 0.002,
               borderColor: "#8391A1",
-              marginRight: screenWidth*0.03,
+              marginLeft: screenWidth*0.03,
               justifyContent:"center",
               alignItems:"center"
             }, selectedButton === 'button2' && styles.selectedButton]}

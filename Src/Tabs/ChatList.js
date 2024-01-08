@@ -53,7 +53,7 @@ const listenForOnlineStatus = () => {
             [recipientId]: userData.onlineStatus,
           }));
         } else {
-          console.log('No such document for recipient:', recipientId);
+          // console.log('No such document for recipient:', recipientId);
         }
       },
       (error) => {
@@ -95,7 +95,7 @@ useEffect(() => {
                 [recipientId]: userData.onlineStatus,
               }));
             } else {
-              console.log('No such document for recipient:', recipientId);
+              // console.log('No such document for recipient:', recipientId);
             }
           })
           .catch((error) => {
@@ -317,17 +317,26 @@ useEffect(() => {
             }}
           />
 
-          <Ionicons
-            name='search'
-            size={RFValue(17)}
-            color='#888888'
-            style={{
-              position: 'absolute',
-              left: '8%',
-              alignSelf: 'center',
-              marginTop: 10,
-            }}
-          />
+          <Image
+          style={{
+            width: 12,
+            height: 12,
+            width: screenWidth * 0.033,
+            height: screenHeight * 0.016,
+            resizeMode:"contain",
+            alignSelf: "center",
+            // backgroundColor: "red",
+            position: "absolute",
+            top:screenHeight*0.018,
+            left:screenWidth*0.085
+
+            // marginTop:screenWidth*0.03
+            // marginTop:"14%"
+            // marginLeft:"8%"
+          }}
+
+          source={require('../../assets/Search.png')} />
+
         </View>
 
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>

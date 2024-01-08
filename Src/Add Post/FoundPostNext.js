@@ -327,11 +327,22 @@ const FoundPostNext = ({ route }) => {
 
       }}
       onPress={handleGoBack}>
-      <Ionicons name="ios-chevron-back-sharp"
-        size={screenWidth * 0.08}
-        color="#6A707C"
-        style={{
-        }} />
+      <Image style={{
+        width: 10,
+        height: 16,
+        width: screenWidth * 0.0285,
+        height: screenHeight * 0.021,
+        resizeMode: "contain",
+        tintColor: "#6A707C",
+        // backgroundColor:"red",
+        // marginLeft: screenWidth*0.73,
+        // position:"absolute",
+        // marginTop:screenHeight*-0.023
+
+
+      }}
+        source={require("../../assets/back.png")} />
+
     </TouchableOpacity>
 
 
@@ -345,27 +356,45 @@ const FoundPostNext = ({ route }) => {
 
       }}
     >
-      Found Post 
+      Found Post
     </Text>
 
 
     <TouchableOpacity
       style={{
         marginRight: "4%",
-      }}
-      onPress={() => sethomemodalVisibleNew(true)}>
-
-      <Image style={{
-        width: screenWidth * 0.1,
-        height: screenHeight * 0.047,
-        resizeMode: "contain",
+        // marginTop:screenHeight*0.003,
+        // backgroundColor: "red",
+        height: screenHeight * 0.055,
+        width: "11.4%",
+        borderRadius: (screenWidth, screenHeight) * 0.016,
+        borderWidth: (screenWidth, screenHeight) * 0.0013,
+        borderColor: "#E0E0E0",
         justifyContent: "center",
         alignSelf: "center",
         alignItems: "center",
 
       }}
-        source={require("../../assets/HomeBack.png")} />
+      onPress={() => sethomemodalVisibleNew(true)}>
+
+
+
+      <Image
+        style={{
+          width: 19,
+          height: 20,
+          width: screenWidth * 0.053,
+          height: screenHeight * 0.027,
+          alignSelf: "center",
+          marginRight: "3%",
+          resizeMode: "contain",
+          //  backgroundColor:"red"
+        }}
+
+        source={require('../../assets/Homeicon.png')} />
     </TouchableOpacity>
+
+
 
 
 
@@ -389,7 +418,7 @@ const FoundPostNext = ({ route }) => {
           fontSize: RFValue(12),
           fontFamily: "Urbanist_500Medium",
           // lineHeight: 14.4,
-          left: "4.5%",
+          marginLeft: "4.5%",
           position: "relative",
           top: screenHeight * 0.03
 
@@ -399,10 +428,11 @@ const FoundPostNext = ({ route }) => {
       </Text>
 
       <TextInput style={{
-        backgroundColor: "#EDEEEF",
+        // backgroundColor: "#EDEEEF",
         borderWidth: 1,
-        borderColor: nameError ? '#483d8b' : '#EDEEEF',
-        width: "92%",
+        borderWidth: (screenWidth, screenHeight) * 0.0013,
+        borderColor: nameError ? '#483d8b' : '#E0E0E0',
+        width: "91%",
         // width:279,
         height: 38,
         height: screenHeight * 0.052,
@@ -411,15 +441,16 @@ const FoundPostNext = ({ route }) => {
         fontFamily: "Urbanist_500Medium",
         position: "relative",
         top: screenHeight * 0.04,
-        paddingLeft: screenWidth * 0.05,
-        letterSpacing: 0.1,
-        color: "#8C9199",
+        paddingLeft: screenWidth * 0.043,  
+        // paddingLeft: 15,  
+        
+        color: "#6A707C",
         // marginLeft: "6%"
         alignSelf: "center",
       }}
 
         placeholder='Enter Lost item Name '
-        placeholderTextColor="#8391A1"
+        placeholderTextColor="#6A707C"
         value={lostItem}
         onChangeText={text => setlostItem(text)}
       />
@@ -431,7 +462,7 @@ const FoundPostNext = ({ route }) => {
           fontSize: RFValue(12),
           fontFamily: "Urbanist_500Medium",
           // lineHeight: 14.4,
-          left: "4.5%",
+          marginLeft: "4.5%",
           position: "relative",
           top: screenHeight * 0.07,
           color: "#0F2944"
@@ -444,10 +475,11 @@ const FoundPostNext = ({ route }) => {
       <TextInput
         multiline
         style={{
-          backgroundColor: "#EDEEEF",
+          // backgroundColor: "#EDEEEF",
           borderWidth: 1,
-          borderColor: descriptionError ? '#483d8b' : '#EDEEEF',
-          width: "92%",
+          borderWidth: (screenWidth, screenHeight) * 0.0013,
+          borderColor: descriptionError ? '#483d8b' : '#E0E0E0',
+          width: "91%",
           // width:279,
           height: 38,
           height: screenHeight * 0.16,
@@ -456,14 +488,15 @@ const FoundPostNext = ({ route }) => {
           fontFamily: "Urbanist_500Medium",
           position: "relative",
           top: screenHeight * 0.08,
-          paddingLeft: screenWidth * 0.05,
-          letterSpacing: 0.1,
-          color: "#8C9199",
+          paddingLeft: screenWidth * 0.043,  
+          color: "#6A707C",
           // marginLeft: "6%"
-          alignSelf: "center"
+          alignSelf: "center",
+          textAlignVertical: 'top',
+          paddingVertical: screenHeight * 0.0155
         }}
         placeholder='Enter Description '
-        placeholderTextColor="#8391A1"
+        placeholderTextColor="#6A707C"
         value={description}
         onChangeText={text => setdescription(text)}
 
@@ -488,7 +521,7 @@ const FoundPostNext = ({ route }) => {
           fontSize: RFValue(12),
           fontFamily: "Urbanist_500Medium",
           // lineHeight: 14.4,
-          left: "4.5%",
+          marginLeft: "4.5%",
           position: "relative",
           top: screenHeight * 0.11,
           color: "#0F2944"
@@ -503,7 +536,7 @@ const FoundPostNext = ({ route }) => {
 
         position: "relative",
         top: screenHeight * 0.12,
-        left: "4.5%",
+        marginLeft: "4.5%",
         flexDirection: "row"
       }}>
 
@@ -620,14 +653,12 @@ const FoundPostNext = ({ route }) => {
             <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Ionicons name="add-circle-sharp"
             size={RFValue(29)}
-            color="#0F2944" // Set color based on selectedButton
+            color="#0F2944"
             style={{
               width: screenWidth * 0.08,
                 height: screenHeight * 0.041,
               alignSelf: "center",
-              // marginRight: "3%",
-              // backgroundColor:"yellow",
-              // marginTop: "2%"
+            
 
             }}
           />
@@ -644,7 +675,7 @@ const FoundPostNext = ({ route }) => {
                 {showCrosImage1 && (
                   <TouchableOpacity
                     onPress={() => {
-                      setImage1(null); // Replace this with the action you want to perform when dismissing the image
+                      setImage1(null); 
                       setShowCrosImage1(false);
                     }}
                     style={{ position: 'absolute', top: screenHeight * 0.001, right: screenWidth * -0.006 }}
@@ -766,12 +797,12 @@ const FoundPostNext = ({ route }) => {
           // position: "absolute",
           // top: 427,
           position: 'relative',
-          top: screenHeight * 0.17,
+          top: screenHeight * 0.162,
           borderRadius: 8,
           backgroundColor: '#0F2944',
           height: screenHeight * 0.059,
           alignSelf: "center",
-          width: "92%",
+          width: "91%",
           justifyContent: "center"
         }}><Text style={{
           fontSize: RFValue(15),

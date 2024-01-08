@@ -218,6 +218,8 @@ const Profile = () => {
           <Text
             style={{
               fontSize: RFValue(20),
+              // fontSize: 20,
+              
               fontFamily: "Urbanist_600SemiBold",
 
               letterSpacing: -1,
@@ -270,37 +272,38 @@ const Profile = () => {
               position: "absolute",
               borderColor: "white",
               // borderWidth:(screenWidth, screenHeight) * 0.007,
-              borderRadius:(screenWidth, screenHeight) * 0.1,
+              borderRadius: (screenWidth, screenHeight) * 0.1,
             }}
 
           />}
 
           <TouchableOpacity onPress={pickImage} style={{
-            backgroundColor: "white",
+            // backgroundColor: "white",
             height: screenHeight * 0.04,
             width: screenWidth * 0.08,
             position: "absolute",
             bottom: screenHeight * -0.0006,
             alignSelf: "center",
             right: screenWidth * 0.38,
-            alignItems:"center",
-            justifyContent:"center",
-              borderRadius:(screenWidth, screenHeight) * 0.08,
+            
+           
+           
 
           }}>
-          <SimpleLineIcons name="camera"
-          size={RFValue(19)}
-          color="#0F2944" // Set color based on selectedButton
+          <Image
           style={{
-            width: screenWidth * 0.06,
-            height: screenHeight * 0.031,
+            width: 32,
+            width: screenWidth * 0.087,
+            height: 32,
+            height: screenHeight * 0.0423,
             alignSelf: "center",
-            // marginRight: "3%",
-            // backgroundColor:"yellow",
-            // marginTop: "2%"
-
+            resizeMode:"contain",
+            marginRight: "3%",
+            // backgroundColor:"red",
           }}
-        />
+
+          source={require('../../assets/Camera.png')} />
+
           </TouchableOpacity>
 
         </View>
@@ -340,7 +343,7 @@ const Profile = () => {
           borderColor: "#0F2944",
           borderWidth: (screenWidth, screenHeight) * 0.0014,
           borderRadius: (screenWidth, screenHeight) * 0.007,
-          flexDirection: "row"
+          flexDirection: "row",justifyContent:"center"
         }}>
 
           <Image
@@ -351,17 +354,18 @@ const Profile = () => {
               height: screenHeight * 0.027,
               resizeMode: "contain",
               alignSelf: "center",
-              marginLeft: "29%",
+              // marginLeft: "29%",
+              marginRight:8
             }}
             source={require('../../assets/LostApp/Point.png')} />
 
 
           <Text
             style={{
-              fontSize: RFValue(20),
+              fontSize: RFValue(15),
               fontFamily: "Urbanist_600SemiBold",
               // lineHeight: 17.5,
-              left: "20%",
+              // left: "20%",
               letterSpacing: -1,
 
               color: "#0F2944",
@@ -369,7 +373,7 @@ const Profile = () => {
               alignSelf: "center"
             }}
           >
-            Points : 0
+            Points : 1234
           </Text>
 
 
@@ -386,38 +390,38 @@ const Profile = () => {
             marginTop: "5%",
             width: "82%",
             height: 60,
-            borderColor: "#8391A1",
+            height: screenHeight*0.075,
+            borderColor: "#E0E0E0",
             borderBottomWidth: screenWidth * 0.001,
-            marginLeft: "6%",
+            marginLeft: "5%",
             flexDirection: "row",
           }}>
 
-          <MaterialCommunityIcons name="contacts-outline"
-            size={RFValue(19)}
-            color="#0F2944" // Set color based on selectedButton
+
+
+          <Image
             style={{
-              width: screenWidth * 0.053,
-              height: screenHeight * 0.031,
+              width: 20,
+              height: 20,
+              width: screenWidth * 0.056,
+              height: screenHeight * 0.0266,
+              resizeMode:"contain",
               alignSelf: "center",
               marginRight: "3%",
-              // backgroundColor:"yellow",
-              marginTop: "2%"
-
+              // backgroundColor:"red"
             }}
-          />
 
-
-
+            source={require('../../assets/profile-circle.png')} />
 
 
           <Text
             style={{
-              fontSize: RFValue(15),
+              fontSize: RFValue(16),
               position: "absolute",
               left: "13%",
               fontFamily: "Urbanist_500Medium",
               alignSelf: "center",
-
+              color: "#0F2944"
             }}
           >
             Account Detail
@@ -437,34 +441,36 @@ const Profile = () => {
             marginTop: "2%",
             width: "82%",
             height: 60,
-            borderColor: "#8391A1",
+            height: screenHeight*0.075,
+            borderColor: "#E0E0E0",
             borderBottomWidth: screenWidth * 0.001,
-            marginLeft: "6%",
+            marginLeft: "5%",
             flexDirection: "row",
           }}>
 
-          <SimpleLineIcons name="settings"
-            size={RFValue(19)}
-            color="#0F2944" // Set color based on selectedButton
-            style={{
-              width: screenWidth * 0.055,
-              height: screenHeight * 0.031,
-              alignSelf: "center",
-              marginRight: "3%",
-              // backgroundColor:"yellow",
-              marginTop: "2%"
+          <Image
+          style={{
+            
+            width: 20,
+            height: 20,
+            width: screenWidth * 0.056,
+            height: screenHeight * 0.0266,
+            resizeMode:"contain",
+            alignSelf: "center",
+            marginRight: "3%",
+          }}
 
-            }}
-          />
+          source={require('../../assets/setting-2.png')} />
 
 
           <Text
             style={{
-              fontSize: RFValue(15),
+              fontSize: RFValue(16),
               position: "absolute",
               left: "13%",
               fontFamily: "Urbanist_500Medium",
-              alignSelf: "center"
+              alignSelf: "center",
+              color: "#0F2944"
             }}
           >
             Settings
@@ -481,38 +487,40 @@ const Profile = () => {
         <TouchableOpacity
           onPress={ContactHandler}
           style={{
-
             position: "relative",
             marginTop: "2%",
             width: "82%",
             height: 60,
-            borderColor: "#8391A1",
+            height: screenHeight*0.075,
+            borderColor: "#E0E0E0",
             borderBottomWidth: screenWidth * 0.001,
-            marginLeft: "6%",
+            marginLeft: "5%",
             flexDirection: "row",
           }}>
 
-          <AntDesign name="mail"
-            size={RFValue(19)}
-            color="#0F2944" // Set color based on selectedButton
-            style={{
-              width: screenWidth * 0.055,
-              height: screenHeight * 0.031,
-              alignSelf: "center",
-              marginRight: "3%",
-              // backgroundColor:"yellow",
-              marginTop: "2%"
+          <Image
+          style={{
+          
+            width: 20,
+            height: 20,
+            width: screenWidth * 0.056,
+            height: screenHeight * 0.0266,
+            resizeMode:"contain",
+            alignSelf: "center",
+            marginRight: "3%",
+          }}
 
-            }}
-          />
+          source={require('../../assets/sms-notification.png')} />
+
 
           <Text
             style={{
-              fontSize: RFValue(15),
+              fontSize: RFValue(16),
               position: "absolute",
               left: "13%",
               fontFamily: "Urbanist_500Medium",
-              alignSelf: "center"
+              alignSelf: "center",
+              color: "#0F2944"
             }}
           >
             Contact

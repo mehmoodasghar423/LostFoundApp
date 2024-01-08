@@ -2,7 +2,7 @@
   "expo": {
     "name": "Lost & Found",
     "slug": "Minimalone",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "com.yourcompany.lostandfound", 
-      "versionCode":3,
+      "versionCode":4,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDbcwfqnPYudCOOhzi85aGb1Ll2v5Wklfc"

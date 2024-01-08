@@ -17,6 +17,21 @@ import { Entypo, Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 
 
+const CustomAntDesignIcon = () => (
+  <AntDesign
+    name="down"
+    size={RFValue(13)}
+    color="red"
+    style={{
+      // left: "17%",
+      top: 2,
+      alignSelf: "center",
+    }}
+  />
+);
+
+
+
 
 const LostPost = ({ route }) => {
   const navigation = useNavigation();
@@ -146,78 +161,107 @@ const LostPost = ({ route }) => {
   }
 
   return (
-    
-    
-    <SafeAreaView style={{flex:1,backgroundColor:"white"}}>
-    
-    <View>
-    <Image style={{width:100,height:400,position:"absolute",marginLeft:10}} source={require('../../assets/line.png')}/>                                  
 
 
-      
-      <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+
+      <View>
 
 
-        <TouchableOpacity
-          style={{
-            marginLeft: "4%",
-            // marginTop:screenHeight*0.003,
-            // backgroundColor: "red",
-            height: screenHeight * 0.055,
-            width: "11.4%",
-            borderRadius: (screenWidth, screenHeight) * 0.016,
-            borderWidth: (screenWidth, screenHeight) * 0.0013,
-            borderColor: "#E0E0E0",
-            justifyContent: "center",
-            alignSelf: "center",
-            alignItems: "center",
 
-          }}
-          onPress={handleGoBack}>
-          <Ionicons name="ios-chevron-back-sharp"
-            size={screenWidth * 0.08}
-            color="#6A707C"
+
+        <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
+
+
+          <TouchableOpacity
             style={{
-            }} />
-        </TouchableOpacity>
+              marginLeft: "4%",
+              // marginTop:screenHeight*0.003,
+              // backgroundColor: "red",
+              height: screenHeight * 0.055,
+              width: "11.4%",
+              borderRadius: (screenWidth, screenHeight) * 0.016,
+              borderWidth: (screenWidth, screenHeight) * 0.0013,
+              borderColor: "#E0E0E0",
+              justifyContent: "center",
+              alignSelf: "center",
+              alignItems: "center",
+
+            }}
+            onPress={handleGoBack}>
+            <Image style={{
+              width: 10,
+              height: 16,
+              width: screenWidth * 0.0285,
+              height: screenHeight * 0.021,
+              resizeMode: "contain",
+              tintColor: "#6A707C",
+              // backgroundColor:"red",
+              // marginLeft: screenWidth*0.73,
+              // position:"absolute",
+              // marginTop:screenHeight*-0.023
 
 
-        <Text
-          style={{
-            fontSize: RFValue(20),
-            fontFamily: "Urbanist_600SemiBold",
-            color: "#0F2944"
-            // marginLeft: "30%",
+            }}
+              source={require("../../assets/back.png")} />
+
+          </TouchableOpacity>
 
 
-          }}
-        >
-        Lost Post
-        </Text>
+          <Text
+            style={{
+              fontSize: RFValue(20),
+              fontFamily: "Urbanist_600SemiBold",
+              color: "#0F2944"
+              // marginLeft: "30%",
 
 
-        <TouchableOpacity 
-        style={{
-          marginRight: "4%",
-        }}
-        onPress={() => setmodalVisible(true)}>
-        <Image style={{
-          width: screenWidth * 0.1,
-          height: screenHeight * 0.047,
-          resizeMode: "contain",
-          justifyContent: "center",
-          alignSelf: "center",
-          alignItems: "center",
-
-        }}
-          source={require("../../assets/HomeBack.png")} />
-      </TouchableOpacity>
+            }}
+          >
+            Lost Post
+          </Text>
 
 
-     
+          <TouchableOpacity
+            style={{
+              marginRight: "4%",
+              // marginTop:screenHeight*0.003,
+              // backgroundColor: "red",
+              height: screenHeight * 0.055,
+              width: "11.4%",
+              borderRadius: (screenWidth, screenHeight) * 0.016,
+              borderWidth: (screenWidth, screenHeight) * 0.0013,
+              borderColor: "#E0E0E0",
+              justifyContent: "center",
+              alignSelf: "center",
+              alignItems: "center",
+
+            }}
+            onPress={() => setmodalVisible(true)}
+          >
+
+            <Image
+              style={{
+                width: 19,
+                height: 20,
+                width: screenWidth * 0.053,
+                height: screenHeight * 0.027,
+                alignSelf: "center",
+                marginRight: "3%",
+                resizeMode: "contain",
+                //  backgroundColor:"red"
+              }}
+
+              source={require('../../assets/Homeicon.png')} />
+          </TouchableOpacity>
 
 
-      </View>
+
+
+
+
+
+        </View>
 
         <Text
           style={{
@@ -242,34 +286,43 @@ const LostPost = ({ route }) => {
         }}>
 
 
-          <TouchableOpacity>
+          <TouchableOpacity style={{
+            // backgroundColor:"red",  s
+            borderWidth: 1,
+            borderRadius: 8,
+            borderWidth: (screenWidth, screenHeight) * 0.0013,
+            borderColor: categoryError ? '#0F2944' : '#E0E0E0',
+
+            borderRadius: (screenWidth, screenHeight) * 0.01,
+
+            width: "91%",
+            alignSelf: "center",
+          }}>
+
 
 
             <SelectList
               setSelected={setCategory} data={data}
-          
 
               boxStyles={{
-                backgroundColor: "#EDEEEF",
-                borderWidth: 1,
-                borderColor: categoryError ? '#0F2944' : '#EDEEEF',
-                width: "92%",
-                // height: screenHeight * 0.052,
-                borderRadius: 8,
-                fontSize: RFValue(12),
-                paddingLeft: screenWidth * 0.1,
+                // backgroundColor: "#EDEEEF",
+
                 height: screenHeight * 0.052,
+                // height: screenHeight * 0.052,
+                borderColor: "rgba(255, 0, 0, 0)",
+                marginLeft: screenWidth * 0.05,
+                fontSize: RFValue(12),
+                paddingLeft: screenWidth * 0.05,
                 color: "#8C9199",
-                // marginLeft: "6%"
-                alignSelf: "center",
-                alignItems:"center",
-                
+                alignItems: "center",
+                width: "97%",
               }}
               dropdownStyles={{
                 borderWidth: 1,
                 borderColor: "#EDEEEF",
-                width: "91%",
-                alignSelf: "center"
+                width: "100%",
+                alignSelf: "center",
+                marginTop: 0
               }}
 
               dropdownTextStyles={{
@@ -280,32 +333,37 @@ const LostPost = ({ route }) => {
                 // backgroundColor:"red",
                 fontSize: RFValue(12),
                 fontFamily: "Urbanist_500Medium",
-                color: "#8391A1",
-                textAlign:"center",
-                marginLeft:screenWidth*0.06,
-                marginTop:screenHeight * 0.005,
-                height:screenHeight * 0.022,
-               
-
+                color: "#6A707C",
+                textAlign: "center",
+                // marginLeft:screenWidth*0.06,
+                marginTop: screenHeight * 0.005,
+                height: screenHeight * 0.022,
+                // paddingLeft: -10
               }}
             />
 
 
-            <MaterialIcons name="category"
-              size={RFValue(20)}
-              color="#8391A1"
-
-              style={{
-                position: "absolute",
-                left: "12.5%",
-                top: screenHeight * 0.012,
-                // alignSelf:"center",
-                marginRight: screenWidth * 0.01,
+            <Image style={{
+              width: screenWidth * 0.1,
+              height: screenHeight * 0.047,
+              width: 15,
+              height: 15,
+              width: screenWidth * 0.0402,
+              height: screenHeight * 0.0197,
+              resizeMode: "contain",
 
 
+              alignSelf: "center",
+              position: "absolute",
+              left: screenWidth * 0.038,
+              top: screenHeight * 0.0155,
+              // alignSelf:"center",
+              // marginRight: screenWidth * 0.01,
 
-              }}
-            />
+
+
+            }}
+              source={require("../../assets/Search.png")} />
 
 
 
@@ -338,14 +396,16 @@ const LostPost = ({ route }) => {
             top: screenHeight * 0.08,
             // position:"absolute",
             // top:187,
-            backgroundColor: "#EDEEEF",
+            // backgroundColor: "#EDEEEF",
             borderWidth: 1,
-            borderColor: locationError ? '#0F2944' : '#EDEEEF',
-            width: "92%",
+            borderColor: locationError ? '#0F2944' : '#E0E0E0',
+            width: "91%",
+            height: screenHeight * 0.05,
             // width:279,
-            height: 38,
-            height: screenHeight * 0.052,
+            // height: 38,
             borderRadius: 8,
+            borderWidth: (screenWidth, screenHeight) * 0.0013,
+            borderColor: categoryError ? '#0F2944' : '#E0E0E0',
             fontSize: RFValue(12),
             alignSelf: "center",
             flexDirection: "row",
@@ -354,151 +414,168 @@ const LostPost = ({ route }) => {
           }}>
 
 
-          <MaterialIcons name="location-city"
-            size={RFValue(20)}
-            color="#8391A1"
+          <Image style={{
+            width: 15,
+            width: screenWidth * 0.0402,
+            height: 15,
+            height: screenHeight * 0.0197,
+            resizeMode: "contain",
+            marginLeft: screenWidth * 0.05,
+            marginLeft: 13,
+            marginLeft: screenWidth * 0.036,
+            // backgroundColor:"red",
 
-            style={{
-              // position: "absolute",
-              // left: "17%",
-              // top: 2,
-              marginLeft: screenWidth * 0.08,
-              alignSelf: "center",
+            alignSelf: "center",
 
 
-            }}
-          />
+          }}
+            source={require("../../assets/location.png")} />
+
+
+
 
           <Text style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
-            marginLeft: screenWidth * 0.02,
-            color: "#8391A1", marginRight: 10
+            color: "#6A707C",
+            marginLeft: screenWidth * 0.033,
+            marginLeft: 10
           }}>
-            {location || 'Please Select Your Specific Location here '}
+            {location || 'Select Location'}
           </Text>
-          <AntDesign name="down"
-            size={RFValue(13)}
-            color="#8391A1"
 
-            style={{
-              // position: "absolute",
-              left: "17%",
-              top: 2,
-              alignSelf: "center",
+          <Image style={{
+            width: 11,
+            height: 7,
+            width: screenWidth * 0.03,
+            height: screenHeight * 0.01,
+            resizeMode: "contain",
+            // backgroundColor:"red",
+            // marginLeft: screenWidth * 0.05,
+            position: "absolute",
+             right: 17,
+             right: screenWidth * 0.0474,
+
+            alignSelf: "center",
 
 
-            }}
-          />
+          }}
+            source={require("../../assets/down2.png")} />
+
         </TouchableOpacity>
 
 
 
 
-       
-
-        
-            <Text
-              style={{
-              
-                fontSize: RFValue(12),
-                fontFamily: "Urbanist_500Medium",
-                // lineHeight: 14.4,
-                left: "4.5%",
-                position: "relative",
-                top: screenHeight * 0.11,
-                color: "#0F2944"
-                // lineHeight: 14.4,
-              }}
-            >
-              Date Lost
-            </Text>
-       
 
 
 
+        <Text
+          style={{
 
-
-       
-
-        <TouchableOpacity 
-        onPress={showDatePicker}
-        style={{
-          position: "relative",
-          top: screenHeight * 0.12,
-          // position:"absolute",
-          // top:187,
-          backgroundColor: "#EDEEEF",
-          borderWidth: 1,
-          borderColor: dateError ? '#0F2944' : '#EDEEEF',
-          width: "60%",
-          // width:279,
-          height: 38,
-          height: screenHeight * 0.052,
-          borderRadius: 8,
-          fontSize: RFValue(12),
-          // alignSelf: "center",
-          marginLeft:"4.5%",
-          flexDirection: "row",
-          alignItems: "center",
-          //  justifyContent: "center",
-        }}>
-
-
-
-
-      
-
-
-            <Fontisto name="date"
-            size={RFValue(17)}
-            color="#8391A1"
-
-            style={{
-              // position: "absolute",
-              // left: "17%",
-              // top: 2,
-              marginLeft: screenWidth * 0.07,
-              left: "12.5%",
-              alignSelf: "center",
-
-
-            }}
-          />
-
-
-
-
-            <Text
-              style={{
-                fontSize: RFValue(12),
+            fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
-            color: "#8391A1", marginLeft:screenWidth*0.043
-              }}
-            >
-              {selectedDate
-                ? `${moment(selectedDate).format("MMMM Do YYYY")}`
-                : 'Select Date'}
-            </Text>
+            // lineHeight: 14.4,
+            left: "4.5%",
+            position: "relative",
+            top: screenHeight * 0.11,
+            color: "#0F2944"
+            // lineHeight: 14.4,
+          }}
+        >
+          Date Lost
+        </Text>
 
-            <AntDesign name="down"
-            size={RFValue(13)}
-            color="#8391A1"
 
+
+
+
+
+
+
+        <TouchableOpacity
+          onPress={showDatePicker}
+          style={{
+            position: "relative",
+            top: screenHeight * 0.12,
+            // position:"absolute",
+            // top:187,
+            // backgroundColor: "#EDEEEF",
+            borderWidth: 1,
+            borderColor: dateError ? '#0F2944' : '#E0E0E0',
+            width: "91%",
+            height: screenHeight * 0.05,
+            borderRadius: 8,
+            borderWidth: (screenWidth, screenHeight) * 0.0013,
+            borderColor: categoryError ? '#0F2944' : '#E0E0E0',
+            fontSize: RFValue(12),
+            // alignSelf: "center",
+            marginLeft: "4.5%",
+            flexDirection: "row",
+            alignItems: "center",
+            //  justifyContent: "center",
+          }}>
+
+
+
+
+
+          <Image style={{
+            width: 15,
+            height: 15,
+            width: screenWidth * 0.0402,
+            height: screenHeight * 0.0197,
+            resizeMode: "contain",
+            marginLeft: screenWidth * 0.05,
+            marginLeft: 13,
+            marginLeft: screenWidth * 0.036,
+            // backgroundColor:"red",
+
+            alignSelf: "center",
+
+
+          }}
+            source={require("../../assets/calender.png")} />
+
+
+
+
+
+          <Text
             style={{
-              // position: "absolute",
-              left: "17%",
-              top: 2,
-              alignSelf: "center",
-
-
+              fontSize: RFValue(12),
+              fontFamily: "Urbanist_500Medium",
+              color: "#6A707C",
+              marginLeft: screenWidth * 0.033,
+              marginLeft: 10
             }}
-          />
-      
+          >
+            {selectedDate
+              ? `${moment(selectedDate).format("MMMM Do YYYY")}`
+              : 'Select Date'}
+          </Text>
+
+          <Image style={{
+            width: 11,
+            height: 7,
+            width: screenWidth * 0.03,
+            height: screenHeight * 0.01,
+            resizeMode: "contain",
+            // backgroundColor:"red",
+            // marginLeft: screenWidth * 0.05,
+            position: "absolute",
+             right: 17,
+             right: screenWidth * 0.0474,
+
+            alignSelf: "center",
+
+          }}
+            source={require("../../assets/down2.png")} />
 
 
 
-        
+
+
 
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
@@ -507,7 +584,7 @@ const LostPost = ({ route }) => {
             onCancel={hideDatePicker}
           />
 
-          </TouchableOpacity>
+        </TouchableOpacity>
 
 
         <TouchableOpacity
@@ -521,7 +598,7 @@ const LostPost = ({ route }) => {
             backgroundColor: '#0F2944',
             // padding: 10,
             // width: 320,
-            width: "92%",
+            width: "91%",
             // width:335,
             height: screenHeight * 0.059,
             alignSelf: "center",

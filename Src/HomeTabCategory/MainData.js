@@ -5,7 +5,10 @@ import React, { useEffect, useState } from 'react';
 import {
   Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
 } from '@expo-google-fonts/urbanist';
-import { useFonts } from '@expo-google-fonts/urbanist';
+import {
+  useFonts,
+  Raleway_100Thin, Raleway_200ExtraLight, Raleway_300Light, Raleway_400Regular, Raleway_500Medium, Raleway_600SemiBold, Raleway_700Bold, Raleway_800ExtraBold, Raleway_900Black,
+} from '@expo-google-fonts/raleway';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import moment from 'moment';
@@ -16,7 +19,7 @@ import { firebase } from '../../config';
 
 
 
-const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton,selectedTypeButton,selectedCityState,leftMarkerDate,rightMarkerDate ,topLocation }) => {
+const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, categoryselectedButton, selectedTypeButton, selectedCityState, leftMarkerDate, rightMarkerDate, topLocation }) => {
   const navigation = useNavigation();
   // console.log('Right date ',rightMarkerDate);
 
@@ -33,37 +36,37 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
   useEffect(() => {
     const userRef = firebase.firestore().collection("UserData");
     setIsLoading(true);
-  
+
     const typeQuery = selectedType || selectedTypeButton
       ? userRef.where("Type", "==", selectedType || selectedTypeButton)
       : userRef;
-  
+
     const locationQuery = selectedLocation || selectedCityState || topLocation
       ? typeQuery.where("location", "==", selectedLocation || selectedCityState || topLocation)
       : typeQuery;
-  
+
     const categoryQuery =
       categoryselectedButton && categoryselectedButton !== "All"
         ? locationQuery.where("category", "==", categoryselectedButton)
         : locationQuery;
-  
+
     let dateFilterQuery = categoryQuery;
-  
+
     if (leftMarkerDate && rightMarkerDate) {
       dateFilterQuery = dateFilterQuery.where("date", ">=", leftMarkerDate).where("date", "<=", rightMarkerDate);
     }
-  
+
     dateFilterQuery.onSnapshot((querySnapshot) => {
       const userDataArray = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         userDataArray.push({ id: doc.id, ...data });
       });
-  
+
       const sortedData = [...userDataArray].sort((a, b) => {
         const dateA = a.date ? a.date.toDate() : null;
         const dateB = b.date ? b.date.toDate() : null;
-  
+
         if (dateA && dateB) {
           return dateB - dateA;
         } else if (dateA && !dateB) {
@@ -73,13 +76,13 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
         }
         return 0;
       });
-  
+
       setUserDataList(sortedData);
       setFilteredData(sortedData);
       setIsLoading(false);
     });
-  }, [selectedType, selectedLocation, categoryselectedButton, selectedTypeButton, selectedCityState, leftMarkerDate, rightMarkerDate,topLocation]);
-  
+  }, [selectedType, selectedLocation, categoryselectedButton, selectedTypeButton, selectedCityState, leftMarkerDate, rightMarkerDate, topLocation]);
+
 
   useEffect(() => {
     if (searchQuery) {
@@ -109,6 +112,8 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
 
   let [fontsLoaded] = useFonts({
     Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
+    Raleway_100Thin, Raleway_200ExtraLight, Raleway_300Light, Raleway_400Regular, Raleway_500Medium, Raleway_600SemiBold, Raleway_700Bold, Raleway_800ExtraBold, Raleway_900Black,
+
   });
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -124,25 +129,41 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
   /////////////////////
   ////////////////
   return (
-    <View style={{ height:screenHeight*0.7, marginTop: screenHeight*0.01 ,paddingBottom:screenHeight*0.01}}>
+    <View style={{
+      // height: screenHeight * 0.6,
+      height:RFPercentage (69),
+      // marginTop: 12,
+      marginTop: screenHeight * 0.0155,
+      // backgroundColor:"red",
+      // borderBottomWidth:1,
+      paddingBottom: screenHeight * 0.014
+    }}>
       {isLoading ? ( // Show loading icon when data is loading
         <ActivityIndicator size="large" color="#7689D6" />
       ) : filteredData.length > 0 ? ( // Data is available, render the data
         <FlatList
-        data={filteredData.filter(item => item.lostItem)} // Filter out items where lostItem is empty
+          data={filteredData.filter(item => item.lostItem)} // Filter out items where lostItem is empty
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={{
-                height: 55.48,
-                height: screenHeight * 0.08,
-                width: "92%",
-                borderRadius: 5,
-                borderColor: "#E8ECF4",
+                height: 55,
+                height: screenHeight * 0.074,
+                width: 321,
+                width: "90%",
+                borderRadius: 8,
+                borderColor: "#E0E0E0",
                 backgroundColor: "white",
-                elevation: 3,
-                marginBottom: 10,
+                // elevation: 1,
+                marginBottom: 8,
+                marginBottom: screenHeight * 0.011,
                 alignSelf: "center",
+                borderWidth: 1,
+                borderRadius: (screenWidth, screenHeight) * 0.01,
+                borderWidth: (screenWidth, screenHeight) * 0.0012,
+
+                // marginLeft:19
               }}
               onPress={() => {
                 navigation.navigate('DetailsScreen', {
@@ -157,7 +178,7 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
                   imageUrl2: item.imageUrl2,
                   imageUrl3: item.imageUrl3,
                   participants: [item.uid],
-                  Type:item.Type
+                  Type: item.Type
                 });
               }}
             >
@@ -165,58 +186,104 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
 
               <View style={{ flexDirection: "row" }}>
                 <Image source={{ uri: item.imageUrl1 }} style={{
-                  height: screenHeight * 0.068,
-                  width: 50.25,
+                  height: 47.5,
+                  width: 50,
+                  height: screenHeight * 0.0635,
                   width: screenWidth * 0.14,
                   borderRadius: 8,
-                  marginTop: 6,
-                  marginTop: "1.4%",
-                  marginLeft: 5,
-                  marginLeft: "1.3%"
+                  borderRadius: (screenWidth, screenHeight) * 0.01,
+                  // marginTop: 6,
+                  // marginTop: "1.4%",
+                  marginLeft: 3.1,
+                  marginTop: 3.5,
+                  marginLeft: screenWidth * 0.009,
+                  marginTop: screenHeight * 0.004,
+                  // backgroundColor:"red"
+                  // marginLeft: "1.3%"
                 }} />
-                <Text style={styles.itemTitle}> {item.lostItem}</Text>
-           
-                <View  style={{
-                  backgroundColor:"#0F2944",
-                borderRadius:4,
-                marginLeft:"4.5%",
-                position:"absolute",
-                bottom:screenHeight*0.002,
-                height:screenHeight*0.015,
-                alignItems:"center",
-                justifyContent:"center"}}>
+                <Text style={{
+                  marginLeft: 8,
+                  marginTop: 10.5,
+                  marginTop: screenHeight * 0.014,
+                  marginLeft: "2.5%",
+                  fontSize: RFValue(14),
+                  fontFamily: "Raleway_500Medium",
+                  fontWeight: "500",
+                  color: "#0F2944",
+                  lineHeight: RFValue(16.44) ,
+                }}> {item.lostItem}</Text>
 
-                <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(9),color:"white" }}
-                >{item.Type}</Text>
-                
-                </View>
 
-                
-                <Text style={styles.itemDate}>
+
+
+                <Text style={{
+                  position: "absolute",
+                  // right: "3.5%",
+                  marginTop: 10.5,
+                  right: 13,
+                  marginTop: 10.5,
+                  right: screenWidth * 0.037,
+                  color: "#6A707C",
+                  fontSize: RFValue(12),
+                  fontFamily: "Raleway_400Regular",
+                  lineHeight:  RFValue(14),
+                }}>
                   {item.date ? moment(item.date.toDate()).format("D MMM YYYY") : 'Date not available'}
                 </Text>
               </View>
 
 
-              
-             
+              <Image
+                style={{
+                  width: 13,
+                  height: 13,
+                  width: screenWidth * 0.037,
+                  height: screenHeight * 0.017,
+                  // alignSelf: "center",
+                  resizeMode: "contain",
+                  position: "absolute",
+                  left: 63.5,
+                  bottom: 8.5,
+                  left: screenWidth * 0.18,
+                  bottom: screenHeight * 0.011,
+                  resizeMode: "contain",
+                  //  backgroundColor:"red"
+                }}
+
+                source={require('../../assets/locate.png')} />
+
+              <Text style={{
+                color: "#6A707C",
+                fontFamily: "Raleway_400Regular",
+                fontSize: RFValue(12),
+                lineHeight: RFValue( 14.09),
+                marginLeft: "1%",
+                position: "absolute",
+                bottom: 8.5,
+                bottom: screenHeight * 0.011,
+                left: 76,
+                left: screenWidth * 0.216,
+              }}>{item.location}</Text>
+
+              <TouchableOpacity style={{
+                position: "absolute",
+                // backgroundColor:"red",
+                right: 14.2,
+                right: screenWidth * 0.038,
+                bottom: 8.5
+              }}>
+                <Text style={styles.detailbtb}>View Details</Text>
+              </TouchableOpacity>
+
+
 
               <View style={styles.SecondView}>
-              <Ionicons name="md-location-sharp" 
-                size={RFValue(11)}
-              color="#FE9003"
-              style={{
-                marginTop: screenHeight*0.0015,marginRight:screenWidth*0.003
-              }}
-            />
-                
 
 
 
-                <Text style={styles.Locationtxt}>{item.location}</Text>
-                <TouchableOpacity style={styles.detailsView}>
-                  <Text style={styles.detailbtb}>View Details</Text>
-                </TouchableOpacity>
+
+
+
               </View>
 
             </TouchableOpacity>
@@ -229,6 +296,8 @@ const MainData = ({ searchQuery, handleSearch, selectedType, selectedLocation, c
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   userContainer: {
@@ -310,20 +379,7 @@ const styles = StyleSheet.create({
     bottom: 45
 
   },
-  type: {
-    fontSize: 14,
-    color: '#858585',
-    position: "absolute",
-    backgroundColor: "#D7D7D7",
-    width: 45,
-    height: 25,
-    borderRadius: 4,
-    paddingLeft: 8,
-    right: 12,
-    top: 12,
-    paddingTop: 3
 
-  },
   date: {
     fontSize: RFValue(12),
     color: '#D7D7D7',
@@ -347,25 +403,27 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   itemTitle: {
-    marginLeft: 10,
-    marginLeft: "2.7%",
-    marginTop: 11.5,
+    marginLeft: 8,
+    // marginLeft: "2.7%",
+    marginTop: 10.5,
     fontSize: RFValue(14),
-    fontFamily: "Urbanist_500Medium",
-    fontWeight:"500",
-    color:"#0F2944",
-    lineHeight:RFValue(16.44) ,
+    fontFamily: "Raleway_500Medium",
+    fontWeight: "500",
+    color: "#0F2944",
+    lineHeight: 16.44,
     // backgroundColor:"red"
   },
   itemDate: {
     position: "absolute",
-    right: "3.5%",
-    top: 11.5,
+    // right: "3.5%",
+    top: 10.5,
+    right: 13,
     color: "#6A707C",
     fontSize: RFValue(12),
-    fontFamily: "Urbanist_400Regular",
-    lineHeight:RFValue(14.09),
-     
+    fontFamily: "Raleway_400Regular",
+    lineHeight: 14,
+    // backgroundColor:"red"
+
 
   },
   SecondView: {
@@ -383,25 +441,27 @@ const styles = StyleSheet.create({
   },
   Locationtxt: {
     color: "#6A707C",
-    fontFamily: "Urbanist_400Regular",
+    fontFamily: "Raleway_400Regular",
     fontSize: RFValue(12),
-    lineHeight:RFValue(14.09), 
-marginLeft:"1%"
+    lineHeight: 14.09,
+    marginLeft: "1%",
+    position: "absolute", bottom: 8.5, left: 76
     // backgroundColor:"yellow"
 
   },
   detailsView: {
     position: "absolute",
-    right: 15,
-    right: "9.8%"
+    // backgroundColor:"red",
+    right: 14.2,
+    bottom: 8.5
   },
   detailbtb: {
     color: "#FE9003",
     fontSize: RFValue(12),
-    fontFamily: "Urbanist_600SemiBold",
+    fontFamily: "Raleway_600SemiBold",
     // lineHeight:10.63,
-    right: -7,
-    lineHeight:RFValue(14.09) 
+
+    lineHeight: RFValue(14.09)
 
 
   },

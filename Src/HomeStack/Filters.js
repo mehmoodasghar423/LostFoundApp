@@ -239,12 +239,21 @@ const Filters = ({ route }) => {
       <View>
 
 
-        <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "5%", }}>
+        <View style={{ 
+          flexDirection: "row",
+           position: "relative",
+            alignItems: "center", 
+        marginTop:13,
+        marginTop: "3.6%",
+        marginLeft:18,
+              marginLeft: "5%",
+
+       }}>
 
 
           <TouchableOpacity
             style={{
-              marginLeft: "4%",
+              // marginLeft: "4%",
               // marginTop:screenHeight*0.003,
               // backgroundColor: "red",
               height: screenHeight * 0.055,
@@ -258,11 +267,25 @@ const Filters = ({ route }) => {
 
             }}
             onPress={handleGoBack}>
-            <Ionicons name="ios-chevron-back-sharp"
-              size={screenWidth * 0.08}
-              color="#6A707C"
-              style={{
-              }} />
+
+
+            <Image style={{
+              width: 10,
+              height: 16,
+              width: screenWidth * 0.0285,
+              height: screenHeight * 0.021,
+              resizeMode: "contain",
+              tintColor:"#6A707C",
+              // backgroundColor:"red",
+              // marginLeft: screenWidth*0.73,
+              // position:"absolute",
+              // marginTop:screenHeight*-0.023
+
+
+            }}
+              source={require("../../assets/back.png")} />
+
+
           </TouchableOpacity>
 
           <Text
@@ -285,10 +308,11 @@ const Filters = ({ route }) => {
           style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
-            // lineHeight: 14.4,
-            left: "4%",
+            lineHeight:  RFValue(14),
+            left: "5%",
             position: "relative",
             top: screenWidth * 0.074,
+            // top:27,
             color: "#0F2944",
 
 
@@ -301,12 +325,14 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "26%",
+             
+              width: "24.6%",
               height: screenHeight * 0.035,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
               borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.021,
+              marginRight: 5,
+              marginRight: screenWidth * 0.015,
             }, selectedType === 'Lost' && styles.selectedButton]}
             onPress={() => handleButtonPress('Lost')}
           >
@@ -317,11 +343,11 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "26%",
+              width: "24.6%",
               height: screenHeight * 0.035,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
-              borderRadius: (screenWidth, screenHeight) * 0.01,
+              borderRadius: (screenWidth, screenHeight) * 0.007,
             }, selectedType === 'Found' && styles.selectedButton]}
             onPress={() => handleButtonPress('Found')}
           >
@@ -334,9 +360,9 @@ const Filters = ({ route }) => {
           style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
-            left: "4%",
+            marginLeft: "5%",
             position: "relative",
-            top: screenHeight * 0.035,
+            top: screenHeight * 0.037,
             // top:28,
             color: "#0F2944",
 
@@ -348,28 +374,31 @@ const Filters = ({ route }) => {
 
 
         <View style={{
-          left: "3.2%",
+      
           position: "relative",
-          top: screenHeight * 0.049,
+          top: screenHeight * 0.0478,
+          // top:36,
           flexDirection: "row",
           justifyContent: "space-between",
-          width: "92%",
+          // width: "92%",
+          // width:32,
           // backgroundColor:"red"
         }}>
 
 
           <TouchableOpacity style={{
             paddingVertical: screenHeight * 0.0045,
-            backgroundColor: '#F7F7F7',
-            borderWidth:1,
-            borderColor:'#F7F7F7',
-            elevation:3,
-            width: "37%",
-            height: screenHeight * 0.035,
+            // borderRadius: (screenWidth, screenHeight) * 0.01,
+            borderWidth: (screenWidth, screenHeight) * 0.0012,
+            borderColor:'#E0E0E0',
+            // elevation:3,
+            width: "41%",
+            height: screenHeight * 0.051,
             // borderWidth: (screenWidth, screenHeight) * 0.0014,
             // borderColor: "#6A707C",
             borderRadius: (screenWidth, screenHeight) * 0.007,
-            justifyContent: "center", alignItems: "center"
+            justifyContent: "center", alignItems: "center",
+            marginLeft: "5%",
           }}>
 
             <Text style={{
@@ -388,26 +417,25 @@ const Filters = ({ route }) => {
 
 
           <Text style={{
-            fontSize: RFValue(14),
+            fontSize: RFValue(21),
             fontFamily: "Urbanist_500Medium",
-            // color: "#6A707C",
+            color: "#6A707C",
             textAlign: "center",
             top: screenHeight * 0.0035,
-          }}>To</Text>
+          }}>-</Text>
 
 
           <TouchableOpacity style={{
             paddingVertical: screenHeight * 0.0045,
-            backgroundColor: '#F7F7F7',
-            borderWidth:1,
-            borderColor:'#F7F7F7',
-            elevation:3,
-            width: "37%",
-            height: screenHeight * 0.035,
+            borderWidth: (screenWidth, screenHeight) * 0.0012,
+            borderColor:'#E0E0E0',
+            // elevation:3,
+            width: "41%",
+            height: screenHeight * 0.051,
             // borderWidth: (screenWidth, screenHeight) * 0.0014,
             // borderColor: "#6A707C",
             borderRadius: (screenWidth, screenHeight) * 0.007,
-            justifyContent: "center", alignItems: "center"
+            justifyContent: "center", alignItems: "center",    marginRight: "5%",
           }}>
 
             <Text style={{
@@ -431,7 +459,7 @@ const Filters = ({ route }) => {
         <View style={{ alignItems: "center", position: "relative", top: screenHeight * 0.041, }}>
           <MultiSlider
             values={sliderValues} // Initial values of the sliders
-            sliderLength={screenWidth * 0.87} // Length of the slider track
+            sliderLength={screenWidth * 0.86} // Length of the slider track
             onValuesChange={handleSliderValuesChange} // Event handler for slider values change
             min={1} // Minimum value of the slider
             max={365} // Maximum value of the slider
@@ -439,7 +467,7 @@ const Filters = ({ route }) => {
             selectedStyle={{ backgroundColor: '#E5E5E5', }}
             unselectedStyle={{ background: "#E0E0E0" }}
             allowOverlap
-            pressedMarkerStyle={{ backgroundColor: 'green', width: screenWidth * 0.047, height: screenHeight * 0.024, }}
+            pressedMarkerStyle={{ backgroundColor: '#FE9003', width: screenWidth * 0.047, height: screenHeight * 0.024, }}
             trackStyle={{ height: screenHeight * 0.012 }}
           />
         </View>
@@ -455,9 +483,12 @@ const Filters = ({ route }) => {
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "4.5%",
+            marginLeft: "5%",
             position: "relative",
             marginTop: "11%",
+            // marginTop:38,
+            marginTop: screenHeight * 0.051,
+
             // position: "absolute",
             // top: 226,
             color: "#0F2944",
@@ -477,7 +508,9 @@ const Filters = ({ route }) => {
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
               borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.0135,
+              marginRight: 7.5,
+              marginRight: screenWidth * 0.021,
+              marginLeft:"5%"
             }, categoryselectedButton === 'All' && styles.selectedButton]}
             onPress={() => CategoryhandleButtonPress('All')}
           >
@@ -488,12 +521,12 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "24.8%",
-              height: screenHeight * 0.035,
+              width: "23.5%",
+              height: screenHeight * 0.0345,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
               borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.0135,
+              marginRight: screenWidth * 0.021,
             }, categoryselectedButton === 'Electronics' && styles.selectedButton]}
             onPress={() => CategoryhandleButtonPress('Electronics')}
           >
@@ -503,12 +536,12 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "24.8%",
-              height: screenHeight * 0.035,
+              width: "23.5%",
+              height: screenHeight * 0.0345,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
               borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.0135,
+              marginRight: screenWidth * 0.021,
             }, categoryselectedButton === 'Jewelry' && styles.selectedButton]}
             onPress={() => CategoryhandleButtonPress('Jewelry')}
           >
@@ -518,12 +551,13 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "24.8%",
-              height: screenHeight * 0.035,
+              width: "23.5%",
+              height: screenHeight * 0.0345,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
               borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.016,
+              // marginRight: screenWidth * 0.016,
+             
             }, categoryselectedButton === 'Bag' && styles.selectedButton]}
             onPress={() => CategoryhandleButtonPress('Bag')}
           >
@@ -541,12 +575,12 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "24.8%",
-              height: screenHeight * 0.035,
+              width: "23.5%",
+              height: screenHeight * 0.0345,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
               borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.016,
+              marginRight: screenWidth * 0.021,
             }, categoryselectedButton === 'Wallet' && styles.selectedButton]}
             onPress={() => CategoryhandleButtonPress('Wallet')}
           >
@@ -556,12 +590,12 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "24.8%",
-              height: screenHeight * 0.035,
+              width: "23.5%",
+              height: screenHeight * 0.0345,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderColor: "#6A707C",
               borderRadius: (screenWidth, screenHeight) * 0.007,
-              marginRight: screenWidth * 0.016,
+              marginRight: screenWidth * 0.021,
             }, categoryselectedButton === 'Glasses' && styles.selectedButton]}
             onPress={() => CategoryhandleButtonPress('Glasses')}
           >
@@ -571,12 +605,12 @@ const Filters = ({ route }) => {
           <TouchableOpacity
             style={[{
               paddingVertical: screenHeight * 0.0045,
-              width: "24.8%",
-              height: screenHeight * 0.035,
+              width: "23.5%",
+              height: screenHeight * 0.0345,
               borderWidth: (screenWidth, screenHeight) * 0.0014,
               borderRadius: (screenWidth, screenHeight) * 0.007,
               borderColor: "#6A707C",
-              marginRight: screenWidth * 0.016,
+              marginRight: screenWidth * 0.021,
             }, categoryselectedButton === 'Laptop' && styles.selectedButton]}
             onPress={() => CategoryhandleButtonPress('Laptop')}
           >
@@ -592,9 +626,10 @@ const Filters = ({ route }) => {
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
             // lineHeight: 14.4,
-            left: "4.5%",
+            left: "5%",
             position: "relative",
-            marginTop: "6%",
+            marginTop: "7.7%",
+            // marginTop: 28,
             // position: "absolute",
             // top: 325,
             color: "#0F2944",
@@ -608,62 +643,69 @@ const Filters = ({ route }) => {
           onPress={locationHandler}
           style={{
             position: "relative",
-            top: screenHeight * 0.012,
+            // marginTop:8,
+            top: screenHeight * 0.0105,
             // position:"absolute",
             // top:187,
-            backgroundColor: "#F3F4F6",
             borderWidth: 1,
             borderColor: '#E0E0E0',
-            width: "91.6%",
-            // width:279,
+            width:321,
+            width: "90%",
             height: 38,
             height: screenHeight * 0.052,
             borderRadius: 8,
             fontSize: RFValue(12),
             alignSelf: "center",
             flexDirection: "row",
-            alignItems: "center", justifyContent: "center",
+            alignItems: "center", 
+            // justifyContent: "center",
           }}>
 
 
-          <MaterialIcons name="location-city"
-            size={RFValue(20)}
-            color="#6A707C"
+          <Image
+          style={{
+            width: screenWidth * 0.05,
+            height: screenHeight * 0.035,
+            width: 14,
+            height: 14,
+            alignSelf: "center",
+            // backgroundColor: "red",
+            // marginRight: screenWidth * 0.005,
+            // marginTop:"14%"
+            // backgroundColor:"red",
+            marginLeft:11
 
-            style={{
-              // position: "absolute",
-              // left: "17%",
-              // top: 2,
-              marginRight: screenWidth * 0.01,
-              alignSelf: "center",
+          }}
+
+          source={require('../../assets/location.png')} />
 
 
-            }}
-          />
-
+          
           <Text style={{
             fontSize: RFValue(12),
             fontFamily: "Urbanist_500Medium",
-            color: "#6A707C", marginRight: 10
+            color: "#6A707C", marginLeft: 3
           }}>
             {selectedLocation || '  Please Select Your Specific Location here '}
           </Text>
-          <AntDesign name="down"
-            size={RFValue(13)}
-            color="#6A707C"
+          <Image
+          style={{
+            width: screenWidth * 0.05,
+            height: screenHeight * 0.035,
+            width: 13,
+            height: 13,
+            alignSelf: "center",
+            resizeMode: "contain", position: "absolute", right: 17
+          }}
 
-            style={{
-              // position: "absolute",
-              left: "17%",
-              top: 2,
-              alignSelf: "center",
+          source={require('../../assets/selector.png')} />
 
-
-            }}
-          />
         </TouchableOpacity>
 
-        <View style={{ flexDirection: "row", position: 'relative', marginTop: "10%", width: "91%", alignSelf: "center", justifyContent: "space-between" }}>
+        <View style={{ flexDirection: "row", position: 'relative',
+        //  marginTop: "10%",
+        marginTop:36,
+          width: "90%", alignSelf: "center", justifyContent: "space-between" }}>
 
 
 
@@ -675,10 +717,12 @@ const Filters = ({ route }) => {
               height: screenHeight * 0.059,
               alignSelf: "center",
               justifyContent: "center",
-              width: "33%",
+              width: "35.3%",
               borderRadius: (screenWidth, screenHeight) * 0.006,
+              borderRadius: 7,
               borderColor: "#0F2944",
-              borderWidth: (screenWidth, screenHeight) * 0.002,
+              borderWidth: (screenWidth, screenHeight) * 0.0012,
+              // borderWidth: 1,
 
             }}><Text style={{
               fontSize: RFValue(15),
@@ -700,8 +744,9 @@ const Filters = ({ route }) => {
               height: screenHeight * 0.059,
               alignSelf: "center",
               justifyContent: "center",
-              width: "60%",
+              width: "63%",
               borderRadius: (screenWidth, screenHeight) * 0.007,
+              borderRadius: 8,
 
             }}><Text style={{
               fontSize: RFValue(15),
@@ -726,9 +771,10 @@ export default Filters
 const styles = StyleSheet.create({
   buttons: {
     flexDirection: "row",
-    marginLeft: "4%",
+    marginLeft: "5%",
     position: "relative",
-    marginTop: "10%"
+    marginTop:35,
+    marginTop: "9.5%",
   },
   button: {
 
@@ -763,15 +809,20 @@ const styles = StyleSheet.create({
 
 Category_Buttons_Conatiner: {
     flexDirection: "row",
-    marginLeft: "4.5%",
+    // marginLeft: "5%",
     position: "relative",
-    marginTop: "3%"
+    marginTop: "2.3%",
+    // marginTop:8
+    width:"100%",
+    paddingRight:"5%",
+    // backgroundColor:"red"
   },
   Category_Buttons_Conatiner_2: {
     flexDirection: "row",
-    marginLeft: "4.5%",
+    marginLeft: "5%",
     position: "relative",
-    marginTop: "1.7%"
+    marginTop: "1.45%",
+    // marginTop: 5,
   },
 
 })

@@ -117,7 +117,7 @@ const Lost = () => {
       <View style={{ justifyContent: "center", alignItems: "center",height:screenHeight*0.75 }}>
 
         {isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#FE9003" />
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -131,9 +131,10 @@ const Lost = () => {
                   height: screenHeight * 0.106,
                   borderRadius: 8,
                   backgroundColor: "white",
-                  elevation: 1,
+                  // elevation: 1,
                   marginTop: screenHeight*0.008,
                   borderWidth:1,
+                borderWidth: (screenWidth, screenHeight) * 0.0012,
                   borderColor:"#E0E0E0"
                 }}
                 onPress={() => {

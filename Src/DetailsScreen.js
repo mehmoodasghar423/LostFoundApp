@@ -456,8 +456,25 @@ const DetailsScreen = ({ route }) => {
             // borderTopLeftRadius: 24,
           }}>
 
+          <View style={{
+             backgroundColor: "#FE9003",
+              borderRadius: 8,
+               marginLeft: "5%",
+               marginTop:18,
+                alignItems: "center",
+                 justifyContent: "center",
+                 width:52,
+                  height: 17,
+                 }}>
+          <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(9.3), color: "white",  }}
+          >{Type}</Text>
 
-            <View style={{ position: "relative", marginTop: "9%", alignSelf: "center", width: "94%", flexDirection: "row", }}>
+        </View>
+
+            <View style={{ position: "relative",
+             marginTop: "2.3%",
+            //  marginTop: 8,
+              alignSelf: "center", width: "94%", flexDirection: "row", }}>
 
               <Text style={{
                 fontFamily: "Urbanist_600SemiBold",
@@ -468,13 +485,9 @@ const DetailsScreen = ({ route }) => {
               }}
               >{lostItem}</Text>
 
-              <View style={{ backgroundColor: "#0F2944", borderRadius: 5, marginLeft: "2%", alignItems: "center", justifyContent: "center", height: screenHeight * 0.02 }}>
-                <Text style={{ fontFamily: "Urbanist_600SemiBold", fontSize: RFValue(11), color: "white", marginHorizontal: 5 }}
-                >{Type}</Text>
+            
 
-              </View>
-
-              <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), letterSpacing: 2, alignSelf: "center", color: "#1E1F4B", position: "absolute", right: screenWidth * 0.017, }}
+              <Text style={{ fontFamily: "Urbanist_500Medium", fontSize: RFValue(12), alignSelf: "center", color: "#1E1F4B", position: "absolute", right: screenWidth * 0.017, }}
               >
                 {date ? moment(date.toDate()).format("Do MMMM YYYY") : 'Date not available'}
 

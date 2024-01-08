@@ -51,8 +51,28 @@ const Contact = () => {
     <SafeAreaView style={{flex:1,backgroundColor:"white"}}>
     <View>
    
-    <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
-
+    <View
+    style={{
+      flexDirection: "row",
+      marginTop:"1%",
+       position: "relative",
+        alignItems: "center",
+       justifyContent: "space-between" ,
+      paddingBottom: "2.15%",
+      borderBottomWidth: RFValue(3),
+      borderBottomColor: 'rgba(0, 0, 0, 0.1)', 
+      ...Platform.select({
+        ios: {
+          shadowColor: 'transparent',
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0,
+          shadowRadius: 0,
+        },
+        android: {
+          elevation: 0,
+        },
+      }),
+    }}>
 
     <TouchableOpacity
       style={{
@@ -70,70 +90,98 @@ const Contact = () => {
 
       }}
       onPress={handleGoBack}>
-      <Ionicons name="ios-chevron-back-sharp"
-        size={screenWidth * 0.08}
-        color="#6A707C"
-        style={{
-        }} />
+      <Image style={{
+        width: 10,
+        height: 16,
+        width: screenWidth * 0.0285,
+        height: screenHeight * 0.021,
+        resizeMode: "contain",
+        tintColor: "#6A707C",
+        // backgroundColor:"red",
+        // marginLeft: screenWidth*0.73,
+        // position:"absolute",
+        // marginTop:screenHeight*-0.023
+
+
+      }}
+        source={require("../../assets/back.png")} />
+
     </TouchableOpacity>
 
 
     <Text
-      style={{
-        fontSize: RFValue(20),
-        fontFamily: "Urbanist_600SemiBold",
-        color: "#0F2944"
-        // marginLeft: "30%",
-
-
-      }}
-    >
-    Contact 
-    </Text>
-
-
-    <TouchableOpacity 
     style={{
-      marginRight: "4%",
-    }}
-    onPress={() => setmodalVisible(true)}>
-    <Image style={{
-      width: screenWidth * 0.1,
-      height: screenHeight * 0.047,
-      resizeMode: "contain",
-      justifyContent: "center",
-      alignSelf: "center",
-      alignItems: "center",
+      fontSize: RFValue(20),
+      fontFamily: "Urbanist_600SemiBold",
+      color: "#0F2944"
+      // marginLeft: "30%",
+
 
     }}
-      source={require("../../assets/HomeBack.png")} />
-  </TouchableOpacity>
+  >
+Contact
+  </Text>
+
+   
+  <TouchableOpacity
+  style={{
+    marginRight: "4%",
+    // marginTop:screenHeight*0.003,
+    // backgroundColor: "red",
+    height: screenHeight * 0.055,
+    width: "11.4%",
+    borderRadius: (screenWidth, screenHeight) * 0.016,
+    borderWidth: (screenWidth, screenHeight) * 0.0013,
+    borderColor: "#E0E0E0",
+    justifyContent: "center",
+    alignSelf: "center",
+    alignItems: "center",
+
+  }}
+  onPress={() => setmodalVisible(true)}
+  >
+
+  <Image
+            style={{
+              width: 19,
+              height: 20,
+              width: screenWidth * 0.053,
+              height: screenHeight * 0.027,
+              alignSelf: "center",
+              marginRight: "3%",
+              resizeMode: "contain",
+              //  backgroundColor:"red"
+            }}
+
+            source={require('../../assets/Homeicon.png')} />
+</TouchableOpacity>
 
 
- 
 
 
   </View>
     
 
     <Text style={{
-      fontFamily: "Urbanist_500Medium",
-      marginTop: "12%",
+      fontFamily: "Urbanist_600SemiBold",
+      marginTop: 25,
+      marginTop: "7%",
       alignItems: "center",
       alignSelf: "center",
-      fontSize: RFValue(14),
+      fontSize: RFValue(16),
 
 
 
-    }}>You can visit our website</Text> 
+    }}>Visit Website</Text> 
     <TouchableOpacity onPress={handleWebsitePress}>
     <Text style={{
-      fontFamily: "Urbanist_500Medium",
-      marginTop: "2%",
+      fontFamily: "Urbanist_600SemiBold",
+      marginTop: "2.6%",
+      // marginTop: 9,
       alignItems: "center",
       alignSelf: "center",
       color: "green",
-      fontSize: RFValue(14),
+      fontSize: RFValue(16),
 
     }}>www.dextersol.com</Text>
   </TouchableOpacity>

@@ -15,7 +15,10 @@ import { useEffect, useState } from 'react';
 import {
   Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
 } from '@expo-google-fonts/urbanist';
-import { useFonts } from '@expo-google-fonts/urbanist';
+import {
+  useFonts,
+  Raleway_100Thin,Raleway_200ExtraLight,Raleway_300Light,Raleway_400Regular, Raleway_500Medium,Raleway_600SemiBold,Raleway_700Bold,Raleway_800ExtraBold,Raleway_900Black,
+} from '@expo-google-fonts/raleway';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
@@ -46,10 +49,10 @@ export default function TabScreens() {
         width: screenWidth * 0.153,
         height: screenHeight * 0.073,
         borderRadius: (screenWidth, screenHeight) * 0.16,
-        backgroundColor: "#0F2944",
+        // backgroundColor: "#0F2944",
         // backgroundColor: "red",
         borderColor: "#ddd",
-        borderWidth: (screenWidth, screenHeight) * 0.0025,
+        // borderWidth: (screenWidth, screenHeight) * 0.0025,
         shadowOpacity: 0.3,
         shadowRadius: 3,
         justifyContent: "center",
@@ -68,6 +71,8 @@ export default function TabScreens() {
 
   let [fontsLoaded] = useFonts({
     Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
+  Raleway_100Thin,Raleway_200ExtraLight,Raleway_300Light,Raleway_400Regular, Raleway_500Medium,Raleway_600SemiBold,Raleway_700Bold,Raleway_800ExtraBold,Raleway_900Black,
+
   });
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -103,12 +108,23 @@ export default function TabScreens() {
             // backgroundColor:"red"
            }}>
 
-              <Ionicons
-                name="home-outline"
-                size={screenWidth * 0.065} // Adjust the size to match the image
-                color={focused ? "#0F2944" : "#748c94"} // Use the focused state to set the color
-              />
-              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Urbanist_600SemiBold" }}>
+
+           <Image
+           style={{
+             width: 19,
+             height: 20,
+             width: screenWidth * 0.0525,
+            height: screenHeight * 0.0266,
+            resizeMode:"contain",
+             alignSelf: "center",
+            //  backgroundColor: "red",
+             tintColor: focused ? "#0F2944" : "#748c94"
+             // marginTop:"14%"
+           }}
+
+           source={require('../assets/Homeicon.png')} />
+             
+              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Raleway_500Medium" }}>
                 Home
               </Text>
             </View>
@@ -126,12 +142,24 @@ export default function TabScreens() {
            width:screenWidth*0.14,
           //  backgroundColor:"red"
           }}>
-              <Ionicons name="ios-megaphone-outline"
-                size={screenWidth * 0.065} // Adjust the size to match the image
-                color={focused ? "#0F2944" : "#748c94"} // Use the focused state to set the color
-              />
+          <Image
+          style={{
+            width: screenWidth * 0.05,
+            height: screenHeight * 0.035,
+            width: 22,
+            height: 20,
+            width: screenWidth * 0.06,
+            height: screenHeight * 0.0266,
+            resizeMode:"contain",
+            alignSelf: "center",
+            // backgroundColor: "red",
+            tintColor: focused ? "#0F2944" : "#748c94"
+            // marginTop:"14%"
+          }}
 
-              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Urbanist_600SemiBold" }}>
+          source={require('../assets/Adds.png')} />
+
+              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Raleway_500Medium" }}>
                 My Ads
               </Text>
             </View>
@@ -193,11 +221,24 @@ export default function TabScreens() {
            width:screenWidth*0.14,
           //  backgroundColor:"red"
           }}>
-              <Ionicons name="chatbubble-ellipses-outline"
-                size={screenWidth * 0.065} // Adjust the size to match the image
-                color={focused ? "#0F2944" : "#748c94"} // Use the focused state to set the color
-              />
-              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Urbanist_600SemiBold" }}>
+          <Image
+          style={{
+            width: screenWidth * 0.05,
+            height: screenHeight * 0.035,
+            width: 22,
+            height:22,
+            width: screenWidth * 0.06,
+            height: screenHeight * 0.0295,
+            resizeMode:"contain",
+
+            alignSelf: "center",
+            // backgroundColor: "red",
+            tintColor: focused ? "#0F2944" : "#748c94"
+            // marginTop:"14%"
+          }}
+
+          source={require('../assets/chatIcon.png')} />
+              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Raleway_500Medium" }}>
                 Chat
               </Text>
             </View>
@@ -215,11 +256,24 @@ export default function TabScreens() {
            width:screenWidth*0.14,
           //  backgroundColor:"red"
           }}>
-              <AntDesign name="user"
-                size={screenWidth * 0.065} // Adjust the size to match the image
-                color={focused ? "#0F2944" : "#748c94"} // Use the focused state to set the color
-              />
-              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Urbanist_600SemiBold" }}>
+          <Image
+          style={{
+            width: screenWidth * 0.05,
+            height: screenHeight * 0.035,
+            width: 24,
+            height: 24,
+            width: screenWidth * 0.0665,
+            height: screenHeight * 0.032,
+            resizeMode:"contain",
+
+            alignSelf: "center",
+            // backgroundColor: "red",
+            tintColor: focused ? "#0F2944" : "#748c94"
+            // marginTop:"14%"
+          }}
+
+          source={require('../assets/Profile.png')} />
+              <Text style={{ color: focused ? "#0F2944" : "#748c94", fontSize: RFValue(10), fontFamily: "Raleway_500Medium" }}>
                 Profile
               </Text>
             </View>

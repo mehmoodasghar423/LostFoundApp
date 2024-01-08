@@ -85,7 +85,7 @@ const App = () => {
     <NavigationContainer>
     <Stack.Navigator initialRouteName='Welcome'>
     {user ? (
-      //  if a user is logged in
+      
       <>
         <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="Middlee" component={Middle}  options={{headerShown:false}} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions,ActivityIndicator,TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions,ActivityIndicator,TouchableWithoutFeedback,TextInput } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../../config';
@@ -10,7 +10,7 @@ import {
 import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-import { Entypo, Ionicons } from '@expo/vector-icons';
+import { Entypo, Ionicons ,FontAwesome} from '@expo/vector-icons';
 
 
 
@@ -26,9 +26,13 @@ const { selectedImage,profilname } = route.params;
   const handleGoBack = () => {
     navigation.goBack();
   };
-
-
+  
   const [modalVisible, setmodalVisible] = useState(false);
+
+
+
+const [userName, setUserName]=useState('')
+const [email, setEmail]=useState('')
 
   // Fetch the user's own data from Firestore when the component mounts
 
@@ -36,7 +40,7 @@ const { selectedImage,profilname } = route.params;
     // Ensure the user is authenticated (you may want to add additional checks)
     if (firebase.auth().currentUser) {
       const userId = firebase.auth().currentUser.uid;
-
+  
       // Fetch user data from Firestore
       firebase
         .firestore()
@@ -46,7 +50,10 @@ const { selectedImage,profilname } = route.params;
         .then((snapshot) => {
           if (snapshot.exists) {
             const userData = snapshot.data();
-            setUserData(userData);
+            // Update email state directly
+            setEmail(userData.email || ''); // Update with default value if null or undefined
+            // Update userName state directly
+            setUserName(userData.username || ''); // Update with default value if null or undefined
           } else {
             console.log('User data not found in Firestore.');
           }
@@ -56,6 +63,8 @@ const { selectedImage,profilname } = route.params;
         });
     }
   }, []);
+  
+
 
 
   let [fontsLoaded] = useFonts({
@@ -78,8 +87,29 @@ const { selectedImage,profilname } = route.params;
     <SafeAreaView>
       <View>
       
-      <View style={{ flexDirection: "row", position: "relative", alignItems: "center", marginTop: "3%", justifyContent: "space-between" }}>
 
+      <View
+      style={{
+        flexDirection: "row",
+        marginTop:"1%",
+         position: "relative",
+          alignItems: "center",
+         justifyContent: "space-between" ,
+        paddingBottom: "2.15%",
+        borderBottomWidth: RFValue(3),
+        borderBottomColor: 'rgba(0, 0, 0, 0.1)', 
+        ...Platform.select({
+          ios: {
+            shadowColor: 'transparent',
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0,
+            shadowRadius: 0,
+          },
+          android: {
+            elevation: 0,
+          },
+        }),
+      }}>
 
       <TouchableOpacity
         style={{
@@ -97,135 +127,182 @@ const { selectedImage,profilname } = route.params;
 
         }}
         onPress={handleGoBack}>
-        <Ionicons name="ios-chevron-back-sharp"
-          size={screenWidth * 0.08}
-          color="#6A707C"
-          style={{
-          }} />
+        <Image style={{
+          width: 10,
+          height: 16,
+          width: screenWidth * 0.0285,
+          height: screenHeight * 0.021,
+          resizeMode: "contain",
+          tintColor: "#6A707C",
+          // backgroundColor:"red",
+          // marginLeft: screenWidth*0.73,
+          // position:"absolute",
+          // marginTop:screenHeight*-0.023
+
+
+        }}
+          source={require("../../assets/back.png")} />
+
       </TouchableOpacity>
 
 
       <Text
-        style={{
-          fontSize: RFValue(20),
-          fontFamily: "Urbanist_600SemiBold",
-          color: "#0F2944"
-          // marginLeft: "30%",
-
-
-        }}
-      >
-      Account Detail
-      </Text>
-
-
-      <TouchableOpacity 
       style={{
-        marginRight: "4%",
-      }}
-      onPress={() => setmodalVisible(true)}>
-      <Image style={{
-        width: screenWidth * 0.1,
-        height: screenHeight * 0.047,
-        resizeMode: "contain",
-        justifyContent: "center",
-        alignSelf: "center",
-        alignItems: "center",
-
-      }}
-        source={require("../../assets/HomeBack.png")} />
-    </TouchableOpacity>
-
-
-   
-
-
-    </View>
-
-        <Text
-        style={{
-          fontSize: RFValue(14),
-          fontFamily: "Urbanist_500Medium",
-          // lineHeight: 24,
-          // left: "6%",
-          // position: "relative",
-          // top: 94,
-          top: screenHeight * 0.03,
-          alignSelf: "center",
-          color: "#8391A1",
-
-        }}
-      >
-        Your Account Details is Given Below
-      </Text>
-
-
-        <Image
-        style={{
-          width: screenWidth * 0.31,
-              height: screenHeight * 0.15,
-              alignSelf: "center",
-              backgroundColor: "red",
-              borderRadius: 100,
-              borderWidth: (screenWidth, screenHeight) * 0.007,
-              borderColor: "white",
-              marginTop:"14%"
-        }}
-        source={
-          selectedImage
-            ? { uri: selectedImage }
-            : require('../../assets/Dpp.png')
-        }
-      />
-
-
-      <View style={{
-        backgroundColor:"#0F2944",
-         paddingVertical:screenHeight* 0.001,
-         justifyContent:"center",alignItems:"center", 
-           position: "relative",marginTop:"3%",width:"auto",
-           alignSelf:"center",borderRadius:(screenWidth, screenHeight) * 0.07,     
-           borderWidth: (screenWidth, screenHeight) * 0.004,borderColor:"white",paddingHorizontal:screenWidth*0.03
-          //  paddingHorizontal:20
-          }}>
-      <Text
-      style={{
-        fontSize: RFValue(16),
+        fontSize: RFValue(20),
         fontFamily: "Urbanist_600SemiBold",
-        color: "white",
-        
+        color: "#0F2944"
+        // marginLeft: "30%",
+
+
       }}
     >
-    {profilname}
+    Account Detail
     </Text>
+
+     
+    <TouchableOpacity
+    style={{
+      marginRight: "4%",
+      // marginTop:screenHeight*0.003,
+      // backgroundColor: "red",
+      height: screenHeight * 0.055,
+      width: "11.4%",
+      borderRadius: (screenWidth, screenHeight) * 0.016,
+      borderWidth: (screenWidth, screenHeight) * 0.0013,
+      borderColor: "#E0E0E0",
+      justifyContent: "center",
+      alignSelf: "center",
+      alignItems: "center",
+
+    }}
+    onPress={() => setmodalVisible(true)}
+    >
+
+    <Image
+              style={{
+                width: 19,
+                height: 20,
+                width: screenWidth * 0.053,
+                height: screenHeight * 0.027,
+                alignSelf: "center",
+                marginRight: "3%",
+                resizeMode: "contain",
+                //  backgroundColor:"red"
+              }}
+
+              source={require('../../assets/Homeicon.png')} />
+  </TouchableOpacity>
+
+
+
 
     </View>
 
 
-        {userData ? (
-          <View style={{  marginTop: "5%",}}>
-           
-            <Text style={{
-              fontFamily: "Urbanist_500Medium",
-        fontSize: RFValue(14),
-         
-              alignItems: "center",
-              alignSelf: "center"
-            }}>Username: {userData.username}</Text>
-            <Text style={{
-              fontFamily: "Urbanist_500Medium",
-              alignSelf: "center",
-        fontSize: RFValue(14),
+    
+
+    
+
+       
+      
 
 
-            }}>Email: {userData.email}</Text>
 
-          </View>
-        ) : (
-          <ActivityIndicator size="large" color="#0F2944" /> // Loading indicator while data loads
-        )}
+      <TextInput style={{
+        // backgroundColor: "#F7F8F9",
+        borderWidth: 1,
+        borderWidth: (screenWidth, screenHeight) * 0.0013,
+
+        borderColor: "#E0E0E0",
+        // width: 335,
+        width: "91%",
+        height: screenHeight*0.06,
+        alignSelf: "center",
+        borderRadius: 8,
+        fontSize:  RFValue(12),
+        fontFamily:"Urbanist_500Medium",
+        // lineHeight: 15,
+        // position: "absolute",
+        // top: 156,
+        position: "relative",
+        marginTop: "10%",
+       
+        padding: 10,
+        color:"#6A707C"
+
+      }}
+        placeholder='Enter User Name'
+        placeholderTextColor="#8391A1"
+        value={userName}
+        onChangeText={text => setUserName(text)}
+        // autoCorrect={false}
+      />
+    
+      <TextInput style={{
+        // backgroundColor: "#F7F8F9",
+        borderWidth: 1,
+        borderWidth: (screenWidth, screenHeight) * 0.0013,
+
+        borderColor: "#E0E0E0",
+        // width: 335,
+        width: "91%",
+        height: screenHeight*0.06,
+        alignSelf: "center",
+        borderRadius: 8,
+        fontSize:  RFValue(12),
+        fontFamily:"Urbanist_500Medium",
+        // lineHeight: 15,
+        // position: "absolute",
+        // top: 156,
+        position: "relative",
+        marginTop: 8,
+        marginTop: "3%",
+        padding: 10,
+        color:"#6A707C"
+      }}
+        placeholder='Enter User Name'
+        placeholderTextColor="#8391A1"
+        value={email}
+        onChangeText={text => setEmail(text)}
+        // autoCorrect={false}
+      />
+    
+    
+    
+      
+    
+    
+    
+      <TouchableOpacity
+    //  onPress={handleResetPassword}
+        style={{
+          position: "relative",
+          borderRadius: 8,
+          backgroundColor: '#0F2944',
+          width: "90%",
+          height:33,
+          height: screenHeight*0.06,
+          alignSelf: "center",
+          marginTop:"8%",
+          justifyContent: "center"
+        }}><Text style={{
+          fontSize: RFValue(15),
+          fontFamily:"Urbanist_600SemiBold",
+          // lineHeight: 18,
+          alignSelf: "center",
+          color: '#F9F9F9',
+    
+    
+        }}
+        > Save Changes</Text>
+      </TouchableOpacity>
+    
 
 
+     
+
+
+    
         {modalVisible && (
           <TouchableWithoutFeedback onPress={() => setmodalVisible(false)}>
             <View
