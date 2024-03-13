@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "9f90ef3f-b6f7-47cc-9226-76e7090357a3",
+		"name": "Lost&found",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30683250"
+	},
+	"item": [
+		{
+			"name": "accounts",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test12@gmail.com\",\n    \"password\": \"myPassword@123\",\n    \"confirm_password\": \"myPassword@123\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/accounts/user/"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test12@gmail.com\",\n    \"password\": \"myPassword@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000//api/accounts/login/"
+					},
+					"response": []
+				},
+				{
+					"name": "forget_password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"fajarvps202@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/accounts/user/forget_password/"
+					},
+					"response": []
+				},
+				{
+					"name": "verify_OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"otp\": \"9769\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/accounts/verify/"
+					},
+					"response": []
+				},
+				{
+					"name": "reset_password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"fajarvps202@gmail.com\",\n    \"password\": \"fajarvps202\",\n    \"password1\": \"fajarvps202\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/accounts/reset/"
+					},
+					"response": []
+				},
+				{
+					"name": "update_profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTcyOTgzNSwiaWF0IjoxNzA1Mjk3ODM1LCJqdGkiOiJiYjE5OThlODJmOGI0NGE2YTEyNzVhMTZkMzMyNjYzYyIsInJlZnJlc2hfZXhwIjoxNzA2MTYxODM1LCJ1c2VyX2lkIjoyfQ.aKUrXEWGdXeyRxEWQsu0SkEf7kBfOgtD7tJ1ocuFj-Q"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profile_image",
+									"type": "file",
+									"src": "/home/black/Downloads/image5.jpeg"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/accounts/profile/update/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "app",
+			"item": [
+				{
+					"name": "Products_list_home",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/app/products/"
+					},
+					"response": []
+				},
+				{
+					"name": "filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/app/home/?type=lost",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"app",
+								"home",
+								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "lost"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+
+				
+				{
+					"name": "creat_post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Barear eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"item\": \"bangles\",\n    \"type\": \"found\",\n    \"category\": \"beaty products\",\n    \"date_added\": \"2022-01-15\",\n    \"location\": {\n        \"city\": \"Lahore\",\n        \"country\": \"Pakistan\"\n    },\n    \"description\": \" description description description v description description description\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/app/products/"
+					},
+					"response": []
+				},
+				{
+					"name": "user_products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/app/products/user/2/"
+					},
+					"response": []
+				},
+				{
+					"name": "user_products_filters",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/app/products/user/2/?type=lost",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"app",
+								"products",
+								"user",
+								"2",
+								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "lost"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

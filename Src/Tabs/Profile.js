@@ -11,11 +11,9 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { useNavigation } from '@react-navigation/native';
 import { LoadingModal } from "react-native-loading-modal";
 import { Ionicons, AntDesign, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-import { firebase } from '../../config';
-import 'firebase/storage';
-
+const SignOut_API_ENDPOINT ='https://31d9-39-37-159-76.ngrok-free.app/api/v1/logout'
 
 
 const Profile = () => {
@@ -23,9 +21,7 @@ const Profile = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const AccountDeatilsHandler = () => {
-    navigation.navigate('AccountDeatils', { selectedImage, profilname: name.username });
-  };
+
 
   ////
   const SettingHandler = () => {
@@ -41,17 +37,7 @@ const Profile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   ///
   const [name, setName] = useState("")
-  useEffect(() => {
-    firebase.firestore().collection("UserData")
-      .doc(firebase.auth().currentUser.uid).get()
-      .then((sanpshot) => {
-        if (sanpshot.exists) {
-          setName(sanpshot.data())
-        } else {
-          console.log("user does not exist")
-        }
-      })
-  }, [])
+
 
 
 
@@ -66,58 +52,46 @@ const Profile = () => {
 
 
 
-
-
-  const pickImage = async () => {
+  const signOut = async () => {
     try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
+      // Retrieve the token from AsyncStorage
+      const userToken = await AsyncStorage.getItem('userToken');
+  
+      if (!userToken) {
+        // Handle the case where there's no token in AsyncStorage
+        console.error('No user token found in AsyncStorage');
+        return;
+      }
+  
+      const response = await fetch(SignOut_API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userToken}`,
+        },
       });
+  
+      if (response.ok) {
+        console.log('User successfully signed out');
+        // Clear the token from AsyncStorage
+        await AsyncStorage.removeItem('userToken');
+        // Add any additional logic you want to perform after signing out
+    navigation.navigate("Login");
 
-      if (!result.canceled) {
-        const selectedAsset = result.assets[0];
-        const storageRef = firebase.storage().ref();
-        const imageName = `${firebase.auth().currentUser.uid}/${new Date().getTime()}.jpg`;
-        const imageRef = storageRef.child(imageName);
-        const response = await fetch(selectedAsset.uri);
-        const blob = await response.blob();
-        await imageRef.put(blob);
-        const imageUrl = await imageRef.getDownloadURL();
-
-        const currentUser = firebase.auth().currentUser;
-        if (currentUser) {
-          await firebase.firestore().collection("UserProfilePictures").doc(currentUser.email).set({
-            profilePic: imageUrl,
-          });
-          setSelectedImage(imageUrl);
-        }
+      } else {
+        console.error('Failed to sign out');
+        console.log('Response Status:', response.status);
+        console.log('Response Text:', await response.text());
+        // Handle sign-out failure
       }
     } catch (error) {
-      console.error("Error picking image: ", error);
-      // Handle the error appropriately, display an alert, etc.
+      console.error('Error signing out:', error);
+      // Handle any errors that occurred during the sign-out process
     }
   };
 
 
-  useEffect(() => {
-    const currentUser = firebase.auth().currentUser;
-    if (currentUser) {
-      firebase.firestore().collection("UserProfilePictures").doc(currentUser.email).get()
-        .then((snapshot) => {
-          if (snapshot.exists) {
-            setSelectedImage(snapshot.data().profilePic);
-            setloadingg(false); // Set loadingg to false when image is fetched
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching profile picture: ", error);
-          setloadingg(false); // Set loadingg to false on error
-          // Handle the error appropriately, display an alert, etc.
-        });
-    }
-  }, []);
+
 
 
   let [fontsLoaded] = useFonts({
@@ -136,60 +110,10 @@ const Profile = () => {
   }
 
 
-  const handleSignOut = async () => {
-    try {
-      setLoading(true); // Show loading modal when sign-out starts
-      const currentUser = firebase.auth().currentUser;
-      if (currentUser) {
-        // Update user status to 'offline'
-        await firebase.firestore().collection('UserData').doc(currentUser.uid).update({
-          onlineStatus: 'offline',
-        });
-      }
-      // Sign the user out after updating the status
-      await firebase.auth().signOut();
-      // Navigate to the login screen or perform any other necessary action
-      navigation.navigate('Login');
-    } catch (error) {
-      console.error('Sign-out error:', error);
-      setLoading(false); // Hide loading modal on error
-    }
-  };
 
 
-  const handleDeleteAccount = () => {
-    Alert.alert(
-      'Delete Account',
-      'Are you sure you want to delete your account? This action cannot be undone.',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          onPress: () => {
-            const user = firebase.auth().currentUser;
-            if (user) {
-              user
-                .delete()
-                .then(() => {
 
-                  navigation.navigate('Login');
-                })
-                .catch((error) => {
-
-                  Alert.alert('Error', 'An error occurred while deleting your account.');
-                });
-            } else {
-              Alert.alert('Error', 'User not found. Please sign in again.');
-            }
-          },
-          style: 'destructive',
-        },
-      ]
-    );
-  };
+ 
 
 
 
@@ -277,7 +201,9 @@ const Profile = () => {
 
           />}
 
-          <TouchableOpacity onPress={pickImage} style={{
+          <TouchableOpacity 
+          // onPress={pickImage}
+           style={{
             // backgroundColor: "white",
             height: screenHeight * 0.04,
             width: screenWidth * 0.08,
@@ -325,7 +251,7 @@ const Profile = () => {
             alignSelf: "center"
           }}
         >
-          {name.username}
+         Ali
         </Text>
 
 
@@ -384,7 +310,7 @@ const Profile = () => {
 
 
         <TouchableOpacity
-          onPress={AccountDeatilsHandler}
+          // onPress={AccountDeatilsHandler}
           style={{
             position: "relative",
             marginTop: "5%",
@@ -435,7 +361,7 @@ const Profile = () => {
 
 
         <TouchableOpacity
-          onPress={SettingHandler}
+          // onPress={SettingHandler}
           style={{
             position: "relative",
             marginTop: "2%",
@@ -485,7 +411,7 @@ const Profile = () => {
 
 
         <TouchableOpacity
-          onPress={ContactHandler}
+          // onPress={ContactHandler}
           style={{
             position: "relative",
             marginTop: "2%",
@@ -534,7 +460,7 @@ const Profile = () => {
 
 
         <TouchableOpacity
-          onPress={handleSignOut}
+          onPress={signOut}
           style={{
             // position: "absolute",
             // top: 427,
@@ -562,7 +488,7 @@ const Profile = () => {
 
 
         <TouchableOpacity
-          onPress={handleDeleteAccount}
+          // onPress={handleDeleteAccount}
           style={{
             position: 'relative',
             // top: 127,

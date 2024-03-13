@@ -627,7 +627,7 @@ const Home = ({ route }) => {
                   borderRadius: (screenWidth, screenHeight) * 0.015,
                   borderRadius: 4,
                   width: screenWidth * 0.2,
-                  height: 26,
+                  // height: 26,
                   height: screenHeight * 0.0345,
                   // marginLeft: screenWidth * 0.02,
                   alignItems: "center",

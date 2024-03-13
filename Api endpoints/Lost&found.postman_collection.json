@@ -70,7 +70,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"otp\": \"0929\",  \n    \"email\": \"fajarvps202@gmail.com\"\n}\n",
+							"raw": "{\n    \"otp\": \"0929\"  \n  ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -88,7 +88,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"fajarvps202@gmail.com\",\n    \"password\": \"fajarvps202\",\n    \"password1\": \"fajarvps202\"\n}",
+							"raw": "{\n    \"password\": \"fajarvps202\",\n    \"password1\": \"fajarvps202\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

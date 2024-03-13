@@ -1,0 +1,281 @@
+{
+	"item": [
+		{
+			"name": "accounts",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ba@gmail.com\",\n    \"password\": \"Ahmad123!\",\n    \"confirm_password\": \"Ahmad123!\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/register"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ab@gmail.com\",\n    \"password\": \"Cat12345!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/login"
+					},
+					"response": []
+				},
+				{
+					"name": "forget_password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"fajarvps202@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/forgetpassword"
+					},
+					"response": []
+				},
+				{
+					"name": "verify_OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"otp\": \"*****\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/verifyotp"
+					},
+					"response": []
+				},
+				{
+					"name": "reset_password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ab@gmail.com\",\n    \"pass1\": \"Cat12345!\",\n    \"pass2\": \"Cat12345!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/resetpassword"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "update_profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTcyOTgzNSwiaWF0IjoxNzA1Mjk3ODM1LCJqdGkiOiJiYjE5OThlODJmOGI0NGE2YTEyNzVhMTZkMzMyNjYzYyIsInJlZnJlc2hfZXhwIjoxNzA2MTYxODM1LCJ1c2VyX2lkIjoyfQ.aKUrXEWGdXeyRxEWQsu0SkEf7kBfOgtD7tJ1ocuFj-Q"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"raw": "{\n \"image\": \"imagefile\"\n}"
+						},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/updateprofile"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "app",
+			"item": [
+				{
+					"name": "Products_list_home",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"body": {
+							"mode": "formdata",
+							"body": {
+								"mode": "formdata",
+								"raw": "{\n \"image\": \"imagefile\" \"image\": \"imagefile\" \"image\": \"imagefile\"\n}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/getpost"
+					},
+					"response": []
+				},
+				{
+					"name": "filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/filterpost?item=iphone12",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"app",
+								"home",
+								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "lost"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+
+
+				{
+					"name": "creat_post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Barear eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"item\": \"bangles\",\n    \"type\": \"found\",\n    \"category\": \"beaty products\",\n    \"date_added\": \"2022-01-15\",\n    \"location\": {\n        \"city\": \"Lahore\",\n        \"country\": \"Pakistan\"\n    },\n    \"description\": \" description description description v description description description\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/createpost"
+					},
+					"response": []
+				},
+
+				
+				{
+					"name": "user_products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/userproduct"
+					},
+					"response": []
+				},
+					{
+					"name": "user_products_filters",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoic2xpZGluZyIsImV4cCI6MTcwNTU2NTExOCwiaWF0IjoxNzA1MTMzMTE4LCJqdGkiOiI3MTA0YThiMGRkMTg0ZDY4OWFhM2IyOWI2N2U3M2E4YSIsInJlZnJlc2hfZXhwIjoxNzA1OTk3MTE4LCJ1c2VyX2lkIjoyfQ.E08xKlnPYcWzbtgIRaom60GCT-lgYmH2tpW5d8wTLjc"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://31d9-39-37-159-76.ngrok-free.app/api/v1/userproduct/item=Iphone 12",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"app",
+								"products",
+								"user",
+								"2",
+								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "lost"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

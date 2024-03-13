@@ -14,8 +14,12 @@ import { firebase } from '../../config';
 import 'firebase/storage';
 import { Entypo, Ionicons, AntDesign,SimpleLineIcons  } from '@expo/vector-icons';
 import { LoadingModal } from "react-native-loading-modal";
+import Constants from 'expo-constants';
 
 
+
+
+const API_ENDPOINT ='https://31d9-39-37-159-76.ngrok-free.app/api/v1/createpost'
 
 
 const LostPostNext = ({ route }) => {
@@ -35,9 +39,9 @@ const LostPostNext = ({ route }) => {
   const [image3, setImage3] = useState(null);
   const { category, location, number, date, } = route.params;
 
-  // console.log(category);
+  // console.log(date);
   const [loading, setLoading] = useState(false);
-  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [isImageUploading1, setIsImageUploading1] = useState(false);
   const [isImageUploading2, setIsImageUploading2] = useState(false);
   const [isImageUploading3, setIsImageUploading3] = useState(false);
 
@@ -51,6 +55,13 @@ const LostPostNext = ({ route }) => {
   const [showCrosImage1, setShowCrosImage1] = useState(false);
   const [showCrosImage2, setShowCrosImage2] = useState(false);
   const [showCrosImage3, setShowCrosImage3] = useState(false);
+
+
+  const [cloudinaryUrl1, setCloudinaryUrl1] = useState(null);
+  const [cloudinaryUrl2, setCloudinaryUrl2] = useState(null);
+  const [cloudinaryUrl3, setCloudinaryUrl3] = useState(null);
+
+
 
 
   useEffect(() => {
@@ -99,6 +110,328 @@ const LostPostNext = ({ route }) => {
   };
 
 
+ 
+
+
+
+
+///1
+
+
+  const pickImage1Gallery = async () => {
+    setIsImageUploading1(true);
+    setCurrentImageIndex(1);
+  
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+      if (status !== 'granted') {
+        console.error('Permission to access media library was denied');
+        setIsImageUploading1(false);
+        setCurrentImageIndex(null);
+        return;
+      }
+  
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+  
+      if (!result.canceled) {
+        const selectedAsset = result.assets[0];
+        setImage1(selectedAsset.uri);
+        // console.log('url', selectedAsset.uri);
+  
+      // Now, upload the image to Cloudinary
+      const cloudinaryUrl = await uploadToCloudinary1(selectedAsset.uri);
+
+    
+    }
+
+  } catch (error) {
+      console.error('Error picking image:', error);
+    } finally {
+      setIsImageUploading1(false);
+      setCurrentImageIndex(null);
+    }
+  };
+
+  const pickImage1Camera = async () => {
+    setIsImageUploading1(true);
+    setCurrentImageIndex(1);
+  
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+      if (status !== 'granted') {
+        console.error('Permission to access media library was denied');
+        setIsImageUploading1(false);
+        setCurrentImageIndex(null);
+        return;
+      }
+  
+      const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+  
+      if (!result.canceled) {
+        const selectedAsset = result.assets[0];
+        setImage2(selectedAsset.uri);
+        // console.log('url', selectedAsset.uri);
+  
+      // Now, upload the image to Cloudinary
+      const cloudinaryUrl = await uploadToCloudinary1(selectedAsset.uri);
+
+    
+    }
+
+  } catch (error) {
+      console.error('Error picking image:', error);
+    } finally {
+      setIsImageUploading1(false);
+      setCurrentImageIndex(null);
+    }
+  };
+  
+  const uploadToCloudinary1 = async (imageUri) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', { uri: imageUri, name: 'image.jpg', type: 'image/jpeg' });
+      formData.append('upload_preset', 'lossfound'); 
+  
+      const response = await fetch("https://api.cloudinary.com/v1_1/dca7xqlaw/image/upload", {
+        method: 'post',
+        body: formData,
+      });
+  
+      const result = await response.json();
+    // console.log(result);
+
+    // Ensure that the 'secure_url' property is present in the Cloudinary response
+    const cloudinaryUrl = result.url;
+    if (!cloudinaryUrl) {
+      throw new Error("Cloudinary URL not found in the response");
+    }
+
+    // Return the Cloudinary URL
+    setCloudinaryUrl1(cloudinaryUrl)
+
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw error; // Re-throw the error to handle it in the calling function
+  }
+};
+
+
+
+///22
+
+
+  const pickImage2 = async () => {
+    setIsImageUploading2(true);
+    setCurrentImageIndex(1);
+  
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+      if (status !== 'granted') {
+        console.error('Permission to access media library was denied');
+        setIsImageUploading2(false);
+        setCurrentImageIndex(null);
+        return;
+      }
+  
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+  
+      if (!result.canceled) {
+        const selectedAsset = result.assets[0];
+        setImage2(selectedAsset.uri);
+        // console.log('url', selectedAsset.uri);
+  
+      // Now, upload the image to Cloudinary
+      const cloudinaryUrl = await uploadToCloudinary2(selectedAsset.uri);
+
+    
+    }
+
+  } catch (error) {
+      console.error('Error picking image:', error);
+    } finally {
+      setIsImageUploading2(false);
+      setCurrentImageIndex(null);
+    }
+  };
+  
+  const uploadToCloudinary2 = async (imageUri) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', { uri: imageUri, name: 'image.jpg', type: 'image/jpeg' });
+      formData.append('upload_preset', 'lossfound'); 
+  
+      const response = await fetch("https://api.cloudinary.com/v1_1/dca7xqlaw/image/upload", {
+        method: 'post',
+        body: formData,
+      });
+  
+      const result = await response.json();
+    // console.log(result);
+
+    // Ensure that the 'secure_url' property is present in the Cloudinary response
+    const cloudinaryUrl = result.url;
+    if (!cloudinaryUrl) {
+      throw new Error("Cloudinary URL not found in the response");
+    }
+
+    // Return the Cloudinary URL
+    setCloudinaryUrl2(cloudinaryUrl)
+
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw error; // Re-throw the error to handle it in the calling function
+  }
+};
+
+
+
+///33333333
+
+
+  const pickImage3 = async () => {
+    setIsImageUploading3(true);
+    setCurrentImageIndex(1);
+  
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+      if (status !== 'granted') {
+        console.error('Permission to access media library was denied');
+        setIsImageUploading3(false);
+        setCurrentImageIndex(null);
+        return;
+      }
+  
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+  
+      if (!result.canceled) {
+        const selectedAsset = result.assets[0];
+        setImage3(selectedAsset.uri);
+        // console.log('url', selectedAsset.uri);
+  
+      // Now, upload the image to Cloudinary
+      const cloudinaryUrl = await uploadToCloudinary3(selectedAsset.uri);
+
+    
+    }
+
+  } catch (error) {
+      console.error('Error picking image:', error);
+    } finally {
+      setIsImageUploading3(false);
+      setCurrentImageIndex(null);
+    }
+  };
+  
+  const uploadToCloudinary3 = async (imageUri) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', { uri: imageUri, name: 'image.jpg', type: 'image/jpeg' });
+      formData.append('upload_preset', 'lossfound'); 
+  
+      const response = await fetch("https://api.cloudinary.com/v1_1/dca7xqlaw/image/upload", {
+        method: 'post',
+        body: formData,
+      });
+  
+      const result = await response.json();
+    // console.log(result);
+
+    // Ensure that the 'secure_url' property is present in the Cloudinary response
+    const cloudinaryUrl = result.url;
+    if (!cloudinaryUrl) {
+      throw new Error("Cloudinary URL not found in the response");
+    }
+
+    // Return the Cloudinary URL
+    setCloudinaryUrl3(cloudinaryUrl)
+
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw error; // Re-throw the error to handle it in the calling function
+  }
+};
+
+
+
+
+const AddProducts = async (token) => {
+ 
+  try {
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, 
+      },
+
+      body: JSON.stringify({
+        item:lostItem,
+        type: "Lost",
+        category,
+        date_added :date,
+        city:location,
+        country:"Pakistan",
+        description,
+        image:[ 
+          {
+            url: cloudinaryUrl1,
+        },
+          {
+            url: cloudinaryUrl2,
+        },
+          {
+            url: cloudinaryUrl3,
+        },
+          
+       
+      ]
+      }),
+    });
+
+    if (response.ok) {
+      Alert.alert('Success', 'Data added successfully to products');
+   
+     console.log('DATA ADDED SUCCESFULLY');
+   
+      navigation.navigate("Check");
+    } else {
+      console.log('Request Payload:', JSON.stringify({
+        item: lostItem,
+      }));
+      Alert.alert('Error', 'Failed to add data');
+      console.log('Response Status:', response.status);
+      console.log('Response Text:', await response.text());
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    Alert.alert('Error', 'Something went wrong');
+  }
+};
+
+
+
+
+  
 
 
   const saveDataToFirestore = () => {
@@ -155,7 +488,7 @@ const LostPostNext = ({ route }) => {
 
 
 
-  const GallerypickImage1 = async () => {
+  const GallerypickImage111 = async () => {
     setIsImageUploading(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
 
@@ -186,7 +519,7 @@ const LostPostNext = ({ route }) => {
   };
 
 
-  const CamerapickImage1 = async () => {
+  const CamerapickImage111 = async () => {
     setIsImageUploading(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
 
@@ -215,9 +548,12 @@ const LostPostNext = ({ route }) => {
 
     }
   };
-  const pickImage2 = async () => {
-    setIsImageUploading2(true); // Set loading indicator to true
-    setCurrentImageIndex(1); // Set the current image index
+
+
+
+  const pickImage222 = async () => {
+    setIsImageUploading2(true); 
+    setCurrentImageIndex(1); 
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -246,7 +582,7 @@ const LostPostNext = ({ route }) => {
   };
 
 
-  const pickImage3 = async () => {
+  const pickImage333 = async () => {
     setIsImageUploading3(true); // Set loading indicator to true
     setCurrentImageIndex(1); // Set the current image index
 
@@ -277,6 +613,9 @@ const LostPostNext = ({ route }) => {
   };
 
   ///
+
+
+
 
 
   let [fontsLoaded] = useFonts({
@@ -582,7 +921,8 @@ const LostPostNext = ({ route }) => {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={GallerypickImage1}
+            <TouchableOpacity 
+            onPress={pickImage1Gallery}
               style={{ flexDirection: "row", marginTop: "3%" }}>
               <AntDesign name="picture"
                 size={RFValue(19)}
@@ -607,7 +947,8 @@ const LostPostNext = ({ route }) => {
               source={require('../../assets/LostApp/Linee.png')}
             />
 
-            <TouchableOpacity onPress={CamerapickImage1}
+            <TouchableOpacity 
+            onPress={pickImage1Camera}
               style={{ flexDirection: "row", marginTop: "7%" }}>
            
               <SimpleLineIcons name="camera"
@@ -643,7 +984,7 @@ const LostPostNext = ({ route }) => {
 
 
           <View style={{ width: screenWidth * 0.19, height: screenHeight * 0.087, backgroundColor: "#F3F4F6", alignItems: "center", justifyContent: "center", borderRadius: 8, marginRight: 10 }}>
-            {!image1 && !isImageUploading && (
+            {!image1 && !isImageUploading1 && (
 
               <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Ionicons name="add-circle-sharp"
@@ -661,7 +1002,7 @@ const LostPostNext = ({ route }) => {
              
               </TouchableOpacity>
             )}
-            {isImageUploading && currentImageIndex === 1 ? (
+            {isImageUploading1 && currentImageIndex === 1 ? (
               <ActivityIndicator size="large" color="#0F2944" style={{ position: "absolute", }} />
             ) : (
               image1 && (
@@ -786,7 +1127,7 @@ const LostPostNext = ({ route }) => {
 
         {loading && <LoadingModal modalVisible={true} />}
         <TouchableOpacity
-          onPress={saveDataToFirestore}
+          onPress={AddProducts}
 
           style={{
             // position: "absolute",

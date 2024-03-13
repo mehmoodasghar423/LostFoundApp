@@ -59,7 +59,7 @@ import TopLocation from './Src/HomeStack/TopLocation';
 import LostPELocation from './Src/PostEditing/LostPELocation.js';
 
 
-
+import Check from './Src/Additional/Check.js';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -127,6 +127,36 @@ const App = () => {
       <Stack.Screen name="OtpVerification" component={OtpVerification}  options={{headerShown:false}} />
       <Stack.Screen name="CreateNewPassword" component={CreateNewPassword}  options={{headerShown:false}} />
       <Stack.Screen name="PasswordChanged" component={PasswordChanged}  options={{headerShown:false}} />
+      
+      <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Check" component={Check} options={{ headerShown: false }} />
+      <Stack.Screen name="Middlee" component={Middle}  options={{headerShown:false}} />
+      <Stack.Screen name="LostPost" component={LostPost}  options={{headerShown:false}} /> 
+      <Stack.Screen name="LostPostNext" component={LostPostNext}  options={{headerShown:false}} />  
+      <Stack.Screen name="OutPutCheck" component={OutPutCheck}  options={{headerShown:false}} />  
+      <Stack.Screen name="FoundPost" component={FoundPost}  options={{headerShown:false}} /> 
+      <Stack.Screen name="FoundPostNext" component={FoundPostNext}  options={{headerShown:false}} /> 
+      <Stack.Screen name="LPostLocation" component={LPostLocation}  options={{headerShown:false}} /> 
+      <Stack.Screen name="FPostLocation" component={FPostLocation}  options={{headerShown:false}} /> 
+      <Stack.Screen name="MyAds" component={MyAds}  options={{headerShown:false}} />
+      <Stack.Screen name="LostPostEdit" component={LostPostEdit}  options={{headerShown:false}} />
+      <Stack.Screen name="LostPELocation" component={LostPELocation}  options={{headerShown:false}} />
+      <Stack.Screen name="LostPostNextEdit" component={LostPostNextEdit}  options={{headerShown:false}} />
+      <Stack.Screen name="FoundPostEdit" component={FoundPostEdit}  options={{headerShown:false}} />
+      <Stack.Screen name="FoundPostNextEdit" component={FoundPostNextEdit}  options={{headerShown:false}} />
+      <Stack.Screen name="FoundPELocation" component={FoundPELocation}  options={{headerShown:false}} />
+      <Stack.Screen name='Filters' component={Filters} options={{headerShown:false}}/>
+      <Stack.Screen name='FilterLocation' component={FilterLocation} options={{headerShown:false}}/>
+      <Stack.Screen name='Location' component={Location} options={{headerShown:false}}/>
+      <Stack.Screen name='TopLocation' component={TopLocation} options={{headerShown:false}}/>
+      <Stack.Screen name='Notifications' component={Notifications} options={{headerShown:false}} />
+      <Stack.Screen name="DetailsScreen" component={DetailsScreen}  options={{headerShown:false}} />  
+      <Stack.Screen name="ChatScreen" component={ChatScreen}  options={{headerShown:false}} />  
+      <Stack.Screen name='ItemDetail' component={ItemDetail} options={{headerShown:false}}/>
+      <Stack.Screen name='AccountDeatils' component={AccountDeatils} options={{headerShown:false}}/>
+      <Stack.Screen name='Settings' component={Settings} options={{headerShown:false}}/>
+      <Stack.Screen name='Contact' component={Contact} options={{headerShown:false}}/>
+      <Stack.Screen name='Map' component={Map} options={{headerShown:false}}/>
       </>
     )}
     </Stack.Navigator>

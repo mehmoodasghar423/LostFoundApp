@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,TouchableOpacity,Image,Dimensions,TouchableWithoutFeedback,TextInput } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity,Image,Dimensions,TouchableWithoutFeedback,TextInput,Alert } from 'react-native'
 import React, { useEffect,useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +11,11 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { LoadingModal } from "react-native-loading-modal";
 import { firebase } from '../../config';
 import { Entypo, Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
+const API_ENDPOINT ='https://31d9-39-37-159-76.ngrok-free.app/api/v1/login'
 
 
 export default function Login() {
@@ -23,8 +27,8 @@ export default function Login() {
   const screenHeight = Dimensions.get('window').height;
 
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('mehmoodasghar029@gmail.com');
+  const [password, setPassword] = useState('Meh12345')
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   
@@ -44,6 +48,39 @@ export default function Login() {
 
   const ForgotPasswordhandler =()=>{
     navigation.navigate("ForgotPassword")
+  }
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to login');
+      }
+  
+      // If login is successful, you might want to handle the response, e.g., extract tokens, user data, etc.
+      const data = await response.json();
+      
+        // Save the token to AsyncStorage
+    await AsyncStorage.setItem('userToken', data.token);
+
+      console.log('Login success:', data);
+      Alert.alert('Login success');
+    navigation.navigate("TabNavigator");
+
+    } catch (error) {
+      console.error('Error logging in:', error);
+      Alert.alert('Error', 'Failed to log in');
+    }
   }
 
 
@@ -217,7 +254,8 @@ export default function Login() {
 
         <TouchableOpacity 
 
-        onPress={() => loginUser(email, password)}
+        // onPress={() => loginUser(email, password)}
+        onPress={handleLogin}
         
           style={{
             position: "relative",

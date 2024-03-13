@@ -14,6 +14,11 @@ import PhoneInput from 'react-native-phone-input';
 import { LoadingModal } from "react-native-loading-modal";
 
 
+
+
+
+const API_ENDPOINT ='https://31d9-39-37-159-76.ngrok-free.app/api/v1/register'
+
 export default function Register() {
   const navigation = useNavigation();
 
@@ -43,7 +48,6 @@ export default function Register() {
 
 
   const [modalVisible, setmodalVisible] = useState(false);
-
 
   const registrationUser = async () => {
 
@@ -115,8 +119,40 @@ export default function Register() {
       });
   }
   
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
 
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          confirm_password: confirmPassword,
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to register');
+      }
+
+      // Handle success
+      Alert.alert('Success', 'User registered successfully!');
+      // Clear input fields after successful registration
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+    } catch (error) {
+      console.error('Error registering user:', error);
+      Alert.alert('Error', 'Failed to register user');
+    }
+  };
 
 
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -319,7 +355,8 @@ export default function Register() {
        
 
         <TouchableOpacity
-        onPress={() => registrationUser(username, email, password, confirmPassword)}
+        // onPress={() => registrationUser(username, email, password, confirmPassword)}
+        onPress={handleRegister}
           style={{
             position: "relative",
            marginTop:"7%",

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Dimensions ,Alert} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Dimensions, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,13 @@ import { useFonts } from '@expo-google-fonts/urbanist';
 import * as SplashScreen from 'expo-splash-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { firebase } from '../../config';
+
+
+
+
+
+const API_ENDPOINT = 'https://077f-39-37-159-76.ngrok-free.app/api/v1/forgetpassword'
+
 
 const ForgotPassword = () => {
   const navigation = useNavigation();
@@ -45,6 +52,35 @@ const ForgotPassword = () => {
   };
 
 
+  const forgetHandler = async () => {
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send OTP on your email');
+        
+      }
+
+      // Handle success
+      Alert.alert('Success', 'Otp sent on your email successfully!');
+      // Optionally, you can navigate the user to another screen after sending the request
+      navigation.navigate('OtpVerification'); // Replace 'Login' with the name of your login screen
+    } catch (error) {
+      console.error('Error sending otp on your email:', error); 
+      Alert.alert('Error', 'Failed to send otp on your email');
+    }
+  };
+
+
+
   let [fontsLoaded] = useFonts({
     Urbanist_300Light, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold,
   });
@@ -61,7 +97,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
 
       <View>
         <TouchableOpacity onPress={handleGoBack}>
@@ -87,7 +123,7 @@ const ForgotPassword = () => {
             letterSpacing: -1,
             position: "relative",
             marginTop: "10%",
-color:"#1E232C",
+            color: "#1E232C",
             // width: 210,
             alignSelf: "center"
           }}
@@ -137,7 +173,7 @@ color:"#1E232C",
         />
 
         <TouchableOpacity
-          onPress={handleResetPassword}
+          onPress={forgetHandler}
           style={{
             position: "relative",
             borderRadius: 8,
